@@ -1,0 +1,19 @@
+---
+- # ====== Authentication: Oracle APEX Accounts ================
+  id: 38651867735003740
+  identification: 
+    name: Oracle APEX Accounts
+
+  subscription: 
+    version-number: 1
+
+  settings: 
+    type: No Authentication
+    username: nobody
+
+  login-processing: 
+    switch-in-session: false
+
+  real-application-security: 
+    ras-mode: Disabled
+

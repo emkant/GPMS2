@@ -1,0 +1,1081 @@
+---
+# ====== Page: GenerateInvoiceForm ===========================
+id: 3
+identification: 
+  name: GenerateInvoiceForm
+  alias: GENERATEINVOICEFORM
+  title: Submit Invoice
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Unrestricted
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Submit Invoice ==============================
+  id: 300912949961551496
+  identification: 
+    name: Submit Invoice
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--noBorder
+    - t-Region--hiddenOverflow
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: GenerateInvoice
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: INV_BILL_FROM_DATE =======================
+  id: 30661706975267109
+  identification: 
+    name: INV_BILL_FROM_DATE
+    type: Date Picker
+
+  label: 
+    label: Bill From Date
+    alignment: Left
+
+  settings: 
+    show-time: false
+    display-as: Popup
+    minimum-date: None
+    maximum-date: None
+    multiple-months: No
+    use-defaults: true
+
+  layout: 
+    sequence: 40
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P3_WRITE_UP_DOWN_VALUE ===================
+  id: 35714333201251738
+  identification: 
+    name: P3_WRITE_UP_DOWN_VALUE
+    type: Display Only
+
+  label: 
+    label: Write Up/Down Value
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: false
+
+  layout: 
+    sequence: 70
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 999G999G999G999G990D00
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: 0
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P3_PRJDET_AGREEMENT_NUMBER ===============
+  id: 41118581997014731
+  identification: 
+    name: P3_PRJDET_AGREEMENT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 20
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_JUSTIFICATION ========================
+  id: 301148245737470756
+  identification: 
+    name: INV_JUSTIFICATION
+    type: Textarea
+
+  label: 
+    label: Adjustment Justification
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: false
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 100
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 10
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 100
+    height: 5
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_RETAINER_BALANCE =====================
+  id: 301148298382470757
+  identification: 
+    name: INV_RETAINER_BALANCE
+    type: Number Field
+
+  label: 
+    label: Retainer Balance
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 110
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_RETAINER_CHK =========================
+  id: 301148375112470758
+  identification: 
+    name: INV_RETAINER_CHK
+    type: Checkbox
+
+  label: 
+    label: Apply Retainer Balance
+    alignment: Left
+
+  settings: 
+    use-defaults: false
+    checked-value: Y
+    unchecked-value: N
+
+  layout: 
+    sequence: 120
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: N
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: ADJUSTMENT_AMOUNT ========================
+  id: 301162824474833769
+  identification: 
+    name: ADJUSTMENT_AMOUNT
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 80
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_CONTRACT_NUMBER ======================
+  id: 301162886325833770
+  identification: 
+    name: INV_CONTRACT_NUMBER
+    type: Select List
+
+  label: 
+    label: Agreement
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 30
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select distinct contract_number, contract_number contract_number_desc 
+      from xxgpms_project_contract
+      where contract_number = nvl(:P3_PRJDET_AGREEMENT_NUMBER,contract_number)
+      and   project_number = nvl(:INV_PROJECT_NUMBER,project_number)
+      -- and session_id = v('APP_SESSION')
+    display-extra-values: false
+    display-null-value: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Item
+    item: P3_PRJDET_AGREEMENT_NUMBER`
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_PROJECT_NUMBER =======================
+  id: 301164179475833783
+  identification: 
+    name: INV_PROJECT_NUMBER
+    type: Select List
+
+  label: 
+    label: '&P0_PROJECT_LABEL.'
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 10
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: false
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select distinct project_number d, project_number r 
+      from   xxgpms_project_costs
+      WHERE SESSION_ID = V('APP_SESSION')
+      order by 1
+      
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- ALL --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: INV_BILL_THRU_DATE =======================
+  id: 301164267211833784
+  identification: 
+    name: INV_BILL_THRU_DATE
+    type: Date Picker
+
+  label: 
+    label: Bill Thru Date
+    alignment: Left
+
+  settings: 
+    show-time: false
+    display-as: Popup
+    minimum-date: None
+    maximum-date: None
+    multiple-months: No
+    use-defaults: true
+
+  layout: 
+    sequence: 50
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: JUSTIFICATION_COMMENT ====================
+  id: 326545016051972862
+  identification: 
+    name: JUSTIFICATION_COMMENT
+    type: Textarea
+
+  label: 
+    alignment: Left
+
+  settings: 
+    resizable: false
+    auto-height: false
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 90
+    region: Submit Invoice # 300912949961551496
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    width: 80
+    height: 2
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    custom-attributes: 
+    - 'style="font-weight:boldl;color:red;font-size:12px;"'
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Static Value
+    static-value: '** Invoice adjustments require additional approval(s). Please supply a justification below.'
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Never
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: InvoiceSubmit ===============================
+  id: 301163931307833780
+  identification: 
+    button-name: InvoiceSubmit
+    label: Submit
+
+  layout: 
+    sequence: 10
+    region: Submit Invoice # 300912949961551496
+    slot: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-color-9
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+dynamic-actions: 
+- # ====== Dynamic Action: New =================================
+  id: 30661955470267111
+  identification: 
+    name: New
+
+  execution: 
+    sequence: 50
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 30662048070267112
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: console.log(apex.item('P_BILL_FROM_DATE').getValue());
+
+    execution: 
+      sequence: 10
+      event: New # 30661955470267111
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Fetch the Write Up Down Value =======
+  id: 35714532542251740
+  identification: 
+    name: Fetch the Write Up Down Value
+
+  execution: 
+    sequence: 30
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - INV_PROJECT_NUMBER
+
+  actions: 
+  - # ====== Action: Set Value ===================================
+    id: 35714659440251741
+    identification: 
+      action: Set Value
+
+    settings: 
+      set-type: SQL Statement
+      sql-statement: |
+        -- select sum(write_up_down_value)
+        -- from (
+        --     select distinct project_number,
+        --       nvl(write_up_down_value, 0) write_up_down_value,
+        --       contract_number
+        --     from xxgpms_project_costs
+        --   )
+        -- where (
+        --     (project_number = NVL(:INV_PROJECT_NUMBER, project_number))
+        --     OR (
+        --       contract_number = nvl(:P3_PRJDET_AGREEMENT_NUMBER, contract_number)
+        --     )
+        --   );
+        
+          select to_char(nvl(round(abs(sum(bill_trns_amount)),2),0),'999G999G999G999G990D00')
+          from   xxgpms_project_events 
+          where project_number = NVL(:INV_PROJECT_NUMBER, project_number)
+          and   contract_number = nvl(:P3_PRJDET_AGREEMENT_NUMBER, contract_number)
+          and   event_type_name = 'WIP Adjustment'
+          and   nvl(fusion_flag,'N') = 'N'
+          and   session_id = V('APP_SESSION');
+      items-to-submit: 
+      - INV_PROJECT_NUMBER
+      escape-special-characters: true
+      suppress-change-event: false
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P3_WRITE_UP_DOWN_VALUE
+
+    execution: 
+      sequence: 10
+      event: Fetch the Write Up Down Value # 35714532542251740
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 41115004473014695
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        // if (apex.item('P3_WRITE_UP_DOWN_VALUE').getValue()<=1000){
+        //     apex.item('JUSTIFICATION_COMMENT').hide();
+        //     apex.item('INV_JUSTIFICATION').hide();
+        // }
+        // else{
+        //     apex.item('JUSTIFICATION_COMMENT').show();
+        //     apex.item('INV_JUSTIFICATION').show();
+        // }
+
+    execution: 
+      sequence: 20
+      event: Fetch the Write Up Down Value # 35714532542251740
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+    server-side-condition: 
+      type: Never
+
+- # ====== Dynamic Action: Hide or Show Justification ==========
+  id: 35714815840251742
+  identification: 
+    name: Hide or Show Justification
+
+  execution: 
+    sequence: 40
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  client-side-condition: 
+    type: Item > Value
+    item: P3_WRITE_UP_DOWN_VALUE
+    value: 1000
+
+  actions: 
+  - # ====== Action: Show Justification ==========================
+    id: 35714921752251743
+    identification: 
+      name: Show Justification
+      action: Show
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - JUSTIFICATION_COMMENT
+      - INV_JUSTIFICATION
+
+    execution: 
+      sequence: 10
+      event: Hide or Show Justification # 35714815840251742
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+  - # ====== Action: Hide Justification ==========================
+    id: 35714974286251744
+    identification: 
+      name: Hide Justification
+      action: Hide
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - JUSTIFICATION_COMMENT
+      - INV_JUSTIFICATION
+
+    execution: 
+      sequence: 10
+      event: Hide or Show Justification # 35714815840251742
+      fire-when-event-result-is: False
+      fire-on-initialization: true
+
+- # ====== Dynamic Action: InvoiceSubmitClick ==================
+  id: 301164049677833781
+  identification: 
+    name: InvoiceSubmitClick
+
+  execution: 
+    sequence: 20
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: InvoiceSubmit # 301163931307833780
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 16678864471673432
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: setTimer();
+
+    execution: 
+      sequence: 10
+      event: InvoiceSubmitClick # 301164049677833781
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Submit Page =================================
+    id: 41118153598014727
+    identification: 
+      action: Submit Page
+
+    settings: 
+      request-/-button-name: INVOICE_SUBMIT
+      show-processing: true
+
+    execution: 
+      sequence: 40
+      event: InvoiceSubmitClick # 301164049677833781
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 301164119366833782
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        begin
+        
+        -- XX_GPMS.GENERATE_EVENTS(:INV_PROJECT_NUMBER,:INV_CONTRACT_NUMBER, :P_BILL_THRU_DATE);
+        
+        
+        XX_GPMS.GENERATE_DRAFT_INVOICE(:INV_PROJECT_NUMBER
+                                       ,:INV_BILL_THRU_DATE
+                                       ,:INV_CONTRACT_NUMBER
+                                       ,null--:INV_JUSTIFICATION
+                                       ,null
+                                       ,:INV_BILL_FROM_DATE);
+        end;
+        
+      items-to-submit: 
+      - INV_CONTRACT_NUMBER
+      - INV_PROJECT_NUMBER
+      - INV_BILL_THRU_DATE
+      - INV_JUSTIFICATION
+      - INV_BILL_FROM_DATE
+
+    execution: 
+      sequence: 20
+      event: InvoiceSubmitClick # 301164049677833781
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 301164595817833787
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        endTimer();
+        apex.navigation.dialog.close(true);
+
+    execution: 
+      sequence: 30
+      event: InvoiceSubmitClick # 301164049677833781
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+processes: 
+- # ====== Process: Percentage_for_the_progress ================
+  id: 18895835819130157
+  identification: 
+    name: Percentage_for_the_progress
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      begin
+      select percentage,message
+      into   :P0_PROGRESS_BAR2, :P0_PROGRESS_MESSAGE
+      from   progress_bar_entries
+      where  module = 'GENERATE_INVOICE'
+      and    seq = :P0_PROGRESS_SEQ
+      order  by seq;
+      exception
+       when others then
+         :P0_PROGRESS_BAR2 := 99;
+         :P0_PROGRESS_MESSAGE := 'Processing..';
+      end;
+      
+      apex_json.open_object;
+      apex_json.write('percent', :P0_PROGRESS_BAR2);
+      apex_json.write('message', :P0_PROGRESS_MESSAGE);
+      apex_json.close_object;
+
+  execution: 
+    sequence: 20
+    point: Ajax Callback
+    run-process: Once Per Page Visit (default)
+
+  comments: 
+    comments: |
+      -- SELECT PERCENTAGE, MESSAGE
+      -- INTO  :P2_PROGRESS_BAR2,:P2_PROGRESS_MESSAGE
+      -- FROM (
+      -- SELECT * 
+      -- FROM  PROGRESS_ENTRIES
+      -- ORDER BY CREATED_DATE DESC)
+      -- WHERE ROWNUM = 1;
+      
+
+- # ====== Process: Set the Agreement Number and Project Number 
+  id: 29656666141000223
+  identification: 
+    name: Set the Agreement Number and Project Number as needed
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      declare
+        v_cnt number;
+      begin
+        if :INV_PROJECT_NUMBER is null and :P3_PRJDET_AGREEMENT_NUMBER is not null 
+        then
+          select count(distinct PROJECT_NUMBER) 
+          into   v_cnt
+          from   xxgpms_project_contract
+          where  contract_number = :P3_PRJDET_AGREEMENT_NUMBER;
+      
+          if v_cnt =1  
+          then
+            select distinct PROJECT_NUMBER
+            into   :INV_PROJECT_NUMBER
+            from   xxgpms_project_contract
+            where  contract_number = :P3_PRJDET_AGREEMENT_NUMBER;
+          end if;
+        elsif :P3_PRJDET_AGREEMENT_NUMBER is null and :INV_PROJECT_NUMBER is not null 
+        then
+          select count(distinct contract_number) 
+          into   v_cnt
+          from   xxgpms_project_contract
+          where  PROJECT_NUMBER = :INV_PROJECT_NUMBER;
+      
+          if v_cnt =1  
+          then
+            select distinct contract_number
+            into   :P3_PRJDET_AGREEMENT_NUMBER
+            from   xxgpms_project_contract
+            where  PROJECT_NUMBER = :INV_PROJECT_NUMBER;
+          end if;
+        end if;
+      end;  
+      
+      :INV_BILL_FROM_DATE := :P_BILL_FROM_DATE;
+      :INV_BILL_THRU_DATE := :P_BILL_THRU_DATE;
+      
+      XX_GPMS.GENERATE_EVENTS(:INV_PROJECT_NUMBER,:INV_CONTRACT_NUMBER, :P_BILL_THRU_DATE);
+      
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+

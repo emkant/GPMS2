@@ -1,0 +1,92 @@
+---
+- # ====== Application Item: G_SAAS_ACCESS_TOKEN ===============
+  id: 23631103638747049
+  identification: 
+    name: G_SAAS_ACCESS_TOKEN
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329099865777
+
+- # ====== Application Item: G_SAAS_ACCESS_URL =================
+  id: 23631336454748169
+  identification: 
+    name: G_SAAS_ACCESS_URL
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329099965604
+
+- # ====== Application Item: G_TOKEN_DURATION ==================
+  id: 23634263228773018
+  identification: 
+    name: G_TOKEN_DURATION
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329104917815
+
+- # ====== Application Item: G_JWT_BASE ========================
+  id: 23634680924785055
+  identification: 
+    name: G_JWT_BASE
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329105985411
+
+- # ====== Application Item: G_SAAS_PREFERRED_NAME =============
+  id: 23635424416815323
+  identification: 
+    name: G_SAAS_PREFERRED_NAME
+    scope: Application
+
+  security: 
+    session-state-protection: Unrestricted
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329123033701
+
+- # ====== Application Item: G_TIMESTAMP =======================
+  id: 23636392491846612
+  identification: 
+    name: G_TIMESTAMP
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41329127091833
+
+- # ====== Application Item: G_SAAS_USER =======================
+  id: 26841236738308874
+  identification: 
+    name: G_SAAS_USER
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 41378100318770
+

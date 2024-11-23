@@ -1,0 +1,17 @@
+---
+- # ====== Application Computation: G_SAAS_ACCESS_URL ==========
+  id: 255582857393235629
+  identification: 
+    item-name: G_SAAS_ACCESS_URL
+
+  execution: 
+    sequence: 10
+    point: Before Header
+
+  computation: 
+    type: Static Value
+    static-value: 'https://fa-eqkm-dev7-saasfademo1.ds-fa.oraclepdemos.com'
+
+  subscription: 
+    version-number: 1
+

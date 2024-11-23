@@ -1,0 +1,427 @@
+---
+# ====== Page: Home ==========================================
+id: 9
+identification: 
+  name: Home
+  alias: HOME
+  title: WIP Form
+
+appearance: 
+  page-mode: Normal
+  page-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: New =========================================
+  id: 55100705274608401
+  identification: 
+    name: New
+    type: Static Content
+
+  layout: 
+    sequence: 50
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Never
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P9_JWT_BASE ==============================
+  id: 55100793800608402
+  identification: 
+    name: P9_JWT_BASE
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 10
+    region: New # 55100705274608401
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P9_FUSION_USER ===========================
+  id: 55100961678608403
+  identification: 
+    name: P9_FUSION_USER
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 50
+    region: New # 55100705274608401
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P9_AGREEMENT_NUMBER ======================
+  id: 55101715854608411
+  identification: 
+    name: P9_AGREEMENT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 20
+    region: New # 55100705274608401
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P9_PROJECT_NUMBER ========================
+  id: 55101828924608412
+  identification: 
+    name: P9_PROJECT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 30
+    region: New # 55100705274608401
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P9_SOURCE ================================
+  id: 55101952307608413
+  identification: 
+    name: P9_SOURCE
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 40
+    region: New # 55100705274608401
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P9_URL ===================================
+  id: 55102001929608414
+  identification: 
+    name: P9_URL
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 40
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+dynamic-actions: 
+- # ====== Dynamic Action: Get the Access Token ================
+  id: 57118553450980348
+  identification: 
+    name: Get the Access Token
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute Server-side Code ====================
+    id: 55102227485608416
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        IF :G_SAAS_ACCESS_TOKEN IS NOT NULL 
+             AND :G_SAAS_USER IS NOT NULL 
+             THEN
+              APEX_CUSTOM_AUTH.DEFINE_USER_SESSION(p_user => :G_SAAS_USER
+                                                   ,p_session_id => :APP_SESSION);
+        
+              apex_util.redirect_url ('https://g15d023dedae272-fronteragpmsdev.adb.us-ashburn-1.oraclecloudapps.com/'||
+              apex_page.get_url(p_page=>2,p_clear_cache => 2
+                --  ,p_items=>'P2_AGREEMENT_NUMBER,P_SOURCE,P2_PROJECT_NUMBER',
+                    -- p_values=> ''''||:P9_AGREEMENT_NUMBER||','||:P9_SOURCE||','||:P9_PROJECT_NUMBER||'''')
+        ));
+        end if;
+      items-to-submit: 
+      - G_SAAS_USER
+      - G_SAAS_ACCESS_TOKEN
+
+    execution: 
+      sequence: 20
+      event: Get the Access Token # 57118553450980348
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+    server-side-condition: 
+      type: Never
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 57118906409980356
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const page_type = urlParams.get('P2_AGREEMENT_NUMBER');
+        apex.item('P9_AGREEMENT_NUMBER').setValue(page_type);
+        const page_type1 = urlParams.get('P2_SOURCE');
+        apex.item('P9_SOURCE').setValue(page_type1);
+        const page_type2 = urlParams.get('P2_PROJECT_NUMBER');
+        apex.item('P9_PROJECT_NUMBER').setValue(page_type2);
+        
+        
+        if((!'&G_SAAS_ACCESS_TOKEN!JS.'))
+        {
+           getAccessToken('&G_SAAS_ACCESS_URL!JS.'); // Escape JS special characters
+        }
+        
+
+    execution: 
+      sequence: 10
+      event: Get the Access Token # 57118553450980348
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+processes: 
+- # ====== Process: Fetch the JWT Token ========================
+  id: 55100618751608400
+  identification: 
+    name: Fetch the JWT Token
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      declare
+        l_query_string varchar2(8500);
+        l_jwt_start_pos NUMBER;
+        l_jwt_arr APEX_APPLICATION_GLOBAL.VC_ARR2;
+        l_prn_json varchar2(10000);
+        l_web_url varchar2(200) := '/fscmUI/HedTokenGenerationServlet?response_type=code';
+      
+      begin
+      XX_GPMS.WIP_DEBUG(2,9, 'In Page 9 Fetch JWT',null); 
+      XX_JWT_USERNAME();
+      l_query_string  := owa_util.get_cgi_env('QUERY_STRING');
+      XX_JWT_USERNAME1(l_query_string);
+      l_jwt_start_pos := INSTR(l_query_string,'jwt=');
+      XX_JWT_USERNAME1(l_jwt_start_pos);
+      XX_GPMS.WIP_DEBUG(2,9.1, l_jwt_start_pos,null); 
+      
+        if l_jwt_start_pos <> 0 then 
+          :P9_JWT_BASE := SUBSTR(l_query_string, l_jwt_start_pos+4, 10000);
+      
+          l_jwt_arr       := APEX_UTIL.STRING_TO_TABLE(:P10_JWT_BASE, '.');
+          :G_SAAS_ACCESS_TOKEN := l_jwt_arr(2);
+      
+             l_prn_json := UTL_ENCODE.TEXT_DECODE(l_jwt_arr(2), 'UTF8', UTL_ENCODE.BASE64);
+      
+             APEX_JSON.PARSE (l_prn_json);
+            :P9_FUSION_USER := APEX_JSON.get_varchar2 (p_path => 'prn');
+            :G_SAAS_USER := :P9_FUSION_USER;
+            :G_JWT_BASE := :P9_JWT_BASE;
+      
+        else
+            XX_GPMS.WIP_DEBUG(2,9.2, :G_SAAS_ACCESS_TOKEN,null); 
+          --   :G_SAAS_ACCESS_URL := 'https://fa-eqkm-dev7-saasfademo1.ds-fa.oraclepdemos.com';
+            :G_SAAS_ACCESS_URL := 'https://fa-ewqs-dev1-saasfaprod1.fa.ocs.oraclecloud.com';
+            :P9_JWT_BASE := 'OTBI'; 
+            :G_JWT_BASE := 'OTBI';    
+          end if;
+        
+      end;
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: SET_ACCESS_TOKEN ===========================
+  id: 57119489099981739
+  identification: 
+    name: SET_ACCESS_TOKEN
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      apex_json.open_object;
+      begin
+        :G_SAAS_ACCESS_TOKEN   := apex_application.g_x01;
+        :G_SAAS_USER           := apex_application.g_x02;
+        :G_SAAS_PREFERRED_NAME := apex_application.g_x03;
+        :G_TIMESTAMP           := apex_application.g_x04;
+        :G_TOKEN_DURATION      := apex_application.g_x05;
+      --   APEX_CUSTOM_AUTH.SET_USER(:P2_SAAS_USER);
+        apex_json.write('ok',true);
+      exception
+        when others then apex_json.write('sqlerrm',sqlerrm);
+      end;
+      apex_json.close_all;
+      
+
+  execution: 
+    sequence: 20
+    point: Ajax Callback
+    run-process: Once Per Page Visit (default)
+

@@ -1,0 +1,1907 @@
+---
+- # ====== Plugin: FOS - Progress Bar ==========================
+  id: 25208688058618561
+  identification: 
+    name: FOS - Progress Bar
+    internal-name: COM.FOS.PROGRESS_BAR
+    type: Item
+
+  advanced: 
+    quick-pick: false
+
+  subscription: 
+    version-number: 1
+
+  source: 
+    pl/sql-code: |
+      -- =============================================================================
+      --
+      --  FOS = FOEX Open Source (fos.world), by FOEX GmbH, Austria (www.foex.at)
+      --
+      --  This plug-in provides you with a highly customisable Progress Bar item.
+      --
+      --  License: MIT
+      --
+      --  GitHub: https://github.com/foex-open-source/fos-progress-bar
+      --
+      -- =============================================================================
+      G_IN_ERROR_HANDLING_CALLBACK   boolean := false;
+      
+      --------------------------------------------------------------------------------
+      -- private function to include the apex error handling function, if one is
+      -- defined on application or page level
+      --------------------------------------------------------------------------------
+      function error_function_callback
+        ( p_error in apex_error.t_error
+        )  return apex_error.t_error_result
+      is
+          c_cr constant varchar2(1) := chr(10);
+      
+          l_error_handling_function apex_application_pages.error_handling_function%type;
+          l_statement               varchar2(32767);
+          l_result                  apex_error.t_error_result;
+      
+          procedure log_value
+            ( p_attribute_name in varchar2
+            , p_old_value      in varchar2
+            , p_new_value      in varchar2 
+            )
+          is
+          begin
+              if   p_old_value <> p_new_value
+                or (p_old_value is not null and p_new_value is null)
+                or (p_old_value is null     and p_new_value is not null)
+              then
+                  apex_debug.info('%s: %s', p_attribute_name, p_new_value);
+              end if;
+          end log_value;
+      
+      begin
+          if not g_in_error_handling_callback 
+          then
+              g_in_error_handling_callback := true;
+      
+              begin
+                  select /*+ result_cache */
+                         coalesce(p.error_handling_function, f.error_handling_function)
+                    into l_error_handling_function
+                    from apex_applications f,
+                         apex_application_pages p
+                   where f.application_id     = apex_application.g_flow_id
+                     and p.application_id (+) = f.application_id
+                     and p.page_id        (+) = apex_application.g_flow_step_id;
+              exception when no_data_found then
+                  null;
+              end;
+          end if;
+      
+          if l_error_handling_function is not null
+          then
+              l_statement := 'declare'||c_cr||
+                                 'l_error apex_error.t_error;'||c_cr||
+                             'begin'||c_cr||
+                                 'l_error := apex_error.g_error;'||c_cr||
+                                 'apex_error.g_error_result := '||l_error_handling_function||' ('||c_cr||
+                                     'p_error => l_error );'||c_cr||
+                             'end;';
+      
+              apex_error.g_error := p_error;
+      
+              begin
+                  apex_exec.execute_plsql(l_statement);
+              exception when others then
+                  apex_debug.error('error in error handler: %s', sqlerrm);
+                  apex_debug.error('backtrace: %s', dbms_utility.format_error_backtrace);
+              end;
+      
+              l_result := apex_error.g_error_result;
+      
+              if l_result.message is null
+              then
+                  l_result.message          := nvl(l_result.message,          p_error.message);
+                  l_result.additional_info  := nvl(l_result.additional_info,  p_error.additional_info);
+                  l_result.display_location := nvl(l_result.display_location, p_error.display_location);
+                  l_result.page_item_name   := nvl(l_result.page_item_name,   p_error.page_item_name);
+                  l_result.column_alias     := nvl(l_result.column_alias,     p_error.column_alias);
+              end if;
+          else
+              l_result.message          := p_error.message;
+              l_result.additional_info  := p_error.additional_info;
+              l_result.display_location := p_error.display_location;
+              l_result.page_item_name   := p_error.page_item_name;
+              l_result.column_alias     := p_error.column_alias;
+          end if;
+      
+          if l_result.message = l_result.additional_info
+          then
+              l_result.additional_info := null;
+          end if;
+      
+          g_in_error_handling_callback := false;
+      
+          return l_result;
+      
+      exception
+          when others then
+              l_result.message             := 'custom apex error handling function failed !!';
+              l_result.additional_info     := null;
+              l_result.display_location    := apex_error.c_on_error_page;
+              l_result.page_item_name      := null;
+              l_result.column_alias        := null;
+              g_in_error_handling_callback := false;
+              
+              return l_result;
+      end error_function_callback;
+      
+      procedure render
+        ( p_item   in            apex_plugin.t_item
+        , p_plugin in            apex_plugin.t_plugin
+        , p_param  in            apex_plugin.t_item_render_param
+        , p_result in out nocopy apex_plugin.t_item_render_result 
+        )
+      as
+          -- native attributes
+          l_name                          p_item.name%type                := apex_escape.html(p_item.name);
+          l_value                         p_param.value%type              := apex_escape.html(p_param.value);
+          l_classes                       p_item.element_css_classes%type := p_item.element_css_classes;
+          
+          l_ajax_id                       varchar2(1000)                  := apex_plugin.get_ajax_identifier;
+          
+          l_value_arr                     apex_t_varchar2;
+          l_pct_val                       varchar2(100);
+          l_msg_val                       varchar2(100);
+           
+          -- width and height 
+          l_width_esc                     p_item.element_width%type       := p_item.element_width;
+          l_height                        p_item.element_height%type      := p_item.element_height;
+          
+          -- init js
+          l_init_js_fn                    varchar2(32767)                 := nvl(apex_plugin_util.replace_substitutions(p_item.init_javascript_code), 'undefined');
+      
+          -- attributes
+          l_default_message               p_plugin.attribute_01%type      := apex_escape.html(p_plugin.attribute_01);
+          l_shape                         p_item.attribute_01%type        := p_item.attribute_01;
+          l_custom_shape                  p_item.attribute_02%type        := p_item.attribute_02;
+          l_style                         p_item.attribute_03%type        := p_item.attribute_03;
+          l_color                         p_item.attribute_04%type        := p_item.attribute_04;
+          l_trail_color                   p_item.attribute_05%type        := p_item.attribute_05;
+          l_end_color                     p_item.attribute_06%type        := p_item.attribute_06;
+          l_animation                     p_item.attribute_07%type        := p_item.attribute_07;
+          l_duration                      p_item.attribute_08%type        := p_item.attribute_08;
+          l_show_pct                      p_item.attribute_09%type        := p_item.attribute_09;
+          l_show_msg                      p_item.attribute_10%type        := p_item.attribute_10;
+          l_options                       p_item.attribute_11%type        := p_item.attribute_11;
+          l_refresh_interval              p_item.attribute_12%type        := p_item.attribute_12;
+          l_repetitions                   p_item.attribute_13%type        := p_item.attribute_13;
+          l_num_of_reps                   p_item.attribute_14%type        := p_item.attribute_14;
+          l_items_to_submit               p_item.attribute_15%type        := apex_plugin_util.page_item_names_to_jquery(p_item.attribute_15);
+          
+          -- local variables
+          FOS_PRB_CLS                     constant varchar2(100)          := 'fos-prb-container';
+          FOS_PRB_WRAPPER                 constant varchar2(100)          := 'fos-prb-wrapper' ;
+          FOS_PRB_MSG_CLS                 constant varchar2(100)          := 'fos-prb-msg';
+          
+          l_msg_markup                    constant varchar2(1000)         := '<span class="'|| FOS_PRB_MSG_CLS ||'"></span>';
+          l_add_timer                     boolean                         := instr(l_options, 'add-timer')        > 0;
+          l_queue_animations              boolean                         := instr(l_options, 'queue-animations') > 0;
+          
+      begin
+      
+          --debug
+          if apex_application.g_debug 
+          then
+              apex_plugin_util.debug_item_render
+                ( p_plugin => p_plugin
+                , p_item   => p_item
+                , p_param  => p_param
+                );
+          end if;
+          
+          -- get the values
+          if instr(l_value,':') > 0
+          then
+              l_value_arr := apex_string.split(l_value,':');
+              l_pct_val   := l_value_arr(1);
+              l_msg_val   := l_value_arr(2);
+          else 
+              l_pct_val   := l_value;
+          end if;
+      
+          -- create the markup
+      
+          sys.htp.p('<div class="'|| FOS_PRB_CLS ||' '|| l_classes || '" ' || p_item.element_attributes ||'>');                                                   -- container open
+          sys.htp.p('    <input id="'|| l_name ||'" type="hidden" name="'|| l_name ||'" value="'|| l_value ||'"></input>');   -- input element
+          sys.htp.p('    <div class="'||FOS_PRB_WRAPPER||' fos-prb-'|| l_shape ||'" id="'|| l_name||'_WRAPPER">');            -- wrapper
+          if l_custom_shape is not null
+          then
+              sys.htp.p(replace(replace(l_custom_shape, '#TRAIL_COLOR#', l_trail_color), '#COLOR#', l_color));
+          end if;
+          
+          sys.htp.p('    </div>');                                                                                            -- wrapper close
+          sys.htp.p('</div>');                                                                                                -- container close
+          
+          
+          apex_json.initialize_clob_output;
+          apex_json.open_object;
+          apex_json.write('ajaxId'           , l_ajax_id          );
+          apex_json.write('name'             , l_name             );
+          apex_json.write('pctVal'           , l_pct_val          );
+          apex_json.write('msgVal'           , l_msg_val          );
+          apex_json.write('shape'            , l_shape            );
+          apex_json.write('style'            , l_style            );
+          apex_json.write('color'            , l_color            );
+          apex_json.write('endColor'         , l_end_color        );
+          apex_json.write('trailColor'       , l_trail_color      );
+          apex_json.write('animation'        , l_animation        );
+          apex_json.write('duration'         , l_duration         );
+          apex_json.write('showPct'          , l_show_pct         );
+          apex_json.write('showMsg'          , l_show_msg         );
+          apex_json.write('msg'              , l_default_message  );
+          apex_json.write('customShape'      , l_custom_shape     );
+          apex_json.write('addTimer'         , l_add_timer        );
+          apex_json.write('refreshInterval'  , l_refresh_interval );
+          apex_json.write('repetitions'      , l_repetitions      );
+          apex_json.write('numOfReps'        , l_num_of_reps      );    
+          apex_json.write('itemsToSubmit'    , l_items_to_submit  );
+          apex_json.write('queueAnimations'  , l_queue_animations );
+          apex_json.close_object;
+          
+          apex_javascript.add_onload_code('FOS.item.progressBar.init('|| apex_json.get_clob_output  ||', '|| l_init_js_fn ||')');
+          
+          apex_json.free_output;
+      
+      end render;
+      
+      procedure ajax
+        ( p_item   in            apex_plugin.t_item
+        , p_plugin in            apex_plugin.t_plugin
+        , p_param  in            apex_plugin.t_item_ajax_param
+        , p_result in out nocopy apex_plugin.t_item_ajax_result 
+        )
+      as
+          -- error handling
+          l_apex_error                    apex_error.t_error;
+          l_result                        apex_error.t_error_result;
+          l_message                       varchar2(32000);
+      
+          l_name                          p_item.name%type                := apex_escape.html(p_item.name);
+          l_advanced_setting              p_item.attribute_10%type        := p_item.attribute_10;
+          l_page_item_to_submit           p_item.attribute_11%type        := p_item.attribute_11;
+          l_context                       apex_exec.t_context;
+          
+          l_source_type                   varchar2(1000);
+          l_source                        varchar2(32000);
+          
+          l_value_arr                     apex_t_varchar2;
+          l_value                         varchar2(1000);
+          l_msg_value                     varchar2(1000);
+          l_pct_value                     varchar2(1000);
+          
+      begin
+      
+          --debug
+          if apex_application.g_debug 
+          then
+              apex_plugin_util.debug_item
+                ( p_plugin => p_plugin
+                , p_item   => p_item
+                );
+          end if;
+          
+          -- get the page source
+          select item_source_type
+               , item_source
+            into l_source_type
+               , l_source
+            from apex_application_page_items
+           where application_id = :APP_ID
+             and page_id = :APP_PAGE_ID
+             and item_name = l_name
+          ;
+          
+          if instr(l_source_type, 'SQL Query') > 0
+          then
+              l_context := apex_exec.open_query_context
+                  ( p_location  => apex_exec.c_location_local_db
+                  , p_sql_query => l_source
+                  );
+      
+              while apex_exec.next_row(l_context)
+              loop
+                  l_value := apex_exec.get_varchar2(l_context,1);
+              end loop;
+      
+              apex_exec.close(l_context);
+          elsif instr(l_source_type,'PL/SQL Expression') > 0 or l_source_type = 'Expression'
+          then
+              l_value := apex_plugin_util.get_plsql_expression_result
+                  ( p_plsql_expression => l_source
+                  );
+          elsif instr(l_source_type, 'PL/SQL Function') > 0 or l_source_type = 'Function'
+          then
+              l_value := apex_plugin_util.get_plsql_function_result
+                  ( p_plsql_function => l_source
+                  );
+          -- @todo: support SQL Expressions +20.1
+          end if;
+          
+          -- get the values
+          if instr(l_value,':') > 0
+          then
+              l_value_arr   := apex_string.split(l_value,':');
+              l_pct_value   := l_value_arr(1);
+              l_msg_value   := l_value_arr(2);
+          else 
+              l_pct_value   := l_value;
+          end if;
+          
+          apex_json.open_object;
+          apex_json.write('success'  , true        );
+          apex_json.write('value'    , l_pct_value );
+          apex_json.write('msg'      , l_msg_value , true);
+          apex_json.close_object;
+          
+      exception
+          when others then
+              apex_exec.close(l_context);
+              l_message := coalesce(apex_application.g_x01, sqlerrm);
+              l_message := replace(l_message, '#SQLCODE#', apex_escape.html_attribute(sqlcode));
+              l_message := replace(l_message, '#SQLERRM#', apex_escape.html_attribute(sqlerrm));
+              l_message := replace(l_message, '#SQLERRM_TEXT#', apex_escape.html_attribute(substr(sqlerrm, instr(sqlerrm, ':')+1)));
+      
+              apex_json.initialize_output;
+              l_apex_error.message             := l_message;
+              l_apex_error.ora_sqlcode         := sqlcode;
+              l_apex_error.ora_sqlerrm         := sqlerrm;
+              l_apex_error.error_backtrace     := dbms_utility.format_error_backtrace;
+              
+              l_result := error_function_callback(l_apex_error);
+      
+              apex_json.open_object;
+              apex_json.write('status' , 'error');
+              apex_json.write('success', false);
+              apex_json.write('errMsg' , SQLERRM);
+              
+              apex_json.close_object;
+              sys.htp.p(apex_json.get_clob_output);
+              apex_json.free_output;
+          
+      end ajax;
+
+  callbacks: 
+    api-interface: Procedure
+    render-procedure/function-name: render
+    ajax-procedure/function-name: ajax
+
+  supported-for: 
+    component-type: 
+    - Page Items
+
+  standard-attributes: 
+    attributes: 
+    - Is Visible Widget
+    - Standard Form Element
+    - Has Source Attributes
+    - Has Element Attributes
+    - Has "Initialization JavaScript Code" Attribute
+
+  custom-attributes: 
+    substitute-attribute-values: true
+
+  css: 
+    file-urls: 
+    - '#PLUGIN_FILES#css/style.css'
+    - null
+
+  javascript: 
+    file-urls: 
+    - '#PLUGIN_FILES#js/script.js'
+    - '#PLUGIN_FILES#progressbarjs/js/progressbar.min.js'
+
+  information: 
+    version: 21.2.0
+    about-url: 'https://fos.world'
+    help-text: |
+      <p>The <strong>FOS - Progress Bar</strong> item plug-in offers a visually impressive and flexible way to display progress within your APEX applications. You can customize the display type, colors, animations, messages, automated refreshing, and more....</p>
+      <p>The plug-in is built on top of the open source <a href="https://kimmobrunfeldt.github.io/progressbar.js/" target="_blank">ProgressBar.js</a> javascript library, which makes it possible to implement responsive and slick progress bars with animated SVG paths.</p>
+
+  comments: 
+    comments: |
+      // Settings for the FOS browser extension
+      @fos-auto-return-to-page
+      @fos-auto-open-files:js/script.js
+
+  standard-attributes: 
+  - # ====== Standard Attribute: INIT_JAVASCRIPT_CODE ============
+    id: 25208464639618559
+    identification: 
+      name: INIT_JAVASCRIPT_CODE
+
+    value: 
+      required: false
+
+    help: 
+      help-text: <p>Javascript function which allows you to override any settings.</p>
+
+    examples: 
+      examples: |
+        <pre>function(config){
+            config.height = '10px';
+            config.strokeWidth = '10px';
+            config.trailWidth = '5px';
+            config.msgColor = '#ffffff';
+            config.autoStartInterval = true;
+            return config;
+        }
+        </pre>
+
+  custom-attributes: 
+  - # ====== Custom Attribute: Shape =============================
+    id: 25208060178502511
+    identification: 
+      attribute: 1
+      name: Shape
+      scope: Component
+
+    layout: 
+      sequence: 10
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: line
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Select the shape of the progress bar.</p>
+
+    entries: 
+    - # ====== Entry: Line =========================================
+      id: 25207753038496121
+      entry: 
+        sequence: 10
+        display: Line
+        return: line
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The default progress bar.</p>
+
+    - # ====== Entry: Circle =======================================
+      id: 25207431347487127
+      entry: 
+        sequence: 20
+        display: Circle
+        return: circle
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>A round shaped progress bar.</p>
+
+    - # ====== Entry: Semi-circle ==================================
+      id: 25206177797452937
+      entry: 
+        sequence: 30
+        display: Semi-circle
+        return: semi-circle
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>A semi-circle shaped progress bar.</p>
+
+    - # ====== Entry: Custom =======================================
+      id: 23572926048572853
+      entry: 
+        sequence: 40
+        display: Custom
+        return: custom
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>Custom shape, based on the provided SVG.</p>
+
+  - # ====== Custom Attribute: Style =============================
+    id: 25205453482178172
+    identification: 
+      attribute: 3
+      name: Style
+      scope: Component
+
+    layout: 
+      sequence: 30
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: solid
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The color style of the progress bar.</p>
+
+    entries: 
+    - # ====== Entry: Solid ========================================
+      id: 25204764192871220
+      entry: 
+        sequence: 10
+        display: Solid
+        return: solid
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>A solid progress bar, with one color.</p>
+
+    - # ====== Entry: Gradient =====================================
+      id: 25204040395862450
+      entry: 
+        sequence: 30
+        display: Gradient
+        return: gradient
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The progress bar transitions between two colors.</p>
+
+  - # ====== Custom Attribute: Color =============================
+    id: 25203480426854817
+    identification: 
+      attribute: 4
+      name: Color
+      scope: Component
+
+    layout: 
+      sequence: 40
+
+    settings: 
+      type: Color
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: '#00A02D'
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The main color of the progress bar.</p>
+
+  - # ====== Custom Attribute: Show Percentage ===================
+    id: 25203211295848662
+    identification: 
+      attribute: 9
+      name: Show Percentage
+      scope: Component
+
+    layout: 
+      sequence: 90
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: on-element
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Select whether the percentage should be displayed or not.</p>
+
+    entries: 
+    - # ====== Entry: No ===========================================
+      id: 25202927063845742
+      entry: 
+        sequence: 10
+        display: No
+        return: no
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The percentage is hidden.</p>
+
+    - # ====== Entry: On Element ===================================
+      id: 25202538828839818
+      entry: 
+        sequence: 20
+        display: On Element
+        return: on-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The percentage is displayed on the progress bar element. (Does not supported with <i>"Shape"</i> set to <i>"Custom"</i>)</p>
+
+    - # ====== Entry: Above Element ================================
+      id: 25202077177833848
+      entry: 
+        sequence: 30
+        display: Above Element
+        return: above-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The percentage is displayed above the element.</p>
+
+    - # ====== Entry: Below Element ================================
+      id: 25201715557829969
+      entry: 
+        sequence: 40
+        display: Below Element
+        return: below-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The percentage is displayed below the element.</p>
+
+  - # ====== Custom Attribute: Show Message ======================
+    id: 25201298494823561
+    identification: 
+      attribute: 10
+      name: Show Message
+      scope: Component
+
+    layout: 
+      sequence: 100
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: on-element
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Set whether a message should be displayed or not.</p>
+
+    entries: 
+    - # ====== Entry: No ===========================================
+      id: 25201032207821660
+      entry: 
+        sequence: 10
+        display: No
+        return: no
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>No message is displayed.</p>
+
+    - # ====== Entry: On Element ===================================
+      id: 25200565570818772
+      entry: 
+        sequence: 20
+        display: On Element
+        return: on-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The message is displayed on the progress bar element. (It does not supported with <i>"Shape"</i> set to <i>"Custom"</i>.)</p>
+
+    - # ====== Entry: Above Element ================================
+      id: 25200171642816588
+      entry: 
+        sequence: 30
+        display: Above Element
+        return: above-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The message is displayed above the progress bar element.</p>
+
+    - # ====== Entry: Below Element ================================
+      id: 25199806854814958
+      entry: 
+        sequence: 40
+        display: Below Element
+        return: below-element
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The message is displayed below the progress bar element.</p>
+
+  - # ====== Custom Attribute: Trail Color =======================
+    id: 25126056578201461
+    identification: 
+      attribute: 5
+      name: Trail Color
+      scope: Component
+
+    layout: 
+      sequence: 50
+
+    settings: 
+      type: Color
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: '#eee'
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The background color of the progress bar.</p>
+
+  - # ====== Custom Attribute: Animation =========================
+    id: 25125504449200035
+    identification: 
+      attribute: 7
+      name: Animation
+      scope: Component
+
+    layout: 
+      sequence: 70
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: ease-in
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The animation of the progress bar.</p>
+
+    entries: 
+    - # ====== Entry: Ease-In-Out ==================================
+      id: 25124902732194370
+      entry: 
+        sequence: 30
+        display: Ease-In-Out
+        return: ease-in-out
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The animation has a slow start, then fast, before it ends slow.</p>
+
+    - # ====== Entry: Ease-in ======================================
+      id: 25124474073191408
+      entry: 
+        sequence: 10
+        display: Ease-in
+        return: ease-in
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The animation has a slow start.</p>
+
+    - # ====== Entry: Ease-out =====================================
+      id: 25124104132189000
+      entry: 
+        sequence: 20
+        display: Ease-out
+        return: ease-out
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The animation has a slow end.</p>
+
+    - # ====== Entry: Linear =======================================
+      id: 25103130720209413
+      entry: 
+        sequence: 40
+        display: Linear
+        return: linear
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>A linear animation.</p>
+
+    - # ====== Entry: Bounce =======================================
+      id: 24992644351018977
+      entry: 
+        sequence: 50
+        display: Bounce
+        return: bounce
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>A bounce animation.</p>
+
+  - # ====== Custom Attribute: Duration ==========================
+    id: 25117348594082472
+    identification: 
+      attribute: 8
+      name: Duration
+      scope: Component
+
+    layout: 
+      sequence: 80
+
+    settings: 
+      type: Number
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+      unit: ms
+
+    default: 
+      value: 1000
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The duration of the animation in milliseconds.</p>
+
+  - # ====== Custom Attribute: End Color =========================
+    id: 24984869613787695
+    identification: 
+      attribute: 6
+      name: End Color
+      scope: Component
+
+    layout: 
+      sequence: 60
+
+    settings: 
+      type: Color
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: '#CC2525'
+
+    condition: 
+      depending-on-custom-attribute: Style # 25205453482178172
+      depending-on-condition-type: equal to
+      expression: gradient
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The end color of the progress bar.</p>
+
+  - # ====== Custom Attribute: Page Items to Submit ==============
+    id: 24615860601513941
+    identification: 
+      attribute: 15
+      name: Page Items to Submit
+      scope: Component
+
+    layout: 
+      sequence: 150
+
+    settings: 
+      type: Page Items
+      common: true
+      show-in-wizard: true
+      required: false
+      translatable: false
+
+    condition: 
+      depending-on-custom-attribute: Options # 23485144810193448
+      depending-on-condition-type: in list
+      expression: add-timer
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Enter the page items submitted to the server, and therefore, available for use within your SQL or PL/SQL Code.</p>
+
+  - # ====== Custom Attribute: Interval ==========================
+    id: 24610605508635043
+    identification: 
+      attribute: 12
+      name: Interval
+      scope: Component
+
+    layout: 
+      sequence: 120
+
+    settings: 
+      type: Number
+      common: true
+      show-in-wizard: true
+      required: false
+      translatable: false
+      unit: ms
+
+    default: 
+      value: 1000
+
+    condition: 
+      depending-on-custom-attribute: Options # 23485144810193448
+      depending-on-condition-type: in list
+      expression: add-timer
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>The auto-refresh interval in milliseconds.</p>
+
+  - # ====== Custom Attribute: Repetitions =======================
+    id: 24609482896595684
+    identification: 
+      attribute: 13
+      name: Repetitions
+      scope: Component
+
+    layout: 
+      sequence: 130
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: progress-is-complete
+
+    condition: 
+      depending-on-custom-attribute: Options # 23485144810193448
+      depending-on-condition-type: in list
+      expression: add-timer
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Choose the repetition type. It can either be a maximum number of repetitions or indefinitely until progress is complete i.e. 100%</p>
+
+    entries: 
+    - # ====== Entry: Until Progress is Complete ===================
+      id: 24609214599593284
+      entry: 
+        sequence: 10
+        display: Until Progress is Complete
+        return: progress-is-complete
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>The timer stops when the progress is complete, ie. reaches 100%.</p>
+
+    - # ====== Entry: Maximum Number of Repetitions ================
+      id: 24608405106561914
+      entry: 
+        sequence: 30
+        display: Maximum Number of Repetitions
+        return: number-of-repetitions
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: The maximum number of iterations the timer will fire for e.g. 10 if the progress is completed before this number is reached the timer is removed.
+
+  - # ====== Custom Attribute: Custom SVG Path ===================
+    id: 23564498552529581
+    identification: 
+      attribute: 2
+      name: Custom SVG Path
+      scope: Component
+
+    layout: 
+      sequence: 20
+
+    settings: 
+      type: HTML
+      common: true
+      show-in-wizard: true
+      required: false
+      translatable: false
+
+    condition: 
+      depending-on-custom-attribute: Shape # 25208060178502511
+      depending-on-condition-type: equal to
+      expression: custom
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: |
+        <p>Provide your custom SVG element, which must contain 1 or 2 <i>"path"</i> element(s). You can use the substitutions #COLOR# and #TRAIL_COLOR# to substitute the chosen plug-in color values.</p>
+        <p><strong>Note:</strong> the plug-in will assign an <i>"id"</i> to the <i>"path"</i> element, so any provided value will be overwritten.</p>
+
+    examples: 
+      examples: |
+        <pre><svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 100 100">
+            <path fill-opacity="0" stroke-width="1" stroke="#TRAIL_COLOR#" d="M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z"/>
+            <path id="heart-path" fill-opacity="0" stroke-width="3" stroke="#COLOR#" d="M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z"/>
+        </svg>
+        </pre>
+
+  - # ====== Custom Attribute: Number of Repetitions =============
+    id: 23522481594314378
+    identification: 
+      attribute: 14
+      name: Number of Repetitions
+      scope: Component
+
+    layout: 
+      sequence: 140
+
+    settings: 
+      type: Text
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+      unit: s
+
+    default: 
+      value: 15
+
+    condition: 
+      depending-on-custom-attribute: Repetitions # 24609482896595684
+      depending-on-condition-type: equal to
+      expression: number-of-repetitions
+      always-evaluate: true
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Enter the number of iterations you want the timer to fire for e.g. 1.</p>
+
+  - # ====== Custom Attribute: Options ===========================
+    id: 23485144810193448
+    identification: 
+      attribute: 11
+      name: Options
+      scope: Component
+
+    layout: 
+      sequence: 110
+
+    settings: 
+      type: Checkboxes
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: false
+      translatable: false
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Extra options to control the Progress Bar.</p>
+
+    entries: 
+    - # ====== Entry: Add Timer ====================================
+      id: 23484877245191976
+      entry: 
+        sequence: 20
+        display: Add Timer
+        return: add-timer
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>Refresh the progress bar within a specified interval.</p>
+
+    - # ====== Entry: Queue Animations =============================
+      id: 14880560827785701
+      entry: 
+        sequence: 10
+        display: Queue Animations
+        return: queue-animations
+
+      advanced: 
+        quick-pick: false
+
+      help: 
+        help-text: <p>If enabled, the animations will be added to the effect queue, ie. every animation will finish completely, before the next one. Otherwise, the animation will begin immediately</p>
+
+  - # ====== Custom Attribute: Default Message ===================
+    id: 13813499046434986
+    identification: 
+      attribute: 1
+      name: Default Message
+      scope: Application
+
+    layout: 
+      sequence: 10
+
+    settings: 
+      type: Text
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: true
+
+    default: 
+      value: Loading...
+
+    help: 
+      help-text: <p>Enter the default text you would like to display when the progress bar message attribute is enabled but no value is provided.</p>
+
+  events: 
+  - # ====== Event: fos_prb_progress_complete ====================
+    id: 23147689297447652
+    identification: 
+      name: FOS - Progress Bar - Progress Complete
+      internal-name: fos_prb_progress_complete
+
+  - # ====== Event: fos_prb_before_refresh =======================
+    id: 23147386107447651
+    identification: 
+      name: FOS - Progress Bar - Before Refresh
+      internal-name: fos_prb_before_refresh
+
+  - # ====== Event: fos_prb_after_refresh ========================
+    id: 23146967934447651
+    identification: 
+      name: FOS - Progress Bar - After Refresh
+      internal-name: fos_prb_after_refresh
+
+  - # ====== Event: fos_prb_interval_over ========================
+    id: 23136627755357310
+    identification: 
+      name: FOS - Progress Bar - Interval End
+      internal-name: fos_prb_interval_over
+
+  files: 
+  - # ====== File: js/script.js ==================================
+    id: 25198895345667027
+    identification: 
+      file-name: js/script.js
+
+    attributes: 
+      mime-type: application/javascript
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.css =================================
+    id: 25198449867666206
+    identification: 
+      file-name: css/style.css
+
+    attributes: 
+      mime-type: text/css
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: js/script.min.js ==============================
+    id: 25197636929648475
+    identification: 
+      file-name: js/script.min.js
+
+    attributes: 
+      mime-type: application/javascript
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: js/script.js.map ==============================
+    id: 25197164563648472
+    identification: 
+      file-name: js/script.js.map
+
+    attributes: 
+      mime-type: application/json
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.min.css =============================
+    id: 25191290944503799
+    identification: 
+      file-name: css/style.min.css
+
+    attributes: 
+      mime-type: text/css
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.css.map =============================
+    id: 25190900385503796
+    identification: 
+      file-name: css/style.css.map
+
+    attributes: 
+      mime-type: application/json
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: progressbarjs/js/progressbar.min.js.map =======
+    id: 25140123656440204
+    identification: 
+      file-name: progressbarjs/js/progressbar.min.js.map
+
+    attributes: 
+      mime-type: application/octet-stream
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: progressbarjs/js/progressbar.min.js ===========
+    id: 25139668661431794
+    identification: 
+      file-name: progressbarjs/js/progressbar.min.js
+
+    attributes: 
+      mime-type: application/javascript
+      file-character-set: Unicode UTF-8
+
+- # ====== Plugin: Progress Bar ================================
+  id: 1048268749754698147
+  identification: 
+    name: Progress Bar
+    internal-name: COM.STEFANDOBRE.PROGRESSBAR
+    type: Item
+
+  advanced: 
+    quick-pick: true
+
+  subscription: 
+    version-number: 1
+
+  source: 
+    pl/sql-code: |
+      /*------------------------------------------------------------------------------
+       * Author       Stefan Dobre
+       * Created      22.06.2019
+       *
+       * Description  Item type Progress Bar Plug-in which can be stylized and animated
+       *
+       * License      MIT 
+       *------------------------------------------------------------------------------
+       * Modification History
+       *
+       * 22.06.2019   v1.0 initial release
+       */-----------------------------------------------------------------------------
+      
+      procedure render
+          ( p_item   in            apex_plugin.t_page_item
+          , p_plugin in            apex_plugin.t_plugin
+          , p_param  in            apex_plugin.t_item_render_param
+          , p_result in out nocopy apex_plugin.t_item_render_result
+          )
+      as
+          l_escaped_value  varchar2(32767) := apex_escape.html(p_param.value);
+          
+          l_percentage     varchar2(32767);
+          l_message        varchar2(32767);
+          
+          l_position       varchar2(100) := p_item.attribute_01;
+          l_size_class     varchar2(100) := p_item.attribute_04;
+          l_color          varchar2(100) := p_item.attribute_05;
+          l_style_class    varchar2(100) := p_item.attribute_08;
+          
+          l_percentage_on_bar    boolean := p_item.attribute_06 = 'onbar';
+          l_percentage_under_bar boolean := p_item.attribute_06 = 'underbar';
+      
+          l_message_on_bar       boolean := p_item.attribute_07 = 'onbar';
+          l_message_under_bar    boolean := p_item.attribute_07 = 'underbar';
+          
+          l_html                 varchar2(32767);
+          l_onBarLabel           varchar2(32767);
+          l_underBarLabel        varchar2(32767);
+          
+          l_initialValues        varchar2(32767);
+          l_options              varchar2(32767);
+          
+          l_isHidden             boolean := instr(p_item.attribute_09, 'hidden') > 0;
+          
+          procedure getValues
+              ( p_value      in out varchar2
+              , p_percentage    out varchar2
+              , p_message       out varchar2
+              )  
+          as
+          begin
+              -- how values are interpreted:
+              -- null  -> 0
+              -- 2     -> 2
+              -- :msg  -> 0:msg
+              -- 2:msg -> 2:msg
+      
+              if p_value is null then
+                  p_value      := 0;
+                  p_percentage := 0;
+              elsif instr(p_value, ':') = 0 then
+                  p_percentage := p_value;
+              elsif instr(p_value, ':') = 1 then
+                  p_percentage := 0;
+                  p_message := p_value;
+              else
+                  p_percentage := substr(p_value, 1, instr(p_value, ':')-1);
+                  p_message    := substr(p_value, instr(p_value, ':')+1);
+              end if;
+      
+          end;
+      
+      begin
+      
+          apex_plugin_util.debug_page_item
+              ( p_plugin     => p_plugin
+              , p_page_item  => p_item
+              );
+              
+          getValues
+              ( p_value      => l_escaped_value
+              , p_percentage => l_percentage
+              , p_message    => l_message
+              );
+      
+          apex_javascript.add_library
+              ( p_name       => 'script#MIN#'
+              , p_directory  => nvl(:G_APEX_NITRO_PROGRESS_BAR, p_plugin.file_prefix) || 'js/'
+              );
+      
+          apex_css.add_file
+              ( p_name       => 'style#MIN#'
+              , p_directory  => nvl(:G_APEX_NITRO_PROGRESS_BAR, p_plugin.file_prefix) || 'css/'
+              );
+      
+          l_initialValues := '{' ||
+              apex_javascript.add_attribute('value', l_escaped_value)       ||
+              apex_javascript.add_attribute('percentage', l_percentage)     ||
+              apex_javascript.add_attribute('message', l_message)           ||
+              apex_javascript.add_attribute('color', l_color, false, false) ||
+              '}';
+          
+          l_options := '{' ||
+              apex_javascript.add_attribute('hidden', l_isHidden, false, false) ||
+              '}';
+      
+          apex_javascript.add_onload_code
+              ( p_code => 'apexProgressBar(' || apex_escape.js_literal(p_item.name) || ').init(' || l_initialValues || ', ' || l_options || ');'
+              );
+      
+          l_html := q'[
+                      <div class="pb-outer" id="@itemName@-wrapper">
+                          <input id="@itemName@" type="hidden" name="@itemName@" value="@escapedValue@"></input>
+                          <div class="pb-progress @sizeClass@">
+                              <span class="pb-bar @styleClass@" style="background-color: @hexColor@; width:@percentage@%;"></span>
+                              @onBarLabel@
+                          </div>
+                          @underBarLabel@
+                      </div>
+                    ]';
+      
+          l_onBarLabel := case when l_percentage_on_bar or l_message_on_bar then
+                              '<div class="pb-label-onbar">' ||
+                                  case when l_percentage_on_bar then
+                                      '<span class="pb-label-percentage">@percentage@% </span>'
+                                  end ||
+                                  case when l_message_on_bar then
+                                      '<span class="pb-label-message">@message@</span>'
+                                  end ||
+                              '</div>'
+                          end;
+                          
+          l_underBarLabel := case when l_percentage_under_bar or l_message_under_bar then
+                                  '<div class="pb-label-underbar">' ||
+                                      case when l_percentage_under_bar then
+                                          '<span class="pb-label-percentage">@percentage@% </span>'
+                                      end ||
+                                      case when l_message_under_bar then
+                                          '<span class="pb-label-message">@message@</span>'
+                                      end ||
+                                  '</div>'
+                              end;
+      
+          l_html := replace(l_html, '@itemName@',      p_item.name);
+          l_html := replace(l_html, '@sizeClass@',     l_size_class);
+          l_html := replace(l_html, '@escapedValue@',  l_escaped_value);
+          l_html := replace(l_html, '@hexColor@',      l_color);
+          l_html := replace(l_html, '@styleClass@',    l_style_class);
+          l_html := replace(l_html, '@onBarLabel@',    l_onBarLabel);
+          l_html := replace(l_html, '@underBarLabel@', l_underBarLabel);
+          l_html := replace(l_html, '@percentage@',    l_percentage);
+          l_html := replace(l_html, '@message@',       l_message);
+          
+          if l_position = 'floatingonbody' then
+              apex_css.add
+                  ( p_css => '#' || p_item.name || '_CONTAINER .t-Form-labelContainer{ display: none; }' ||
+                             '#' || p_item.name || '_CONTAINER .t-Form-inputContainer{ padding: 0; }'
+                  , p_key => 'hideItemWrapper-' || p_item.name
+                  );
+              l_html := '<div class="pb-overlay pb-overlay-fixed"><div class="pb-body">' || l_html || '</div></div>';
+          end if;
+          
+          htp.p(l_html);
+      
+      end render;
+
+  callbacks: 
+    api-interface: Procedure
+    render-procedure/function-name: render
+
+  supported-for: 
+    component-type: 
+    - Page Items
+
+  standard-attributes: 
+    attributes: 
+    - Is Visible Widget
+    - Standard Form Element
+    - Session State Changeable
+    - Has Source Attributes
+    - Has Element Attributes
+    - Has Encrypt Session State Attribute
+
+  custom-attributes: 
+    substitute-attribute-values: true
+
+  information: 
+    version: 1.0
+    about-url: 'https://github.com/stefandobre/Progress-Bar'
+    help-text: Progress Bar Plug-in which can be stylized and animated.
+
+  custom-attributes: 
+  - # ====== Custom Attribute: Position ==========================
+    id: 222666413556085481
+    identification: 
+      attribute: 1
+      name: Position
+      scope: Component
+
+    layout: 
+      sequence: 10
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: pageitem
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Choose "Regular Page Item" to display the progress bar inline. "Floating on Body" can be used to show the progress bar as a popup.</p>
+
+    entries: 
+    - # ====== Entry: Regular Page Item ============================
+      id: 222665842894084225
+      entry: 
+        sequence: 10
+        display: Regular Page Item
+        return: pageitem
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: Floating on Body =============================
+      id: 222665043155080881
+      entry: 
+        sequence: 30
+        display: Floating on Body
+        return: floatingonbody
+
+      advanced: 
+        quick-pick: false
+
+  - # ====== Custom Attribute: Size ==============================
+    id: 222661654526051161
+    identification: 
+      attribute: 4
+      name: Size
+      scope: Component
+
+    layout: 
+      sequence: 40
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: pb-size-small
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: <p>Choose the size of the progress bar. Small has a height of 24px, while Large has 48px.</p>
+
+    entries: 
+    - # ====== Entry: Small ========================================
+      id: 222661031590050644
+      entry: 
+        sequence: 10
+        display: Small
+        return: pb-size-small
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: Large ========================================
+      id: 222660696483050057
+      entry: 
+        sequence: 20
+        display: Large
+        return: pb-size-large
+
+      advanced: 
+        quick-pick: false
+
+  - # ====== Custom Attribute: Color =============================
+    id: 222660266595045215
+    identification: 
+      attribute: 5
+      name: Color
+      scope: Component
+
+    layout: 
+      sequence: 50
+
+    settings: 
+      type: Color
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: '#00A02D'
+
+    supported-for: 
+      component-type: 
+      - Page Items
+
+    help: 
+      help-text: |
+        <p>This is the color of the progress part of the bar. You can choose any color format accepted as valid CSS.</p>
+        <p>Note that dark colors don't look very good combined with the "on bar" percentage or message.</p>
+
+  - # ====== Custom Attribute: Show Percentage ===================
+    id: 222628538234639175
+    identification: 
+      attribute: 6
+      name: Show Percentage
+      scope: Component
+
+    layout: 
+      sequence: 60
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: no
+
+    help: 
+      help-text: <p>Choose if, and where the percentage should be shown.</p>
+
+    entries: 
+    - # ====== Entry: No ===========================================
+      id: 222627679194638523
+      entry: 
+        sequence: 10
+        display: No
+        return: no
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: On Bar =======================================
+      id: 222627276152637161
+      entry: 
+        sequence: 20
+        display: On Bar
+        return: onbar
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: Under Bar ====================================
+      id: 222626828591636125
+      entry: 
+        sequence: 30
+        display: Under Bar
+        return: underbar
+
+      advanced: 
+        quick-pick: false
+
+  - # ====== Custom Attribute: Show Message ======================
+    id: 222626451534628266
+    identification: 
+      attribute: 7
+      name: Show Message
+      scope: Component
+
+    layout: 
+      sequence: 70
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: no
+
+    help: 
+      help-text: <p>Choose if, and where the message should be shown.</p>
+
+    entries: 
+    - # ====== Entry: No ===========================================
+      id: 222625513291627705
+      entry: 
+        sequence: 10
+        display: No
+        return: no
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: On Bar =======================================
+      id: 222625154607627088
+      entry: 
+        sequence: 20
+        display: On Bar
+        return: onbar
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: Under Bar ====================================
+      id: 222624770024626244
+      entry: 
+        sequence: 30
+        display: Under Bar
+        return: underbar
+
+      advanced: 
+        quick-pick: false
+
+  - # ====== Custom Attribute: Style =============================
+    id: 222472985197455681
+    identification: 
+      attribute: 8
+      name: Style
+      scope: Component
+
+    layout: 
+      sequence: 55
+
+    settings: 
+      type: Select List
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: true
+      translatable: false
+
+    default: 
+      value: pb-animated-stripes
+
+    help: 
+      help-text: <p>Choose the style of the progress bar.</p>
+
+    entries: 
+    - # ====== Entry: Solid ========================================
+      id: 222471713336453911
+      entry: 
+        sequence: 10
+        display: Solid
+        return: pb-solid
+
+      advanced: 
+        quick-pick: false
+
+    - # ====== Entry: Animated Stripes =============================
+      id: 222471365116452415
+      entry: 
+        sequence: 20
+        display: Animated Stripes
+        return: pb-animated-stripes
+
+      advanced: 
+        quick-pick: false
+
+  - # ====== Custom Attribute: Options ===========================
+    id: 222455793322098959
+    identification: 
+      attribute: 9
+      name: Options
+      scope: Component
+
+    layout: 
+      sequence: 90
+
+    settings: 
+      type: Checkboxes
+      lov-type: Static
+      common: true
+      show-in-wizard: true
+      required: false
+      translatable: false
+
+    entries: 
+    - # ====== Entry: Hidden by Default ============================
+      id: 222454591863096396
+      entry: 
+        sequence: 10
+        display: Hidden by Default
+        return: hidden
+
+      advanced: 
+        quick-pick: false
+
+  events: 
+  - # ====== Event: pb-100-percent ===============================
+    id: 222048223673724643
+    identification: 
+      name: Reached 100%
+      internal-name: pb-100-percent
+
+  files: 
+  - # ====== File: js/script.js ==================================
+    id: 221048596981196597
+    identification: 
+      file-name: js/script.js
+
+    attributes: 
+      mime-type: application/x-javascript
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.css =================================
+    id: 219628352725073088
+    identification: 
+      file-name: css/style.css
+
+    attributes: 
+      mime-type: text/css
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.min.css =============================
+    id: 219627938984061432
+    identification: 
+      file-name: css/style.min.css
+
+    attributes: 
+      mime-type: text/css
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: css/style.css.map =============================
+    id: 219627672257061410
+    identification: 
+      file-name: css/style.css.map
+
+    attributes: 
+      mime-type: application/octet-stream
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: js/script.min.js ==============================
+    id: 219626731275061379
+    identification: 
+      file-name: js/script.min.js
+
+    attributes: 
+      mime-type: application/x-javascript
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: js/script.js.map ==============================
+    id: 219626362270061369
+    identification: 
+      file-name: js/script.js.map
+
+    attributes: 
+      mime-type: application/octet-stream
+      file-character-set: Unicode UTF-8
+
+  - # ====== File: plsql/render.sql ==============================
+    id: 219625965511061359
+    identification: 
+      file-name: plsql/render.sql
+
+    attributes: 
+      mime-type: application/octet-stream
+      file-character-set: Unicode UTF-8
+

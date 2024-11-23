@@ -1,0 +1,1417 @@
+---
+# ====== Page: WIP Adjustments ===============================
+id: 4
+identification: 
+  name: WIP Adjustments
+  alias: WIP-TAGGING
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+javascript: 
+  file-urls: 
+  - '#APP_IMAGES#currencyFormatter.js'
+  function-and-global-variable-declaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Unrestricted
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: WIP Adjustments =============================
+  id: 920671576778626
+  identification: 
+    name: WIP Adjustments
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--accent2
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Project Split ===============================
+  id: 9961651260186531
+  identification: 
+    name: Project Split
+    type: Interactive Grid
+
+  source: 
+    location: Local Database
+    type: Table / View
+    table-owner: Parsing Schema
+    table-name: XXGPMS_PROJECT_SPLIT
+    include-rowid-column: true
+
+  layout: 
+    sequence: 81
+    parent-region: WIP Adjustments # 920671576778626
+    slot: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Interactive Report
+    template-options: 
+    - t-IRR-region--noBorders
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: ProjectSplit
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 9962315672186537
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Add Row
+      - Update Row
+      - Delete Row
+      lost-update-type: Row Values
+      add-row-if-empty: true
+
+    performance: 
+      lazy-loading: false
+
+    appearance: 
+      select-first-row: true
+      fixed-row-height: true
+
+    pagination: 
+      type: Scroll
+      show-total-count: true
+
+    toolbar: 
+      show: true
+      controls: 
+      - Save Button
+
+    enable-users-to: 
+      save-public-report: false
+      flashback: false
+      define-chart-view: false
+      download: false
+
+    heading: 
+      fixed-to: Page
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 10975566172616245
+      identification: 
+        name: Primary Report
+        alias: 127193
+
+  columns: 
+  - # ====== Column: ROWID =======================================
+    id: 3060026931042114
+    identification: 
+      column-name: ROWID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 70
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: ROWID
+      data-type: ROWID
+      primary-key: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+  - # ====== Column: SESSION_ID ==================================
+    id: 9962361000186538
+    identification: 
+      column-name: SESSION_ID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 30
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: SESSION_ID
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: SQL Query (return single value)
+      sql-query-(return-single-value): select V('SESSION') from dual
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+
+  - # ====== Column: PROJECT_NUMBER ==============================
+    id: 9962463165186539
+    identification: 
+      column-name: PROJECT_NUMBER
+      type: Text Field
+
+    heading: 
+      heading: '&P0_PROJECT_LABEL. Number'
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 40
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 25
+
+    source: 
+      type: Database Column
+      database-column: PROJECT_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: Distinct Column
+      exact-match: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: TASK_NUMBER =================================
+    id: 9962641046186540
+    identification: 
+      column-name: TASK_NUMBER
+      type: Text Field
+
+    heading: 
+      heading: Task Number
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 50
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 25
+
+    source: 
+      type: Database Column
+      database-column: TASK_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: Distinct Column
+      exact-match: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: QUANTITY ====================================
+    id: 9962735298186541
+    identification: 
+      column-name: QUANTITY
+      type: Number Field
+
+    heading: 
+      heading: Quantity
+      alignment: end
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 60
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: QUANTITY
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: APEX$ROW_ACTION =============================
+    id: 9962804718186542
+    identification: 
+      column-name: APEX$ROW_ACTION
+      type: Actions Menu
+
+    layout: 
+      sequence: 20
+
+  - # ====== Column: APEX$ROW_SELECTOR ===========================
+    id: 9962924751186543
+    identification: 
+      column-name: APEX$ROW_SELECTOR
+      type: Row Selector
+
+    settings: 
+      enable-multi-select: true
+      show-select-all: true
+      hide-control: false
+
+    layout: 
+      sequence: 10
+
+page-items: 
+- # ====== Page Item: EVENT_ADJ_PCT ============================
+  id: 920821584778627
+  identification: 
+    name: EVENT_ADJ_PCT
+    type: Number Field
+
+  label: 
+    label: Discount
+    alignment: Left
+
+  settings: 
+    number-alignment: Start
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 50
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 4
+    label-column-span: 2
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_SEL_AMOUNT ===========================
+  id: 921026124778629
+  identification: 
+    name: WIP_SEL_AMOUNT
+    type: Number Field
+
+  label: 
+    label: WIP Amount
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 10
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 5
+    label-column-span: 2
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_EXPIDS ===============================
+  id: 921286472778632
+  identification: 
+    name: WIP_EXPIDS
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 70
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_PROJECT_NUMBER =======================
+  id: 921559995778635
+  identification: 
+    name: WIP_PROJECT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 80
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_MODAL_FLAG ===========================
+  id: 923078372778650
+  identification: 
+    name: WIP_MODAL_FLAG
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 90
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: EVENT_ADJ_AMT ============================
+  id: 923594925778655
+  identification: 
+    name: EVENT_ADJ_AMT
+    type: Number Field
+
+  label: 
+    label: Amount to Bill
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 60
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: false
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    width: 50
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_ERROR_FLAG ===========================
+  id: 3059826154042112
+  identification: 
+    name: WIP_ERROR_FLAG
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 150
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_TRX_SPLT =============================
+  id: 3760968846040210
+  identification: 
+    name: WIP_TRX_SPLT
+    type: Display Only
+
+  label: 
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 140
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: Transfer & Split
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_BILLABLE_FLAG ========================
+  id: 9960409222186518
+  identification: 
+    name: WIP_BILLABLE_FLAG
+    type: Select List
+
+  label: 
+    label: Billable
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 100
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 4
+    label-column-span: 2
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC:Yes;Y,No;N'
+    display-extra-values: true
+    display-null-value: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_HOLD =================================
+  id: 9960461216186519
+  identification: 
+    name: WIP_HOLD
+    type: Radio Group
+
+  label: 
+    label: Hold
+    alignment: Left
+
+  settings: 
+    number-of-columns: 3
+    page-action-on-selection: None
+
+  layout: 
+    sequence: 110
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 12
+    label-column-span: 2
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC:Once;Y,Until Released;N,Release Hold;R'
+    display-extra-values: true
+    display-null-value: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    escape-special-characters: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_JUSTIFICATION_CODE ===================
+  id: 9960612563186520
+  identification: 
+    name: WIP_JUSTIFICATION_CODE
+    type: Select List
+
+  label: 
+    label: Justification Code
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 120
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 4
+    label-column-span: 2
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC:Client Satisfaction;1,Billing Error;2,B.I.S.S.;3'
+    display-extra-values: true
+    display-null-value: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_JUSTIFICATION_TEXT ===================
+  id: 9960719142186521
+  identification: 
+    name: WIP_JUSTIFICATION_TEXT
+    type: Textarea
+
+  label: 
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: false
+    character-counter: false
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 130
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+    height: 5
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_LINE_COUNT ===========================
+  id: 9961018935186524
+  identification: 
+    name: WIP_LINE_COUNT
+    type: Number Field
+
+  label: 
+    label: Total Lines
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 30
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 3
+    label-column-span: 1
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_HOURS_COUNT ==========================
+  id: 9961087692186525
+  identification: 
+    name: WIP_HOURS_COUNT
+    type: Number Field
+
+  label: 
+    label: Total Hours
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 40
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 3
+    label-column-span: 1
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_CURRENCY ==============================
+  id: 35057343492699315
+  identification: 
+    name: P4_CURRENCY
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 160
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_SEL_AMOUNT_COPY ======================
+  id: 35057574753699317
+  identification: 
+    name: WIP_SEL_AMOUNT_COPY
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 20
+    region: WIP Adjustments # 920671576778626
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: WIP_Adjust ==================================
+  id: 921668403778636
+  identification: 
+    button-name: WIP_Adjust
+    label: Create Adjustments
+
+  layout: 
+    sequence: 50
+    region: WIP Adjustments # 920671576778626
+    slot: DELETE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+    css-classes: 
+    - u-color-9
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+dynamic-actions: 
+- # ====== Dynamic Action: WIP_AdjustClick =====================
+  id: 922039124778639
+  identification: 
+    name: WIP_AdjustClick
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: WIP_Adjust # 921668403778636
+
+  actions: 
+  - # ====== Action: Execute Server-side Code ====================
+    id: 922058997778640
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        declare
+        
+        status number := 0;
+        
+        
+        begin
+        
+        if (:WIP_ERROR_FLAG = 'N') then 
+            status := XX_GPMS.WIP_TAG_ADJUSTMENT (:WIP_EXPIDS,:WIP_PROJECT_NUMBER,:EVENT_ADJ_PCT, :EVENT_ADJ_AMT, :WIP_SEL_AMOUNT_COPY);
+        end if;
+        
+        
+        end;
+        
+      items-to-submit: 
+      - WIP_EXPIDS
+      - EVENT_ADJ_PCT
+      - WIP_PROJECT_NUMBER
+      - EVENT_ADJ_AMT
+      - WIP_SEL_AMOUNT
+      - WIP_ERROR_FLAG
+
+    execution: 
+      sequence: 30
+      event: WIP_AdjustClick # 922039124778639
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 922301545778642
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var i,
+        
+        i = "Y";
+        
+        apex.item( "WIP_MODAL_FLAG" ).setValue (i);
+        
+        
+        
+        if ($v("WIP_ERROR_FLAG") == 'N') {
+        apex.navigation.dialog.close(true);
+        }
+        
+        
+        
+
+    execution: 
+      sequence: 40
+      event: WIP_AdjustClick # 922039124778639
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 3059942060042113
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var ig_len, ig_project_number, ig_project_exists, ig_project_len, ig_qty
+        
+        var ig$ = apex.region("ProjectSplit").widget();
+        
+        var model = ig$.interactiveGrid("getViews", "grid").model;
+        
+        var ig_errflag = 'N';
+        
+        
+        
+        ig_project_number = 0;
+        ig_project_len = 0;
+        ig_project_exists = 0;
+        ig_qty = 0;
+        
+        model.forEach(function(igrec) {
+           ig_project_number = igrec[model.getFieldKey("PROJECT_NUMBER")];
+           ig_qty += Number(igrec[model.getFieldKey("QUANTITY")]);
+              
+           ig_project_len = ig_project_number.length;
+           
+           if (ig_project_len > 0) {
+               ig_project_exists = 1;
+            
+           }
+          
+           //apex.message.alert(igrec[model.getFieldKey("PROJECT_NUMBER")]);
+        });
+        
+        
+        
+        
+        
+        if ($v("EVENT_ADJ_AMT") != 0  && $v("EVENT_ADJ_PCT") != 0 ){
+               ig_errflag = 'Y';
+               apex.message.alert( "Adjustment Amount and Adjustment Percentage cannot be specified at the same time" );
+        }
+        
+        
+        if ($v("EVENT_ADJ_AMT") != 0  && ig_project_exists == 1 ){
+               ig_errflag = 'Y';
+               apex.message.alert( "Adjustment Amount and Transfers cannot be specified at the same time" );
+        }
+        
+        if ($v("EVENT_ADJ_PCT") != 0  && ig_project_exists == 1 ){
+               ig_errflag = 'Y';
+               apex.message.alert( "Adjustment Percentage and Transfers cannot be specified at the same time" );
+        }
+        
+        if (ig_project_exists == 1 & $v("WIP_HOURS_COUNT") != ig_qty) {
+               ig_errflag = 'Y';
+               apex.message.alert( "Mismatch between Expenditure Quantity and Transfer Quantity" );
+        }
+        
+        apex.item( "WIP_ERROR_FLAG" ).setValue (ig_errflag)
+        
+        if (ig_errflag == 'N') {
+        apex.region( "ProjectSplit" ).widget().interactiveGrid("getActions"). invoke("save");
+        }
+
+    execution: 
+      sequence: 10
+      event: WIP_AdjustClick # 922039124778639
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Format the Numbers as per the currenc
+  id: 35057165590699313
+  identification: 
+    name: Format the Numbers as per the currency
+
+  execution: 
+    sequence: 20
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 35057299662699314
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: $("#WIP_SEL_AMOUNT").val(currencyFormatter(Number($("#WIP_SEL_AMOUNT").val()),apex.item("P4_CURRENCY").getValue()));
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_SEL_AMOUNT
+      - WIP_SEL_AMOUNT_COPY
+
+    execution: 
+      sequence: 20
+      event: Format the Numbers as per the currency # 35057165590699313
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 35057865761699320
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: ':WIP_SEL_AMOUNT_COPY := :WIP_SEL_AMOUNT;'
+      items-to-submit: 
+      - WIP_SEL_AMOUNT_COPY
+      - WIP_SEL_AMOUNT
+
+    execution: 
+      sequence: 10
+      event: Format the Numbers as per the currency # 35057165590699313
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+processes: 
+- # ====== Process: Project Split - Save Interactive Grid Data =
+  id: 9962952001186544
+  identification: 
+    name: Project Split - Save Interactive Grid Data
+    type: Interactive Grid - Automatic Row Processing (DML)
+    execution-chain: None
+    editable-region: Project Split # 9961651260186531
+
+  settings: 
+    target-type: Region Source
+    prevent-lost-updates: true
+    lock-row: Yes
+    return-primary-key(s)-after-insert: true
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    execution-scope: For Created and Modified Rows
+

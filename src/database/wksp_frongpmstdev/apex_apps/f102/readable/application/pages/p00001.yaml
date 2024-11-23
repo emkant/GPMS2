@@ -1,0 +1,1921 @@
+---
+# ====== Page: Home ==========================================
+id: 1
+identification: 
+  name: Home
+  alias: HOME
+  title: Mass Approvals
+
+appearance: 
+  page-mode: Normal
+  page-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+javascript: 
+  function-and-global-variable-declaration: |
+    function getSelectedRecordsTaskNumbers(){
+      var task_number;
+      var taskNumbers = [];
+      var grid_model = apex.region("invoicesIG").widget().interactiveGrid("getCurrentView").model ;
+      var records = grid_model.getSelectedRecords();
+    
+      if (records.length > 0) {
+      $.each(records, function(i,r) {
+          task_number = grid_model.getValue(r, "TASKNUMBER");
+          taskNumbers.push('"'+task_number+'"');
+      });
+    };
+      apex.item('P1_SELECTED_RECORDS').setValue(taskNumbers);
+    };
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Invoices ====================================
+  id: 18846932878685317
+  identification: 
+    name: Invoices
+    type: Interactive Grid
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select TASKID,
+             TASKNUMBER,
+             TASK_DEFINITION_NAME,
+             PRIORITY,
+             TITLE,
+             IDENTIFICATION_KEY,
+             CONTRACT_NUMBER,
+             INVOICE_NUM,
+             INVOICE_STATUS_CODE,
+             ASSIGNEE,
+             ASSIGNEE_DISPLAY_NAME,
+             INVOICE_CURRENCY_CODE,
+             INVOICE_DATE,
+             INVOICE_AMOUNT,
+             WRITE_OFF_AMOUNT,
+             BILL_CUSTOMER_NAME,
+             BILL_CUST_ACCT_NUM,
+             BILL_CUST_ACCT_NAME,
+             BILL_CUST_SITE
+        from MA_APPROVAL_INVOICES
+       where upper(assignee) = upper(:P1_SAAS_USER)
+    page-items-to-submit: 
+    - P1_SAAS_USER
+
+  layout: 
+    sequence: 40
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Interactive Report
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: invoicesIG
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 18847063975685318
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Add Row
+      - Update Row
+      - Delete Row
+      lost-update-type: Row Values
+      add-row-if-empty: false
+
+    performance: 
+      lazy-loading: false
+
+    appearance: 
+      select-first-row: false
+      fixed-row-height: true
+
+    pagination: 
+      type: Scroll
+      show-total-count: true
+
+    toolbar: 
+      show: true
+      controls: 
+      - Search Column Selection
+      - Search Field
+      - Actions Menu
+      - Reset Button
+      - Save Button
+
+    enable-users-to: 
+      save-public-report: false
+      flashback: true
+      define-chart-view: true
+      download: true
+
+    download: 
+      formats: 
+      - CSV
+      - HTML
+      - Excel
+      - PDF
+      send-as-email: true
+
+    heading: 
+      fixed-to: Page
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    advanced: 
+      initialization-javascript-function: |
+        function(config) {
+          config.defaultGridViewOptions = {
+            persistSelection: true
+          };
+          return config;
+        }
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 26843810728527263
+      identification: 
+        name: Primary Report
+        alias: 268439
+
+  columns: 
+  - # ====== Column: TASKID ======================================
+    id: 18847114270685319
+    identification: 
+      column-name: TASKID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 30
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: TASKID
+      data-type: VARCHAR2
+      query-only: true
+      primary-key: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: TASKNUMBER ==================================
+    id: 18847216604685320
+    identification: 
+      column-name: TASKNUMBER
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 40
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: TASKNUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: TASK_DEFINITION_NAME ========================
+    id: 18847371233685321
+    identification: 
+      column-name: TASK_DEFINITION_NAME
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 50
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: TASK_DEFINITION_NAME
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: PRIORITY ====================================
+    id: 18847424207685322
+    identification: 
+      column-name: PRIORITY
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 60
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: PRIORITY
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: TITLE =======================================
+    id: 18847520326685323
+    identification: 
+      column-name: TITLE
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 70
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: TITLE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: IDENTIFICATION_KEY ==========================
+    id: 18847691255685324
+    identification: 
+      column-name: IDENTIFICATION_KEY
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 80
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: IDENTIFICATION_KEY
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: CONTRACT_NUMBER =============================
+    id: 18847785860685325
+    identification: 
+      column-name: CONTRACT_NUMBER
+      type: Textarea
+
+    heading: 
+      heading: Contract Number
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 90
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: CONTRACT_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: INVOICE_NUM =================================
+    id: 18847833789685326
+    identification: 
+      column-name: INVOICE_NUM
+      type: Number Field
+
+    heading: 
+      heading: Invoice Num
+      alignment: end
+
+    settings: 
+      number-alignment: Start
+      virtual-keyboard: Decimal
+
+    layout: 
+      sequence: 100
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: INVOICE_NUM
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: INVOICE_STATUS_CODE =========================
+    id: 18847917718685327
+    identification: 
+      column-name: INVOICE_STATUS_CODE
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 190
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: INVOICE_STATUS_CODE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: ASSIGNEE ====================================
+    id: 18848034271685328
+    identification: 
+      column-name: ASSIGNEE
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 200
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: ASSIGNEE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: ASSIGNEE_DISPLAY_NAME =======================
+    id: 18848127539685329
+    identification: 
+      column-name: ASSIGNEE_DISPLAY_NAME
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 210
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: ASSIGNEE_DISPLAY_NAME
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: APEX$ROW_ACTION =============================
+    id: 18848251625685330
+    identification: 
+      column-name: APEX$ROW_ACTION
+      type: Actions Menu
+
+    layout: 
+      sequence: 20
+
+  - # ====== Column: APEX$ROW_SELECTOR ===========================
+    id: 18848390526685331
+    identification: 
+      column-name: APEX$ROW_SELECTOR
+      type: Row Selector
+
+    settings: 
+      enable-multi-select: true
+      show-select-all: true
+      hide-control: false
+
+    layout: 
+      sequence: 10
+
+  - # ====== Column: INVOICE_CURRENCY_CODE =======================
+    id: 29064795933657133
+    identification: 
+      column-name: INVOICE_CURRENCY_CODE
+      type: Text Field
+
+    heading: 
+      heading: Invoice Currency Code
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 110
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 100
+
+    source: 
+      type: Database Column
+      database-column: INVOICE_CURRENCY_CODE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: Distinct Column
+      exact-match: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: INVOICE_AMOUNT ==============================
+    id: 29064922904657135
+    identification: 
+      column-name: INVOICE_AMOUNT
+      type: Number Field
+
+    heading: 
+      heading: Invoice Amount
+      alignment: end
+
+    settings: 
+      number-alignment: Start
+      virtual-keyboard: Decimal
+
+    layout: 
+      sequence: 130
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: INVOICE_AMOUNT
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: WRITE_OFF_AMOUNT ============================
+    id: 29065091677657136
+    identification: 
+      column-name: WRITE_OFF_AMOUNT
+      type: Number Field
+
+    heading: 
+      heading: Write Off Amount
+      alignment: end
+
+    settings: 
+      number-alignment: Start
+      virtual-keyboard: Decimal
+
+    layout: 
+      sequence: 140
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: WRITE_OFF_AMOUNT
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: BILL_CUSTOMER_NAME ==========================
+    id: 29065108811657137
+    identification: 
+      column-name: BILL_CUSTOMER_NAME
+      type: Textarea
+
+    heading: 
+      heading: Bill Customer Name
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 150
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: BILL_CUSTOMER_NAME
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: BILL_CUST_ACCT_NUM ==========================
+    id: 29065209527657138
+    identification: 
+      column-name: BILL_CUST_ACCT_NUM
+      type: Textarea
+
+    heading: 
+      heading: Bill Customer Account Number
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 160
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: BILL_CUST_ACCT_NUM
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: BILL_CUST_ACCT_NAME =========================
+    id: 29065339756657139
+    identification: 
+      column-name: BILL_CUST_ACCT_NAME
+      type: Textarea
+
+    heading: 
+      heading: Bill Customer Account Name
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 170
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: BILL_CUST_ACCT_NAME
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: BILL_CUST_SITE ==============================
+    id: 29065477311657140
+    identification: 
+      column-name: BILL_CUST_SITE
+      type: Textarea
+
+    heading: 
+      heading: Bill Customer Site
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 180
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: BILL_CUST_SITE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: INVOICE_DATE ================================
+    id: 29065611394657142
+    identification: 
+      column-name: INVOICE_DATE
+      type: Textarea
+
+    heading: 
+      heading: Invoice Date
+      alignment: start
+
+    settings: 
+      resizable: true
+      auto-height: false
+      character-counter: false
+      trim-spaces: Leading and Trailing
+
+    layout: 
+      sequence: 120
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 1000
+
+    source: 
+      type: Database Column
+      database-column: INVOICE_DATE
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  printing: 
+    page: 
+      size: Letter
+      orientation: Landscape
+      units: Inches
+      width: 11
+      height: 8.5
+      border-width: 0.5
+      border-color: '#666666'
+
+    page-header: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 12
+      font-color: '#000000'
+      alignment: center
+      page-header-text: Invoices
+
+    column-headings: 
+      font: Helvetica
+      font-weight: Bold
+      font-size: 10
+      font-color: '#000000'
+      background-color: '#EEEEEE'
+
+    columns: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 10
+      font-color: '#000000'
+      background-color: '#FFFFFF'
+
+    page-footer: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 12
+      font-color: '#000000'
+      alignment: center
+
+- # ====== Region: Rejection Comment ===========================
+  id: 29062099841657106
+  identification: 
+    name: Rejection Comment
+    type: Static Content
+
+  layout: 
+    sequence: 60
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Inline Dialog
+    template-options: 
+    - '#DEFAULT#'
+    - js-dialog-autoheight
+    - js-dialog-size480x320
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P1_SAAS_USER =============================
+  id: 18846577231685313
+  identification: 
+    name: P1_SAAS_USER
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 10
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Item
+    item: G_SAAS_PREFERRED_NAME
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P1_SELECTED_RECORDS ======================
+  id: 18849769206685345
+  identification: 
+    name: P1_SELECTED_RECORDS
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P1_COMMENT ===============================
+  id: 29062104839657107
+  identification: 
+    name: P1_COMMENT
+    type: Textarea
+
+  label: 
+    label: Comment
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: true
+    character-counter: true
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 10
+    region: Rejection Comment # 29062099841657106
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+    height: 5
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: APPROVE =====================================
+  id: 18848870383685336
+  identification: 
+    button-name: APPROVE
+    label: Approve
+
+  layout: 
+    sequence: 10
+    region: Invoices # 18846932878685317
+    slot: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--iconLeft
+    - t-Button--gapBottom
+    icon: fa-check
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+- # ====== Button: REJECT ======================================
+  id: 18849054838685338
+  identification: 
+    button-name: REJECT
+    label: Reject
+
+  layout: 
+    sequence: 20
+    region: Invoices # 18846932878685317
+    slot: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--danger
+    - t-Button--iconLeft
+    - t-Button--gapBottom
+    icon: fa-remove
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+- # ====== Button: SAVE ========================================
+  id: 29062411882657110
+  identification: 
+    button-name: SAVE
+    label: Save
+
+  layout: 
+    sequence: 20
+    region: Rejection Comment # 29062099841657106
+    slot: NEXT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+- # ====== Button: LOGS ========================================
+  id: 29064462424657130
+  identification: 
+    button-name: LOGS
+    label: View Webservice Logs
+
+  layout: 
+    sequence: 30
+    region: Invoices # 18846932878685317
+    slot: PREVIOUS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--gapBottom
+
+  behavior: 
+    action: Redirect to Page in this Application
+    target: 
+      url: 'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:2::'
+      page: 2 # WebService Call Logs
+      clear-cache: 2
+
+    warn-on-unsaved-changes: Do Not Check
+
+dynamic-actions: 
+- # ====== Dynamic Action: Get the Access Token ================
+  id: 18846196261685309
+  identification: 
+    name: Get the Access Token
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 18846268472685310
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        if((!'&G_SAAS_ACCESS_TOKEN!JS.'))
+        {
+          getAccessToken('&G_SAAS_ACCESS_URL!JS.'); // Escape JS special characters
+        }
+        
+
+    execution: 
+      sequence: 10
+      event: Get the Access Token # 18846196261685309
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 18848704315685335
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        :P0_CLIENT := :CLIENT;
+        :P0_ENV := :ENV;
+        
+        if (:G_SAAS_ACCESS_TOKEN is not null)
+        then
+        BEGIN
+          MA_UTIL.FETCH_INVOICES;
+        END;
+        end if;
+          
+      items-to-submit: 
+      - G_SAAS_ACCESS_TOKEN
+      items-to-return: 
+      - P0_CLIENT
+      - P0_ENV
+      suppress-change-event: false
+
+    execution: 
+      sequence: 20
+      event: Get the Access Token # 18846196261685309
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+      stop-execution-on-error: true
+      wait-for-result: true
+
+- # ====== Dynamic Action: Clicked on Approve ==================
+  id: 18849332753685341
+  identification: 
+    name: Clicked on Approve
+
+  execution: 
+    sequence: 20
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: APPROVE # 18848870383685336
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 18849427123685342
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: getSelectedRecordsTaskNumbers();
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P1_SELECTED_RECORDS
+
+    execution: 
+      sequence: 20
+      event: Clicked on Approve # 18849332753685341
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Confirm =====================================
+    id: 18849525930685343
+    identification: 
+      action: Confirm
+
+    settings: 
+      message: This action will Approve the selected records. Press OK to continue.
+      style: Warning
+
+    execution: 
+      sequence: 30
+      event: Clicked on Approve # 18849332753685341
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P1_SELECTED_RECORDS
+
+  - # ====== Action: Submit Page =================================
+    id: 18850002356685348
+    identification: 
+      action: Submit Page
+
+    settings: 
+      request-/-button-name: APPROVAL
+      show-processing: true
+
+    execution: 
+      sequence: 60
+      event: Clicked on Approve # 18849332753685341
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P1_SELECTED_RECORDS
+
+  - # ====== Action: Alert =======================================
+    id: 18850154999685349
+    identification: 
+      action: Alert
+
+    settings: 
+      message: No Records Selected!
+      style: Warning
+
+    execution: 
+      sequence: 40
+      event: Clicked on Approve # 18849332753685341
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is null
+      item: P1_SELECTED_RECORDS
+
+- # ====== Dynamic Action: Clicked on REJECT ===================
+  id: 29062667120657112
+  identification: 
+    name: Clicked on REJECT
+
+  execution: 
+    sequence: 30
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: REJECT # 18849054838685338
+
+  actions: 
+  - # ====== Action: Open Region =================================
+    id: 29062399293657109
+    identification: 
+      action: Open Region
+
+    affected-elements: 
+      selection-type: Region
+      region: Rejection Comment # 29062099841657106
+
+    execution: 
+      sequence: 40
+      event: Clicked on REJECT # 29062667120657112
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P1_SELECTED_RECORDS
+
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 29062722052657113
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: getSelectedRecordsTaskNumbers();
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P1_SELECTED_RECORDS
+
+    execution: 
+      sequence: 10
+      event: Clicked on REJECT # 29062667120657112
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Confirm =====================================
+    id: 29062893712657114
+    identification: 
+      action: Confirm
+
+    settings: 
+      message: This action will Reject the selected records. Press OK to continue.
+      style: Warning
+
+    execution: 
+      sequence: 20
+      event: Clicked on REJECT # 29062667120657112
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P1_SELECTED_RECORDS
+
+  - # ====== Action: Alert =======================================
+    id: 29062929298657115
+    identification: 
+      action: Alert
+
+    settings: 
+      message: No Records Selected!
+      style: Warning
+
+    execution: 
+      sequence: 30
+      event: Clicked on REJECT # 29062667120657112
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is null
+      item: P1_SELECTED_RECORDS
+
+- # ====== Dynamic Action: When Comment Entered ================
+  id: 29063204514657118
+  identification: 
+    name: When Comment Entered
+
+  execution: 
+    sequence: 40
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Dialog Closed
+    selection-type: jQuery Selector
+    jquery-selector: window
+
+  client-side-condition: 
+    type: Item is not null
+    item: P1_COMMENT
+
+  actions: 
+  - # ====== Action: Submit Page =================================
+    id: 29063196247657117
+    identification: 
+      action: Submit Page
+
+    settings: 
+      request-/-button-name: REJECT
+      show-processing: true
+
+    execution: 
+      sequence: 20
+      event: When Comment Entered # 29063204514657118
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P1_SELECTED_RECORDS
+
+- # ====== Dynamic Action: Close Dialog ========================
+  id: 29063462906657120
+  identification: 
+    name: Close Dialog
+
+  execution: 
+    sequence: 50
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: SAVE # 29062411882657110
+
+  actions: 
+  - # ====== Action: Submit Page =================================
+    id: 29063578703657121
+    identification: 
+      action: Submit Page
+
+    settings: 
+      request-/-button-name: REJECTION
+      show-processing: true
+
+    execution: 
+      sequence: 10
+      event: Close Dialog # 29063462906657120
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+processes: 
+- # ====== Process: SET_ACCESS_TOKEN ===========================
+  id: 18846312035685311
+  identification: 
+    name: SET_ACCESS_TOKEN
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      apex_json.open_object;
+      begin
+        :G_SAAS_ACCESS_TOKEN   := apex_application.g_x01;
+        :G_SAAS_PREFERRED_NAME           := apex_application.g_x02;
+      --   :G_SAAS_PREFERRED_NAME := apex_application.g_x03;
+        :G_SAAS_USER          := apex_application.g_x03;
+        :G_TIMESTAMP           := apex_application.g_x04;
+        :G_TOKEN_DURATION      := apex_application.g_x05;
+      --   APEX_CUSTOM_AUTH.SET_USER(:P2_SAAS_USER);
+        apex_json.write('ok',true);
+      exception
+        when others then apex_json.write('sqlerrm',sqlerrm);
+      end;
+      apex_json.close_all;
+      
+
+  execution: 
+    sequence: 10
+    point: Ajax Callback
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: Parse JWT and Get Username =================
+  id: 18846404505685312
+  identification: 
+    name: Parse JWT and Get Username
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      declare
+      l_query_string varchar2(8500);
+      l_jwt_start_pos NUMBER;
+      l_jwt_arr APEX_APPLICATION_GLOBAL.VC_ARR2;
+      l_prn_json varchar2(10000);
+      l_web_url varchar2(200) := '/fscmUI/HedTokenGenerationServlet?response_type=code';
+      
+      begin
+      
+      XX_JWT_USERNAME();
+      l_query_string  := owa_util.get_cgi_env('QUERY_STRING');
+      XX_JWT_USERNAME1(l_query_string);
+      
+      
+        l_jwt_start_pos := INSTR(l_query_string,'jwt=');
+        XX_JWT_USERNAME1(l_jwt_start_pos);
+        if l_jwt_start_pos <> 0 then 
+          :G_JWT_BASE := SUBSTR(l_query_string, l_jwt_start_pos+4, 10000);
+      
+          l_jwt_arr       := APEX_UTIL.STRING_TO_TABLE(:G_JWT_BASE, '.');
+          :P2_SAAS_ACCESS_TOKEN := l_jwt_arr(2);
+      
+             l_prn_json := UTL_ENCODE.TEXT_DECODE(l_jwt_arr(2), 'UTF8', UTL_ENCODE.BASE64);
+      
+             APEX_JSON.PARSE (l_prn_json);
+            :P1_SAAS_USER := APEX_JSON.get_varchar2 (p_path => 'prn');
+          --   :P1_SAAS_USER := :P10_FUSION_USER;
+      
+        else
+          if :G_SAAS_ACCESS_URL IS NULL
+          then
+            select base_url 
+            into   :G_SAAS_ACCESS_URL
+             from prt_environments
+             where organization_id in (
+             select organization_id from prt_organizations
+             where organization_name = :CLIENT)
+             and environment_name = :ENV;
+             
+            :G_JWT_BASE := 'OTBI';     
+          end if;
+                :G_JWT_BASE := 'OTBI';       
+          end if;
+       IF :G_SAAS_ACCESS_TOKEN IS NOT NULL AND :G_SAAS_USER IS NOT NULL THEN
+      --    APEX_CUSTOM_AUTH.SET_USER(:G_SAAS_USER);
+            APEX_CUSTOM_AUTH.DEFINE_USER_SESSION(p_user => :G_SAAS_USER
+                                                 ,p_session_id => :APP_SESSION);
+      --    apex_session.create_session (p_app_id => :APP_ID, p_page_id  => :APP_PAGE_ID, p_username => :G_SAAS_USER);
+       END IF;
+        
+      end;
+      
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+  server-side-condition: 
+    type: Never
+
+- # ====== Process: Web Service Call ===========================
+  id: 18846692523685314
+  identification: 
+    name: Web Service Call
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      -- apex_session.create_session (p_app_id => :APP_ID, p_page_id  => :APP_PAGE_ID
+      -- , p_username => :G_SAAS_PREFERRED_NAME);
+      
+      :P0_CLIENT := :CLIENT;
+      :P0_ENV := :ENV;
+      
+      BEGIN
+        MA_UTIL.FETCH_INVOICES;
+      END;
+        
+
+  execution: 
+    sequence: 20
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+  server-side-condition: 
+    type: Never
+
+- # ====== Process: Invoices - Save Interactive Grid Data ======
+  id: 18848479332685332
+  identification: 
+    name: Invoices - Save Interactive Grid Data
+    type: Interactive Grid - Automatic Row Processing (DML)
+    execution-chain: None
+    editable-region: Invoices # 18846932878685317
+
+  settings: 
+    target-type: Region Source
+    prevent-lost-updates: true
+    lock-row: Yes
+    return-primary-key(s)-after-insert: true
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    execution-scope: For Created and Modified Rows
+
+- # ====== Process: Rejection Call =============================
+  id: 29063665521657122
+  identification: 
+    name: Rejection Call
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+        V_RESPONSE CLOB;
+      BEGIN  
+      MA_UTIL.MASS_REJECT_INVOICES(:P1_SELECTED_RECORDS,:P1_COMMENT,V_RESPONSE);
+      END;
+      
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Action Processed Successfully!
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    type: Request = Value
+    value: REJECTION
+
+- # ====== Process: Approval Call ==============================
+  id: 29065866229657144
+  identification: 
+    name: Approval Call
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+       V_RESPONSE CLOB;
+      BEGIN 
+      MA_UTIL.MASS_APPROVE_INVOICES(:P1_SELECTED_RECORDS,V_RESPONSE);
+      END;
+      
+
+  execution: 
+    sequence: 30
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Action Processed Successfully!
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    type: Request = Value
+    value: APPROVAL
+

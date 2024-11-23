@@ -1,0 +1,40 @@
+---
+- # ====== Authentication: Application Express Authentication ==
+  id: 10265227402882135
+  identification: 
+    name: Application Express Authentication
+
+  subscription: 
+    version-number: 1
+
+  settings: 
+    type: Oracle APEX Accounts
+
+  session-not-valid: 
+    redirect-to: Login Page
+
+  login-processing: 
+    switch-in-session: false
+
+  real-application-security: 
+    ras-mode: Disabled
+
+- # ====== Authentication: No Authentication ===================
+  id: 10958436563352889
+  identification: 
+    name: No Authentication
+
+  subscription: 
+    version-number: 1
+
+  settings: 
+    type: No Authentication
+    username: nobody
+
+  login-processing: 
+    pre-authentication-procedure-name: XX_GPMS.WIP_DEBUG(5555,2,'URL',null)
+    switch-in-session: false
+
+  real-application-security: 
+    ras-mode: Disabled
+

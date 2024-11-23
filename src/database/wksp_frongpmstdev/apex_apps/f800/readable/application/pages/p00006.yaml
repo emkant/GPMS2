@@ -1,0 +1,1814 @@
+---
+# ====== Page: Fee Allocation ================================
+id: 6
+identification: 
+  name: Fee Allocation
+  alias: FEE-ALLOCATION
+  title: Fee Allocation
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  width: 75%
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+javascript: 
+  file-urls: 
+  - null
+  - null
+  execute-when-page-loads: |
+    /// Not working when moved into JS File
+    
+    $(".is-aggregate .a-GV-rowLabel").text("Total");
+    // Set the Value of Write Down % Total
+    // var tot_fees = $($(".is-aggregate td")[3]).text();
+    // var tot_write_down = $($(".is-aggregate td")[4]).text();
+    // var realizedamt = $($(".is-aggregate td")[6]).text();
+    // var tot_percent = ((tot_fees - realizedamt) / tot_fees * 100).toFixed(2);
+    // $($(".is-aggregate td")[5]).text(tot_percent);
+    
+    $(".a-MediaBlock").hide();
+    var i_selector = $('#FeeAllocation tr .dummy');
+    //var i_selector = $('#FeeAllocation tr td');
+    var i_currency = '&G_CURRENCY.';
+    for (i = 0; i < i_selector.length; i++) {
+        i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML), i_currency);
+    }
+    
+    init_page6();
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Unrestricted
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: New =========================================
+  id: 44647006841860810
+  identification: 
+    name: New
+    type: Static Content
+
+  layout: 
+    sequence: 20
+    parent-region: Container # 64869112766496010
+    slot: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Container ===================================
+  id: 64869112766496010
+  identification: 
+    name: Container
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--noUI
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: container
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Fee Allocation ==============================
+  id: 65065441035115991
+  identification: 
+    name: Fee Allocation
+    type: Interactive Grid
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      SELECT C001 PERSON_NAME,
+          --    C002 JOB_NAME,
+             C002 LINES,
+             to_char(C003,'999G999G999G999G990D000') HOURS,
+             C004 FEES,
+             C005 ADJUSTMENT,
+             C006 OLD_ADJUSTMENT,
+             C007 WRITE_DOWN_PCT,
+             C008 FEE_ALLOCATION,
+             C009 STANDARD_BILL_RATE_AMT,
+             C008/DECODE(C009,0,1,NULL,1,C009)*100 C010,
+             C011 OLD_FEE_ALLOCATION,
+             C012 OLD_WRITE_DOWN_PCT,
+             C013 SESSION_ID,
+             SEQ_ID
+      FROM APEX_COLLECTIONS
+      WHERE COLLECTION_NAME = 'PERSON_ADJUSTMENTS'
+      AND   C013 = V('APP_SESSION')
+
+  layout: 
+    sequence: 10
+    parent-region: Container # 64869112766496010
+    slot: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Interactive Report
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: FeeAllocation
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 65065501429115992
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Update Row
+      lost-update-type: Row Values
+
+    performance: 
+      lazy-loading: false
+
+    appearance: 
+      select-first-row: false
+      fixed-row-height: true
+
+    pagination: 
+      type: Scroll
+      show-total-count: false
+
+    toolbar: 
+      show: true
+      controls: 
+      - Search Column Selection
+      - Search Field
+      - Actions Menu
+      - Reset Button
+      - Save Button
+
+    enable-users-to: 
+      save-public-report: false
+      flashback: false
+      define-chart-view: false
+      download: false
+
+    heading: 
+      fixed-to: Page
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    advanced: 
+      initialization-javascript-function: |
+        function(config) {
+         config.defaultGridViewOptions = { 
+             footer: false 
+             }; 
+        
+        return config; 
+        }  
+        
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 65103342760304183
+      identification: 
+        name: Primary Report
+        alias: 102396
+
+  columns: 
+  - # ====== Column: C010 ========================================
+    id: 43642350555593928
+    identification: 
+      column-name: C010
+      type: Number Field
+
+    heading: 
+      heading: Realization %
+      alignment: center
+
+    settings: 
+      number-alignment: Start
+      virtual-keyboard: Decimal
+
+    layout: 
+      sequence: 250
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      format-mask: 999G999G999G999G990D00
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: C010
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: SEQ_ID ======================================
+    id: 65066922099116006
+    identification: 
+      column-name: SEQ_ID
+      type: Number Field
+
+    heading: 
+      heading: Seq Id
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 50
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: true
+
+    source: 
+      type: Database Column
+      database-column: SEQ_ID
+      data-type: NUMBER
+      query-only: true
+      primary-key: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: PERSON_NAME =================================
+    id: 65066978404116007
+    identification: 
+      column-name: PERSON_NAME
+      type: Display Only
+
+    heading: 
+      heading: Person Name
+      alignment: start
+
+    settings: 
+      format: Plain Text
+      based-on: Item Value
+
+    layout: 
+      sequence: 60
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: PERSON_NAME
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+    advanced: 
+      column-initialization-javascript-function: |
+        function(config) {
+            config.defaultGridColumnOptions = {
+                noStretch: true
+            };
+            return config;
+        }   
+
+  - # ====== Column: LINES =======================================
+    id: 65067209005116009
+    identification: 
+      column-name: LINES
+      type: Display Only
+
+    heading: 
+      heading: Lines
+      alignment: center
+
+    settings: 
+      format: Plain Text
+      based-on: Item Value
+
+    layout: 
+      sequence: 80
+      column-alignment: center
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: LINES
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+  - # ====== Column: HOURS =======================================
+    id: 65067356732116010
+    identification: 
+      column-name: HOURS
+      type: Display Only
+
+    heading: 
+      heading: Hours
+      alignment: center
+
+    settings: 
+      format: Plain Text
+      based-on: Item Value
+
+    layout: 
+      sequence: 90
+      column-alignment: center
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: HOURS
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+  - # ====== Column: FEES ========================================
+    id: 65067423947116011
+    identification: 
+      column-name: FEES
+      type: Number Field
+
+    heading: 
+      heading: Fees@ Agreement
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 100
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      css-classes: 
+      - is-readonly
+      - null
+      - dummy
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: FEES
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+    advanced: 
+      static-id: fees_agreement
+
+  - # ====== Column: STANDARD_BILL_RATE_AMT ======================
+    id: 65067912280116016
+    identification: 
+      column-name: STANDARD_BILL_RATE_AMT
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 150
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: STANDARD_BILL_RATE_AMT
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: ADJUSTMENT ==================================
+    id: 65068600441116023
+    identification: 
+      column-name: ADJUSTMENT
+      type: Number Field
+
+    heading: 
+      heading: Write Down (-Up)
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 170
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      css-classes: 
+      - dummy
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: ADJUSTMENT
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+  - # ====== Column: OLD_ADJUSTMENT ==============================
+    id: 65068705774116024
+    identification: 
+      column-name: OLD_ADJUSTMENT
+      type: Number Field
+
+    heading: 
+      heading: Old Adjustment
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 180
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      format-mask: 999G999G999G999G990D00
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: OLD_ADJUSTMENT
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: WRITE_DOWN_PCT ==============================
+    id: 65068863113116025
+    identification: 
+      column-name: WRITE_DOWN_PCT
+      type: Number Field
+
+    heading: 
+      heading: Write Down %
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 190
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      format-mask: 999G999G999G999G990D00
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: WRITE_DOWN_PCT
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+  - # ====== Column: FEE_ALLOCATION ==============================
+    id: 65069027387116027
+    identification: 
+      column-name: FEE_ALLOCATION
+      type: Number Field
+
+    heading: 
+      heading: Fee Allocation
+      alignment: center
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 200
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      css-classes: 
+      - dummy
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: FEE_ALLOCATION
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: false
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: false
+
+  - # ====== Column: OLD_FEE_ALLOCATION ==========================
+    id: 65069120029116028
+    identification: 
+      column-name: OLD_FEE_ALLOCATION
+      type: Number Field
+
+    heading: 
+      alignment: end
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 210
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: OLD_FEE_ALLOCATION
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: OLD_WRITE_DOWN_PCT ==========================
+    id: 65069202846116029
+    identification: 
+      column-name: OLD_WRITE_DOWN_PCT
+      type: Number Field
+
+    heading: 
+      alignment: end
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 220
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 32767
+
+    source: 
+      type: Database Column
+      database-column: OLD_WRITE_DOWN_PCT
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+      hide: true
+
+  - # ====== Column: SESSION_ID ==================================
+    id: 65300448876897689
+    identification: 
+      column-name: SESSION_ID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 240
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: SESSION_ID
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+page-items: 
+- # ====== Page Item: P6_PARENT_CLICK ==========================
+  id: 30102837036964636
+  identification: 
+    name: P6_PARENT_CLICK
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 140
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_ON_LOAD ===============================
+  id: 37024502458176213
+  identification: 
+    name: P6_ON_LOAD
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 60
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  default: 
+    type: Static
+    static-value: 1
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_JUSTIFICATION_CODE ====================
+  id: 45832310023780330
+  identification: 
+    name: P6_JUSTIFICATION_CODE
+    type: Select List
+
+  label: 
+    label: Justification
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 10
+    region: New # 44647006841860810
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Above
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC:Client Satisfaction;Client Satisfaction,Billing Error;Billing Error,B.I.S.S.;B.I.S.S.,We do not pay for summer associates;We do not pay for summer associates'
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_JUSTIFICATION_TEXT ====================
+  id: 45832526523781784
+  identification: 
+    name: P6_JUSTIFICATION_TEXT
+    type: Textarea
+
+  label: 
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: false
+    character-counter: true
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 10
+    region: New # 44647006841860810
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Above
+    template-options: 
+    - '#DEFAULT#'
+    width: 60
+    height: 5
+
+  validation: 
+    value-required: false
+    maximum-length: 150
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_PROJECT_NUMBER ========================
+  id: 55104368224608437
+  identification: 
+    name: P6_PROJECT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 40
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_AGREEMENT_NUMBER ======================
+  id: 55104389449608438
+  identification: 
+    name: P6_AGREEMENT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 50
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P6_COLL_CHANGED ==========================
+  id: 65301766551897703
+  identification: 
+    name: P6_COLL_CHANGED
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 10
+    region: Container # 64869112766496010
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: N
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: CREATE_ADJUSTMENTS ==========================
+  id: 64869029093496009
+  identification: 
+    button-name: CREATE_ADJUSTMENTS
+    label: Create Adjustments
+
+  layout: 
+    sequence: 50
+    region: Container # 64869112766496010
+    slot: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+    icon: fa-adjust
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  advanced: 
+    static-id: CREATE_ADJ
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: ":P6_COLL_CHANGED = 'Y'"
+
+- # ====== Button: CALCULATE ===================================
+  id: 65064799489115985
+  identification: 
+    button-name: CALCULATE
+    label: Calculate
+
+  layout: 
+    sequence: 40
+    region: Container # 64869112766496010
+    slot: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--warning
+    - t-Button--iconRight
+    - t-Button--hoverIconPush
+    icon: fa-calculator
+
+  behavior: 
+    action: Submit Page
+    execute-validations: false
+    show-processing: false
+    warn-on-unsaved-changes: Do Not Check
+
+  advanced: 
+    static-id: CALC
+
+- # ====== Button: CLEAR =======================================
+  id: 65299839569897683
+  identification: 
+    button-name: CLEAR
+    label: Clear
+
+  layout: 
+    sequence: 30
+    region: Container # 64869112766496010
+    slot: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text with Icon
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--danger
+    - t-Button--iconRight
+    - t-Button--gapRight
+    icon: fa-eraser
+
+  behavior: 
+    action: Submit Page
+    execute-validations: false
+    show-processing: false
+    warn-on-unsaved-changes: Do Not Check
+
+  advanced: 
+    static-id: CLR
+
+dynamic-actions: 
+- # ====== Dynamic Action: Check if IG has changed =============
+  id: 65300667724897692
+  identification: 
+    name: Check if IG has changed
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: CREATE_ADJUSTMENTS # 64869029093496009
+
+  actions: 
+  - # ====== Action: Submit Page =================================
+    id: 65300950995897694
+    identification: 
+      action: Submit Page
+
+    settings: 
+      request-/-button-name: CREATE_ADJUSTMENTS
+      show-processing: true
+
+    execution: 
+      sequence: 20
+      event: Check if IG has changed # 65300667724897692
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Change of Values ====================
+  id: 65301389439897699
+  identification: 
+    name: Change of Values
+
+  execution: 
+    sequence: 20
+    event-scope: Dynamic
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Column(s)
+    interactive-grid: Fee Allocation # 65065441035115991
+    column(s): 
+    - ADJUSTMENT
+    - WRITE_DOWN_PCT
+    - FEE_ALLOCATION
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 65301501083897700
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        apex.item("CALC").show();
+        // apex.item("CLR").show();
+        apex.item("CREATE_ADJ").hide();
+
+    execution: 
+      sequence: 10
+      event: Change of Values # 65301389439897699
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: After Refresh of Region =============
+  id: 65302062828897705
+  identification: 
+    name: After Refresh of Region
+
+  execution: 
+    sequence: 30
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: After Refresh
+    selection-type: Region
+    region: Fee Allocation # 65065441035115991
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 65302115278897706
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: $(".a-MediaBlock").hide();
+
+    execution: 
+      sequence: 10
+      event: After Refresh of Region # 65302062828897705
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+validations: 
+- # ====== Validation: Justification is needed for Write Up/Down
+  id: 46447557349750865
+  identification: 
+    name: Justification is needed for Write Up/Down
+
+  execution: 
+    sequence: 10
+
+  validation: 
+    type: Function Body (returning Error Text)
+    language: PL/SQL
+    pl/sql-function-body-returning-error-text: |
+      if coalesce(:P6_JUSTIFICATION_CODE,:P6_JUSTIFICATION_TEXT,'~!~') = '~!~'
+        then
+          return 'Justification is needed if Write Up/Down is performed!';
+      end if;
+    always-execute: false
+
+  error: 
+    display-location: Inline with Field and in Notification
+    associated-item: P6_JUSTIFICATION_CODE # 45832310023780330
+
+  server-side-condition: 
+    type: Item = Value
+    item: P6_COLL_CHANGED
+    value: Y
+
+processes: 
+- # ====== Process: Close Dialog on SAVE =======================
+  id: 64869224657496011
+  identification: 
+    name: Close Dialog on SAVE
+    type: Close Dialog
+    execution-chain: None
+
+  settings: 
+    items-to-return-: 
+    - P0_CUMULATIVE_EXP_ID
+    show-success-messages: false
+
+  execution: 
+    sequence: 60
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CREATE_ADJUSTMENTS # 64869029093496009
+
+- # ====== Process: Create Collection from Query ===============
+  id: 65065333290115990
+  identification: 
+    name: Create Collection from Query
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+      V_QUERY VARCHAR2(32767);
+      BEGIN
+      IF :P6_PARENT_CLICK = 'Y' AND APEX_COLLECTION.COLLECTION_EXISTS('PERSON_ADJUSTMENTS') 
+      THEN
+        APEX_COLLECTION.DELETE_COLLECTION(P_COLLECTION_NAME => 'PERSON_ADJUSTMENTS');
+        :P6_PARENT_CLICK := 'N';
+      END IF;
+      --APEX_COLLECTION.DELETE_COLLECTION(P_COLLECTION_NAME => 'PERSON_ADJUSTMENTS');
+      IF NOT APEX_COLLECTION.COLLECTION_EXISTS('PERSON_ADJUSTMENTS') 
+      THEN
+      --   IF  :P6_ON_LOAD = 1 
+      --   THEN
+      --    APEX_COLLECTION.DELETE_COLLECTION(P_COLLECTION_NAME => 'PERSON_ADJUSTMENTS');
+      --   END IF; 
+          V_QUERY := q'#SELECT PERSON_NAME,
+         COUNT(*)                    LINES,
+         SUM(QUANTITY)               HOURS,
+         SUM(PROJECT_BILL_RATE_AMT)  FEES,
+         SUM(PROJECT_BILL_RATE_AMT) -   SUM(REALIZED_BILL_RATE_AMT)     ADJUSTMENT,
+         SUM(PROJECT_BILL_RATE_AMT) -   SUM(REALIZED_BILL_RATE_AMT)     OLD_ADJUSTMENT,
+         ROUND((SUM(PROJECT_BILL_RATE_AMT) - SUM(REALIZED_BILL_RATE_AMT))/DECODE(SUM(PROJECT_BILL_RATE_AMT),0,1,NULL,1,SUM(PROJECT_BILL_RATE_AMT))*100,2)    WRITE_DOWN_PCT,
+         TRUNC(SUM(REALIZED_BILL_RATE_AMT),2) FEE_ALLOCATION,
+         SUM(STANDARD_BILL_RATE_AMT) STANDARD_BILL_RATE_AMT,
+         TRUNC(SUM(REALIZED_BILL_RATE_AMT)/DECODE(SUM(STANDARD_BILL_RATE_AMT),0,1,NULL,1,SUM(STANDARD_BILL_RATE_AMT))*100,2)       REALIZATION_PCT,
+         SUM(REALIZED_BILL_RATE_AMT) OLD_FEE_ALLOCATION,
+         TRUNC((SUM(PROJECT_BILL_RATE_AMT) - SUM(REALIZED_BILL_RATE_AMT))/DECODE(SUM(PROJECT_BILL_RATE_AMT),0,1,NULL,1,SUM(PROJECT_BILL_RATE_AMT))*100,2)    OLD_WRITE_DOWN_PCT,
+         V('SESSION') SESSION_ID
+      FROM XXGPMS_PROJECT_COSTS
+      WHERE SESSION_ID = V('SESSION')
+      AND   PROJECT_NUMBER = COALESCE('#'||:P6_PROJECT_NUMBER||q'#',project_number)
+      and   contract_number = nvl('#'||:P6_AGREEMENT_NUMBER||q'#',contract_number)
+      and  lower(wip_category) = 'labor'
+      GROUP BY PERSON_NAME#';
+          APEX_COLLECTION.CREATE_COLLECTION_FROM_QUERY(P_COLLECTION_NAME => 'PERSON_ADJUSTMENTS'
+          , P_QUERY => V_QUERY, P_GENERATE_MD5 =>
+          'YES');
+      
+          :P6_ON_LOAD := 0;
+          :P6_PARENT_CLICK := 'N';
+      ELSE
+        IF(APEX_COLLECTION.COLLECTION_HAS_CHANGED (
+          p_collection_name => 'PERSON_ADJUSTMENTS'))
+          THEN
+            :P6_COLL_CHANGED := 'Y';
+        ELSE
+          :P6_COLL_CHANGED := 'N';    
+        END IF; 
+        :P6_ON_LOAD := 0;   
+        :P6_PARENT_CLICK := 'N';
+      END IF;
+      END;
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: Fee Allocation - Save Interactive Grid Data 
+  id: 65068350829116020
+  identification: 
+    name: Fee Allocation - Save Interactive Grid Data
+    type: Execute Code
+    execution-chain: None
+    editable-region: Fee Allocation # 65065441035115991
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+          V_STATUS NUMBER;
+          V_EXP_ID VARCHAR2(32767);
+      BEGIN
+          SELECT '-'
+                 ||
+                 LISTAGG(EXPENDITURE_ITEM_ID, '-')
+                 || '-'
+          INTO V_EXP_ID
+          FROM XXGPMS_PROJECT_COSTS
+          WHERE PERSON_NAME = :PERSON_NAME;
+      
+          V_STATUS := XX_GPMS.WIP_TAG_ADJUSTMENT(V_EXP_ID, 
+          :WIP_PROJECT_NUMBER, 
+          NULL, 
+          TO_NUMBER(:FEES, '999G999G999G999G990D00') +
+          TO_NUMBER(:ADJUSTMENT, '999G999G999G999G990D00'), 
+          TO_NUMBER(:FEES, '999G999G999G999G990D00'));
+      
+      END;
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CREATE_ADJUSTMENTS # 64869029093496009
+    execution-scope: All Submitted Rows
+    type: Never
+
+- # ====== Process: Calculate New Values =======================
+  id: 65068380900116021
+  identification: 
+    name: Calculate New Values
+    type: Execute Code
+    execution-chain: None
+    editable-region: Fee Allocation # 65065441035115991
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+      --6 -- NEW_ADJ --7 -- OLD_ADJ
+      -- 8 --NEW_WRITE_DOWN -- 13 -- WRITE_DOWN_PCT
+      -- 9 -- ALLOCATION -- 12 -- OLD_ALLOC
+       V_NEW_ADJUSTMENT NUMBER;
+       --V_ADJUSTMENT NUMBER := TO_NUMBER(:ADJUSTMENT);
+      BEGIN 
+      IF :OLD_ADJUSTMENT <> :ADJUSTMENT THEN
+       APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '5',
+              p_attr_value => :ADJUSTMENT);
+       APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '6',
+              p_attr_value => :ADJUSTMENT);
+       APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '8',
+              p_attr_value => :FEES -:ADJUSTMENT);    
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '11',
+              p_attr_value => :FEES -:ADJUSTMENT);               
+       APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '7',
+              p_attr_value => (:FEES- (:FEES-:ADJUSTMENT))/(CASE NVL(:FEES,0) WHEN 0 THEN 1 ELSE :FEES END)*100);        
+       APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '12',
+              p_attr_value => (:FEES- (:FEES-:ADJUSTMENT))/(CASE NVL(:FEES,0) WHEN 0 THEN 1 ELSE :FEES END)*100);                
+      ELSIF :OLD_FEE_ALLOCATION <> :FEE_ALLOCATION THEN
+        APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '8',
+              p_attr_value => :FEE_ALLOCATION);
+         APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '11',
+              p_attr_value => :FEE_ALLOCATION); 
+           APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '5',
+              p_attr_value => :FEES-:FEE_ALLOCATION);  
+          APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '6',
+              p_attr_value => :FEES-:FEE_ALLOCATION);      
+           APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '7',
+              p_attr_value => (:FEES- :FEE_ALLOCATION)/(CASE NVL(:FEES,0) WHEN 0 THEN 1 ELSE :FEES END)*100);  
+           APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '12',
+              p_attr_value => (:FEES- :FEE_ALLOCATION)/(CASE NVL(:FEES,0) WHEN 0 THEN 1 ELSE :FEES END)*100);             
+      ELSIF :OLD_WRITE_DOWN_PCT <> :WRITE_DOWN_PCT THEN
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '7',
+              p_attr_value => :WRITE_DOWN_PCT);
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '12',
+              p_attr_value => :WRITE_DOWN_PCT);
+              V_NEW_ADJUSTMENT := :FEES-(:FEES*(:WRITE_DOWN_PCT/100));
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '5',
+              p_attr_value => :FEES*(:WRITE_DOWN_PCT/100));
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '6',
+              p_attr_value => :FEES*(:WRITE_DOWN_PCT/100));        
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '8',
+              p_attr_value => V_NEW_ADJUSTMENT);   
+      APEX_COLLECTION.UPDATE_MEMBER_ATTRIBUTE (
+              p_collection_name => 'PERSON_ADJUSTMENTS',
+              p_seq => :SEQ_ID,
+              p_attr_number => '11',
+              p_attr_value => V_NEW_ADJUSTMENT);    
+      END IF;
+      END;
+
+  execution: 
+    sequence: 50
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CALCULATE # 65064799489115985
+    execution-scope: For Created and Modified Rows
+
+- # ====== Process: Clear the Collection =======================
+  id: 65300195613897687
+  identification: 
+    name: Clear the Collection
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      -- APEX_COLLECTION.DELETE_COLLECTION('PERSON_ADJUSTMENTS');
+      :P6_PARENT_CLICK := 'Y';
+      -- null;
+
+  execution: 
+    sequence: 30
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    type: Request is contained in Value
+    value: CLEAR,CREATE_ADJUSTMENTS
+
+- # ====== Process: Create Adjustments =========================
+  id: 65300284366897688
+  identification: 
+    name: Create Adjustments
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+       V_ACTUAL_FEE_ALLOC NUMBER;
+       V_EXP_ID VARCHAR2(32767);
+       V_STATUS NUMBER;
+       V_FINAL_EXP_ID varchar2(4000);
+      BEGIN 
+      FOR I IN (SELECT * FROM APEX_COLLECTIONS
+      WHERE COLLECTION_NAME = 'PERSON_ADJUSTMENTS'
+      AND  C013 = V('SESSION')
+      AND (NVL(C005,0)<> 0 OR NVL(C007,0)<>0 ))
+      LOOP
+         
+         XX_GPMS.WIP_DEBUG ( 3, 4999, I.C001, '' );
+      
+       -- GET THE ACTUAL SUM OF REALIZED AMOUNT FOR THAT PERSON
+         SELECT SUM(REALIZED_BILL_RATE_AMT)
+         INTO   V_ACTUAL_FEE_ALLOC
+         FROM   XXGPMS_PROJECT_COSTS
+         WHERE  PERSON_NAME = I.C001
+         AND    SESSION_ID = I.C013
+         AND    LOWER(WIP_CATEGORY) = 'labor';
+      
+       -- COMPARE IT WITH THE NEW REALIZED AMOUNT SUM
+       IF I.C009 <> V_ACTUAL_FEE_ALLOC THEN
+         SELECT '-'
+                 ||
+                 LISTAGG(DISTINCT EXPENDITURE_ITEM_ID, '-')
+                 || '-'
+          INTO V_EXP_ID
+          FROM XXGPMS_PROJECT_COSTS
+          WHERE PERSON_NAME = I.C001
+          AND    SESSION_ID = I.C013
+          AND    LOWER(WIP_CATEGORY) = 'labor';
+      
+          V_STATUS := XX_GPMS.WIP_TAG_ADJUSTMENT(V_EXP_ID,
+          :WIP_PROJECT_NUMBER, 
+          NULL, 
+          I.C004-I.C005, 
+          I.C004,
+          'Y',
+          :P6_JUSTIFICATION_CODE||case when :P6_JUSTIFICATION_TEXT is not null then ': '||:P6_JUSTIFICATION_TEXT end 
+          );
+       END IF;
+       V_FINAL_EXP_ID := V_FINAL_EXP_ID||'-'||V_EXP_ID;
+      END LOOP; 
+      :P0_CUMULATIVE_EXP_ID := V_FINAL_EXP_ID;
+      XX_GPMS.WIP_DEBUG (3, 5310, 'Cumulative Exp ID: '||:P0_CUMULATIVE_EXP_ID, '');   
+      END;
+      
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: CREATE_ADJUSTMENTS # 64869029093496009
+

@@ -1,0 +1,25 @@
+---
+- # ====== Substitution: APP_NAME ==============================
+  id: 36844276540830362
+  identification: 
+    name: APP_NAME
+
+  installation: 
+    prompt-substitution: false
+
+- # ====== Substitution: CLIENT ================================
+  id: 36844276540830361
+  identification: 
+    name: CLIENT
+
+  installation: 
+    prompt-substitution: false
+
+- # ====== Substitution: ENV ===================================
+  id: 36844276540830360
+  identification: 
+    name: ENV
+
+  installation: 
+    prompt-substitution: false
+

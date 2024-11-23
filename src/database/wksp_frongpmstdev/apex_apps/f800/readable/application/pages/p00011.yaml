@@ -1,0 +1,838 @@
+---
+# ====== Page: Invoice History ===============================
+id: 11
+identification: 
+  name: Invoice History
+  alias: INVOICE-HISTORY
+  title: Invoice History
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Invoice History =============================
+  id: 43642664929593931
+  identification: 
+    name: Invoice History
+    type: Interactive Report
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select NULL,
+             ID,
+             INVOICE_DATE,
+             INVOICE_NUMBER,
+             ADJUSTMENTS,
+             INVOICE_AMOUNT,
+             TAX,
+             TOTAL_INVOICE_AMOUNT,
+             OPEN_BALANCE,
+             LAST_RECEIPT_DATE,
+             SESSION_ID,
+             CONTRACT_ID,
+             INVOICE_ID,
+             1 ord
+        from XXGPMS_PROJECT_INVOICE_HISTORY
+       where session_id = v('APP_SESSION')
+       union 
+       select '<b>Total</b>',
+               NULL,
+               NULL,
+               NULL,
+              SUM(ADJUSTMENTS),
+               SUM(INVOICE_AMOUNT),
+               SUM(TAX),
+               SUM(TOTAL_INVOICE_AMOUNT),
+               SUM(OPEN_BALANCE),
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               999 ord
+          from XXGPMS_PROJECT_INVOICE_HISTORY
+       where session_id = v('APP_SESSION')   
+       order by ord,invoice_date, invoice_number
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Interactive Report
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: invHistory
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 43642803684593932
+    link: 
+      link-column: Exclude Link Column
+
+    pagination: 
+      type: Row Ranges X to Y of Z
+      display-position: Top and Bottom - Right
+
+    performance: 
+      lazy-loading: true
+      maximum-rows-to-process: 1000000
+
+    search-bar: 
+      include-search-bar: true
+      search-field: true
+      finder-drop-down: true
+      reports-select-list: true
+      rows-per-page-selector: true
+
+    actions-menu: 
+      include-actions-menu: true
+      filter: true
+      select-columns: true
+      rows-per-page: true
+      sort: true
+      control-break: false
+      highlight: false
+      compute: false
+      aggregate: true
+      chart: true
+      group-by: true
+      pivot: false
+      flashback: false
+      save-report: true
+      save-public-report: false
+      reset: true
+      help: true
+      download: true
+      subscription: true
+
+    download: 
+      formats: 
+      - CSV
+      - HTML
+      - Excel
+      - PDF
+      send-as-email: true
+
+    heading: 
+      fixed-to: Region
+      maximum-report-height: 300
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 44640956343759930
+      identification: 
+        name: Primary Report
+        alias: 166713
+
+    columns: 
+    - # ====== Column: ID ==========================================
+      id: 43642881418593933
+      identification: 
+        column-name: ID
+        type: Hidden
+
+      heading: 
+        heading: Id
+
+      layout: 
+        sequence: 10
+
+      source: 
+        primary-key: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: INVOICE_DATE ================================
+      id: 43642979866593934
+      identification: 
+        column-name: INVOICE_DATE
+        type: Plain Text
+
+      heading: 
+        heading: Invoice Date
+        alignment: start
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 20
+        column-alignment: start
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+        date-ranges: All
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: INVOICE_NUMBER ==============================
+      id: 43643068722593935
+      identification: 
+        column-name: INVOICE_NUMBER
+        type: Plain Text
+
+      heading: 
+        heading: Invoice Number
+        alignment: start
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 30
+        column-alignment: start
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: ADJUSTMENTS =================================
+      id: 43643200642593936
+      identification: 
+        column-name: ADJUSTMENTS
+        type: Plain Text
+
+      heading: 
+        heading: Adjustments (Up/Down)
+        alignment: end
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 40
+        column-alignment: end
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      advanced: 
+        static-id: ADJ
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: INVOICE_AMOUNT ==============================
+      id: 43643256888593937
+      identification: 
+        column-name: INVOICE_AMOUNT
+        type: Plain Text
+
+      heading: 
+        heading: Invoice Amount
+        alignment: end
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 50
+        column-alignment: end
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      advanced: 
+        static-id: INV_AMT
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: TAX =========================================
+      id: 43643424597593938
+      identification: 
+        column-name: TAX
+        type: Plain Text
+
+      heading: 
+        heading: Tax
+        alignment: end
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 60
+        column-alignment: end
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      advanced: 
+        static-id: TAX
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: TOTAL_INVOICE_AMOUNT ========================
+      id: 43643459138593939
+      identification: 
+        column-name: TOTAL_INVOICE_AMOUNT
+        type: Plain Text
+
+      heading: 
+        heading: Total Invoice Amount
+        alignment: end
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 70
+        column-alignment: end
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      advanced: 
+        static-id: TIA
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: OPEN_BALANCE ================================
+      id: 43643529154593940
+      identification: 
+        column-name: OPEN_BALANCE
+        type: Plain Text
+
+      heading: 
+        heading: Open Balance
+        alignment: end
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 80
+        column-alignment: end
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      advanced: 
+        static-id: OPB
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: LAST_RECEIPT_DATE ===========================
+      id: 43643721196593941
+      identification: 
+        column-name: LAST_RECEIPT_DATE
+        type: Plain Text
+
+      heading: 
+        heading: Last Receipt Date
+        alignment: start
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 90
+        column-alignment: start
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+        date-ranges: All
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: SESSION_ID ==================================
+      id: 43643746115593942
+      identification: 
+        column-name: SESSION_ID
+        type: Hidden
+
+      heading: 
+        heading: Session Id
+
+      layout: 
+        sequence: 100
+
+      source: 
+        primary-key: false
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: CONTRACT_ID =================================
+      id: 43643922615593943
+      identification: 
+        column-name: CONTRACT_ID
+        type: Hidden
+
+      heading: 
+        heading: Contract Id
+
+      layout: 
+        sequence: 110
+
+      source: 
+        primary-key: false
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: INVOICE_ID ==================================
+      id: 43643976069593944
+      identification: 
+        column-name: INVOICE_ID
+        type: Hidden
+
+      heading: 
+        heading: Invoice Id
+
+      layout: 
+        sequence: 120
+
+      source: 
+        primary-key: false
+
+      security: 
+        escape-special-characters: true
+
+    - # ====== Column: NULL ========================================
+      id: 44645815519860798
+      identification: 
+        column-name: NULL
+        type: Plain Text
+
+      heading: 
+        heading: '&nbsp'
+        alignment: start
+
+      single-row-view: 
+        use-column-heading: true
+
+      layout: 
+        sequence: 130
+        column-alignment: start
+
+      accessibility: 
+        value-identifies-row: false
+
+      source: 
+        primary-key: false
+
+      column-filter: 
+        type: Default Based on Column Type
+
+      enable-users-to: 
+        hide: true
+        sort: true
+        filter: true
+        highlight: true
+        control-break: true
+        aggregate: true
+        compute: true
+        chart: true
+        group-by: true
+        pivot: true
+
+      security: 
+        escape-special-characters: false
+
+    - # ====== Column: ORD =========================================
+      id: 44645922903860799
+      identification: 
+        column-name: ORD
+        type: Hidden
+
+      heading: 
+        heading: Ord
+
+      layout: 
+        sequence: 140
+
+      source: 
+        primary-key: false
+
+      security: 
+        escape-special-characters: true
+
+    printing: 
+      output: 
+        layout: Default Report Layout
+        view-file-as: Attachment
+
+      page: 
+        size: Letter
+        orientation: Landscape
+        units: Inches
+        width: 11
+        height: 8.5
+        border-width: 0.5
+        border-color: '#666666'
+
+      page-header: 
+        font: Helvetica
+        font-weight: Normal
+        font-size: 12
+        font-color: '#000000'
+        alignment: center
+        page-header-text: Invoice History
+
+      column-headings: 
+        font: Helvetica
+        font-weight: Bold
+        font-size: 10
+        font-color: '#000000'
+        background-color: '#EEEEEE'
+
+      columns: 
+        font: Helvetica
+        font-weight: Normal
+        font-size: 10
+        font-color: '#000000'
+        background-color: '#FFFFFF'
+
+      page-footer: 
+        font: Helvetica
+        font-weight: Normal
+        font-size: 12
+        font-color: '#000000'
+        alignment: center
+
+page-items: 
+- # ====== Page Item: P11_CURRENCY =============================
+  id: 44645672106860797
+  identification: 
+    name: P11_CURRENCY
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 60
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+dynamic-actions: 
+- # ====== Dynamic Action: Set the Currency Post refresh =======
+  id: 44645439689860795
+  identification: 
+    name: Set the Currency Post refresh
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: After Refresh
+    selection-type: Region
+    region: Invoice History # 43642664929593931
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 44645586782860796
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var i_selector = $("#invHistory tr td[headers='INV_AMT']");
+        var i_currency = apex.item("P11_CURRENCY").getValue();
+        console.log('Starting at ',i_currency);
+        if (!i_currency){
+            i_currency = apex.item('PRJDET_CURRENCY').getValue();
+            console.log('Currency is null so setting ',i_currency);
+            apex.item('P11_CURRENCY').setValue(i_currency);
+        }
+        for (i=0;i<i_selector.length;i++)
+        {  
+            console.log(i_currency);
+            i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        }
+        
+        var i_selector = $("#invHistory tr td[headers='TIA']");
+        var i_currency = apex.item("P11_CURRENCY").getValue();
+        for (i=0;i<i_selector.length;i++)
+        {  
+            console.log(i_currency);
+            i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        }
+        
+        var i_selector = $("#invHistory tr td[headers='TAX']");
+        var i_currency = apex.item("P11_CURRENCY").getValue();
+        for (i=0;i<i_selector.length;i++)
+        {  
+            console.log(i_currency);
+            i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        }
+        
+        var i_selector = $("#invHistory tr td[headers='ADJ']");
+        var i_currency = apex.item("P11_CURRENCY").getValue();
+        for (i=0;i<i_selector.length;i++)
+        {  
+            console.log(i_currency);
+            i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        }
+        
+        var i_selector = $("#invHistory tr td[headers='OPB']");
+        var i_currency = apex.item("P11_CURRENCY").getValue();
+        for (i=0;i<i_selector.length;i++)
+        {  
+            console.log(i_currency);
+            i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        }
+
+    execution: 
+      sequence: 10
+      event: Set the Currency Post refresh # 44645439689860795
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+processes: 
+- # ====== Process: New ========================================
+  id: 46439376554495395
+  identification: 
+    name: New
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      begin
+      select distinct CURRENCY_CODE
+      into  :P11_CURRENCY
+      from  xxgpms_project_contract
+      where session_id = V('APP_SESSION');
+      exception
+        when others then
+          null;
+      end;
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+

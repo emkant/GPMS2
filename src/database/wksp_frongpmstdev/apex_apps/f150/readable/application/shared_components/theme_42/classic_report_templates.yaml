@@ -1,0 +1,2335 @@
+---
+- # ====== Classic Report Template: Contextual Info ============
+  id: 43860550001533324
+  identification: 
+    name: Contextual Info
+    identifier: CONTEXTUAL_INFO
+    class: Value Attribute Pairs
+
+  subscription: 
+    master: 
+      referenced-id: 2114325881116323585
+
+  advanced: 
+    translatable: false
+
+  attributes: 
+    type: Generic Columns (column template)
+
+  report-template: 
+    top: ' <div class="t-ContextualInfo #COMPONENT_CSS_CLASSES#" id="report_#REGION_STATIC_ID#" #REPORT_ATTRIBUTES# data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </div>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  column-template-1: 
+    template: |
+      <div class="t-ContextualInfo-item">
+        <span class="t-ContextualInfo-label">#COLUMN_HEADER#</span>
+        <span class="t-ContextualInfo-value">#COLUMN_VALUE#</span>
+      </div>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Hide Empty Values ==================
+    id: 8711483492354273
+    identification: 
+      name: Hide Empty Values
+      identifier: HIDE_EMPTY_VALUES
+      sequence: 1
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContextualInfo--hideNulls
+
+    help: 
+      help-text: 'This option will hide the null rows. Note: This only works in browsers that supports :has() pseudo-class.'
+
+  - # ====== Template Option: Stacked ============================
+    id: 43860995678533326
+    identification: 
+      name: Stacked
+      identifier: DISPLAY_ITEMS_STACKED
+      group: Display Items
+      sequence: 1
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContextualInfo-item--stacked
+
+  - # ====== Template Option: Stacked ============================
+    id: 43861343457533326
+    identification: 
+      name: Stacked
+      identifier: DISPLAY_LABELS_STACKED
+      group: Display Labels
+      sequence: 1
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContextualInfo-label--stacked
+
+- # ====== Classic Report Template: Alerts =====================
+  id: 308419999309310835
+  identification: 
+    name: Alerts
+    identifier: ALERTS
+    class: Custom 8
+
+  subscription: 
+    master: 
+      referenced-id: 2881456138952347027
+
+  advanced: 
+    translatable: false
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<div class="t-Alerts #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_alerts" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </div>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <div class="t-Alert t-Alert--horizontal t-Alert--colorBG t-Alert--defaultIcons t-Alert--#ALERT_TYPE#" role="alert">
+        <div class="t-Alert-wrap">
+          <div class="t-Alert-icon">
+            <span class="t-Icon" aria-hidden="true"></span>
+          </div>
+          <div class="t-Alert-content">
+            <div class="t-Alert-header">
+              <h2 class="t-Alert-title">#ALERT_TITLE#</h2>
+            </div>
+            <div class="t-Alert-body">
+              #ALERT_DESC#
+            </div>
+          </div>
+          <div class="t-Alert-buttons">
+            #ALERT_ACTION#
+          </div>
+        </div>
+      </div>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+- # ====== Classic Report Template: Badge List =================
+  id: 308420145534310836
+  identification: 
+    name: Badge List
+    identifier: BADGE_LIST
+    class: Value Attribute Pairs
+
+  subscription: 
+    master: 
+      referenced-id: 2103197159775914759
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-BadgeList--large
+    - t-BadgeList--fixed
+    - t-BadgeList--circular
+
+  attributes: 
+    type: Generic Columns (column template)
+
+  report-template: 
+    top: '<ul class="t-BadgeList #COMPONENT_CSS_CLASSES#" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  column-template-1: 
+    template: |
+      <li class="t-BadgeList-item">
+        <span class="t-BadgeList-wrap u-color">
+          <span class="t-BadgeList-label">#COLUMN_HEADER#</span>
+          <span class="t-BadgeList-value">#COLUMN_VALUE#</span>
+        </span>
+      </li>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: 128px ==============================
+    id: 308420652259310836
+    identification: 
+      name: 128px
+      identifier: 128PX
+      group: Badge Size
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--xxlarge
+
+  - # ====== Template Option: 2 Column Grid ======================
+    id: 308421024403310836
+    identification: 
+      name: 2 Column Grid
+      identifier: 2COLUMNGRID
+      group: Layout
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--cols
+
+    help: 
+      help-text: Arrange badges in a two column grid
+
+  - # ====== Template Option: 32px ===============================
+    id: 308421309457310836
+    identification: 
+      name: 32px
+      identifier: 32PX
+      group: Badge Size
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--small
+
+  - # ====== Template Option: 3 Column Grid ======================
+    id: 308421518867310836
+    identification: 
+      name: 3 Column Grid
+      identifier: 3COLUMNGRID
+      group: Layout
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--cols
+      - t-BadgeList--3cols
+
+    help: 
+      help-text: Arrange badges in a 3 column grid
+
+  - # ====== Template Option: 48px ===============================
+    id: 308421721594310837
+    identification: 
+      name: 48px
+      identifier: 48PX
+      group: Badge Size
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--medium
+
+  - # ====== Template Option: 4 Column Grid ======================
+    id: 308421831910310837
+    identification: 
+      name: 4 Column Grid
+      identifier: 4COLUMNGRID
+      group: Layout
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--cols
+      - t-BadgeList--4cols
+
+  - # ====== Template Option: 5 Column Grid ======================
+    id: 308422101872310837
+    identification: 
+      name: 5 Column Grid
+      identifier: 5COLUMNGRID
+      group: Layout
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--cols
+      - t-BadgeList--5cols
+
+  - # ====== Template Option: 64px ===============================
+    id: 308422253258310837
+    identification: 
+      name: 64px
+      identifier: 64PX
+      group: Badge Size
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--large
+
+  - # ====== Template Option: 96px ===============================
+    id: 308422496425310837
+    identification: 
+      name: 96px
+      identifier: 96PX
+      group: Badge Size
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--xlarge
+
+  - # ====== Template Option: Apply Theme Colors =================
+    id: 308422721408310837
+    identification: 
+      name: Apply Theme Colors
+      identifier: APPLY_THEME_COLORS
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - u-colors
+
+  - # ====== Template Option: Circular ===========================
+    id: 308423074365310837
+    identification: 
+      name: Circular
+      identifier: CIRCULAR
+      group: Style
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--circular
+
+  - # ====== Template Option: Span Horizontally ==================
+    id: 308423266117310837
+    identification: 
+      name: Span Horizontally
+      identifier: FIXED
+      group: Layout
+      sequence: 60
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--fixed
+
+  - # ====== Template Option: Flexible Box =======================
+    id: 308423504303310838
+    identification: 
+      name: Flexible Box
+      identifier: FLEXIBLEBOX
+      group: Layout
+      sequence: 80
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--flex
+
+  - # ====== Template Option: Float Items ========================
+    id: 308423648856310838
+    identification: 
+      name: Float Items
+      identifier: FLOATITEMS
+      group: Layout
+      sequence: 70
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--float
+
+  - # ====== Template Option: Grid ===============================
+    id: 308423850428310838
+    identification: 
+      name: Grid
+      identifier: GRID
+      group: Style
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--dash
+
+  - # ====== Template Option: Stacked ============================
+    id: 308424076100310838
+    identification: 
+      name: Stacked
+      identifier: STACKED
+      group: Layout
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-BadgeList--stacked
+
+- # ====== Classic Report Template: Cards ======================
+  id: 308424160064310838
+  identification: 
+    name: Cards
+    identifier: CARDS
+    class: Custom 1
+
+  subscription: 
+    master: 
+      referenced-id: 2973535649510699732
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-Cards--animColorFill
+    - t-Cards--3cols
+    - t-Cards--basic
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<ul class="t-Cards #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_cards" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <li class="t-Cards-item #CARD_MODIFIERS#">
+        <div class="t-Card">
+          <a href="#CARD_LINK#" class="t-Card-wrap">
+            <div class="t-Card-icon u-color #CARD_COLOR#"><span class="t-Icon fa #CARD_ICON#"><span class="t-Card-initials" role="presentation">#CARD_INITIALS#</span></span></div>
+            <div class="t-Card-titleWrap"><h3 class="t-Card-title">#CARD_TITLE#</h3><h4 class="t-Card-subtitle">#CARD_SUBTITLE#</h4></div>
+            <div class="t-Card-body">
+              <div class="t-Card-desc">#CARD_TEXT#</div>
+              <div class="t-Card-info">#CARD_SUBTEXT#</div>
+            </div>
+            <span class="t-Card-colorFill u-color #CARD_COLOR#"></span>
+          </a>
+        </div>
+      </li>
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':CARD_LINK is not null'
+
+  row-template-2: 
+    template: |
+      <li class="t-Cards-item #CARD_MODIFIERS#">
+        <div class="t-Card">
+          <div class="t-Card-wrap">
+            <div class="t-Card-icon u-color #CARD_COLOR#"><span class="t-Icon fa #CARD_ICON#"><span class="t-Card-initials" role="presentation">#CARD_INITIALS#</span></span></div>
+            <div class="t-Card-titleWrap"><h3 class="t-Card-title">#CARD_TITLE#</h3><h4 class="t-Card-subtitle">#CARD_SUBTITLE#</h4></div>
+            <div class="t-Card-body">
+              <div class="t-Card-desc">#CARD_TEXT#</div>
+              <div class="t-Card-info">#CARD_SUBTEXT#</div>
+            </div>
+            <span class="t-Card-colorFill u-color #CARD_COLOR#"></span>
+          </div>
+        </div>
+      </li>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: 2 Columns ==========================
+    id: 308424428301310839
+    identification: 
+      name: 2 Columns
+      identifier: 2_COLUMNS
+      group: Layout
+      sequence: 15
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--cols
+
+  - # ====== Template Option: 2 Lines ============================
+    id: 308424877382310839
+    identification: 
+      name: 2 Lines
+      identifier: 2_LINES
+      group: Body Text
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--desc-2ln
+
+  - # ====== Template Option: 3 Columns ==========================
+    id: 308425090783310839
+    identification: 
+      name: 3 Columns
+      identifier: 3_COLUMNS
+      group: Layout
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--3cols
+
+  - # ====== Template Option: 3 Lines ============================
+    id: 308425317142310839
+    identification: 
+      name: 3 Lines
+      identifier: 3_LINES
+      group: Body Text
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--desc-3ln
+
+  - # ====== Template Option: 4 Columns ==========================
+    id: 308425485744310839
+    identification: 
+      name: 4 Columns
+      identifier: 4_COLUMNS
+      group: Layout
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--4cols
+
+  - # ====== Template Option: 4 Lines ============================
+    id: 308425636148310839
+    identification: 
+      name: 4 Lines
+      identifier: 4_LINES
+      group: Body Text
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--desc-4ln
+
+  - # ====== Template Option: 5 Columns ==========================
+    id: 308425861685310839
+    identification: 
+      name: 5 Columns
+      identifier: 5_COLUMNS
+      group: Layout
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--5cols
+
+  - # ====== Template Option: Basic ==============================
+    id: 308426064472310839
+    identification: 
+      name: Basic
+      identifier: BASIC
+      group: Style
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--basic
+
+  - # ====== Template Option: Block ==============================
+    id: 308426237500310840
+    identification: 
+      name: Block
+      identifier: BLOCK
+      group: Style
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--featured
+      - t-Cards--block
+      - force-fa-lg
+
+  - # ====== Template Option: Color Fill =========================
+    id: 308426661436310840
+    identification: 
+      name: Color Fill
+      identifier: CARDS_COLOR_FILL
+      group: Animation
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--animColorFill
+
+  - # ====== Template Option: Raise Card =========================
+    id: 308426859720310840
+    identification: 
+      name: Raise Card
+      identifier: CARD_RAISE_CARD
+      group: Animation
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--animRaiseCard
+
+  - # ====== Template Option: Compact ============================
+    id: 308427099835310840
+    identification: 
+      name: Compact
+      identifier: COMPACT
+      group: Style
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--compact
+
+    help: 
+      help-text: Use this option when you want to show smaller cards.
+
+  - # ====== Template Option: Display Icons ======================
+    id: 308427480499310840
+    identification: 
+      name: Display Icons
+      identifier: DISPLAY_ICONS
+      group: Icons
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--displayIcons
+
+  - # ====== Template Option: Display Initials ===================
+    id: 308427633286310840
+    identification: 
+      name: Display Initials
+      identifier: DISPLAY_INITIALS
+      group: Icons
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--displayInitials
+
+  - # ====== Template Option: Display Subtitle ===================
+    id: 308427874804310840
+    identification: 
+      name: Display Subtitle
+      identifier: DISPLAY_SUBTITLE
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--displaySubtitle
+
+  - # ====== Template Option: Featured ===========================
+    id: 308428101691310840
+    identification: 
+      name: Featured
+      identifier: FEATURED
+      group: Style
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--featured
+      - force-fa-lg
+
+  - # ====== Template Option: Float ==============================
+    id: 308428257463310841
+    identification: 
+      name: Float
+      identifier: FLOAT
+      group: Layout
+      sequence: 60
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--float
+
+  - # ====== Template Option: Hidden =============================
+    id: 308428482171310841
+    identification: 
+      name: Hidden
+      identifier: HIDDEN_BODY_TEXT
+      group: Body Text
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--hideBody
+
+    help: 
+      help-text: This option hides the card body which contains description and subtext.
+
+  - # ====== Template Option: Rounded Corners ====================
+    id: 308428830888310841
+    identification: 
+      name: Rounded Corners
+      identifier: ICONS_ROUNDED
+      group: Icon Shape
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--iconsRounded
+
+    help: 
+      help-text: The icons are displayed within a square with rounded corners.
+
+  - # ====== Template Option: Square =============================
+    id: 308429031845310841
+    identification: 
+      name: Square
+      identifier: ICONS_SQUARE
+      group: Icon Shape
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--iconsSquare
+
+    help: 
+      help-text: The icons are displayed within a square shape.
+
+  - # ====== Template Option: Span Horizontally ==================
+    id: 308429298403310841
+    identification: 
+      name: Span Horizontally
+      identifier: SPAN_HORIZONTALLY
+      group: Layout
+      sequence: 70
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Cards--spanHorizontally
+
+  - # ====== Template Option: Apply Theme Colors =================
+    id: 308429463532310841
+    identification: 
+      name: Apply Theme Colors
+      identifier: USE_THEME_COLORS
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - u-colors
+
+- # ====== Classic Report Template: Comments ===================
+  id: 308429601683310841
+  identification: 
+    name: Comments
+    identifier: COMMENTS
+    class: Custom 1
+
+  subscription: 
+    master: 
+      referenced-id: 2611722012730764232
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-Comments--chat
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<ul class="t-Comments #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_report" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <li class="t-Comments-item #COMMENT_MODIFIERS#">
+        <div class="t-Comments-icon">
+          <div class="t-Comments-userIcon #ICON_MODIFIER#" aria-hidden="true">#USER_ICON#</div>
+        </div>
+        <div class="t-Comments-body">
+          <div class="t-Comments-info">
+            #USER_NAME# <span class="t-Comments-date">#COMMENT_DATE#</span> <span class="t-Comments-actions">#ACTIONS#</span>
+          </div>
+          <div class="t-Comments-comment">
+            #COMMENT_TEXT##ATTRIBUTE_1##ATTRIBUTE_2##ATTRIBUTE_3##ATTRIBUTE_4#
+          </div>
+        </div>
+      </li>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+      
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Basic ==============================
+    id: 308430107296310841
+    identification: 
+      name: Basic
+      identifier: BASIC
+      group: Comments Style
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Comments--basic
+
+  - # ====== Template Option: Rounded Corners ====================
+    id: 308430261116310842
+    identification: 
+      name: Rounded Corners
+      identifier: ICONS_ROUNDED
+      group: Icon Shape
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Comments--iconsRounded
+
+    help: 
+      help-text: The icons are displayed within a square with rounded corners.
+
+  - # ====== Template Option: Square =============================
+    id: 308430493178310842
+    identification: 
+      name: Square
+      identifier: ICONS_SQUARE
+      group: Icon Shape
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Comments--iconsSquare
+
+    help: 
+      help-text: The icons are displayed within a square shape.
+
+  - # ====== Template Option: Speech Bubbles =====================
+    id: 308430716594310842
+    identification: 
+      name: Speech Bubbles
+      identifier: SPEECH_BUBBLES
+      group: Comments Style
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Comments--chat
+
+- # ====== Classic Report Template: Content Row ================
+  id: 308430730783310842
+  identification: 
+    name: Content Row
+    identifier: CONTENT_ROW
+    class: Standard
+
+  subscription: 
+    master: 
+      referenced-id: 1797843454948280151
+
+  advanced: 
+    translatable: false
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<ul class="t-ContentRow #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_report" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <li class="t-ContentRow-item #ITEM_CLASSES#">
+        <div class="t-ContentRow-wrap">
+          <div class="t-ContentRow-selection">#SELECTION#</div>
+          <div class="t-ContentRow-iconWrap">
+            <span class="t-ContentRow-icon #ICON_CLASS#">#ICON_HTML#</span>
+          </div>
+          <div class="t-ContentRow-body">
+            <div class="t-ContentRow-content">
+              <h3 class="t-ContentRow-title">#TITLE#</h3>
+              <div class="t-ContentRow-description">#DESCRIPTION#</div>
+            </div>
+            <div class="t-ContentRow-misc">#MISC#</div>
+            <div class="t-ContentRow-actions">#ACTIONS#</div>
+          </div>
+        </div>
+      </li>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Hidden =============================
+    id: 308431231125310842
+    identification: 
+      name: Hidden
+      identifier: ACTIONS_HIDDEN
+      group: Actions
+      sequence: 60
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideActions
+
+    help: 
+      help-text: Hides the Actions column from being rendered on the screen.
+
+  - # ====== Template Option: Top ================================
+    id: 308431678850310842
+    identification: 
+      name: Top
+      identifier: ALIGNMENT_TOP
+      group: Content Alignment
+      sequence: 100
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--alignTop
+
+    help: 
+      help-text: Aligns the content to the top of the row. This is useful when you expect that yours rows will vary in height (e.g. some rows will have longer descriptions than others).
+
+  - # ====== Template Option: Hidden =============================
+    id: 308432107129310842
+    identification: 
+      name: Hidden
+      identifier: DESCRIPTION_HIDDEN
+      group: Description
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideDescription
+
+    help: 
+      help-text: Hides the Description from being rendered on the screen.
+
+  - # ====== Template Option: Hidden =============================
+    id: 308432448407310843
+    identification: 
+      name: Hidden
+      identifier: ICON_HIDDEN
+      group: Icon
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideIcon
+
+    help: 
+      help-text: Hides the Icon from being rendered on the screen.
+
+  - # ====== Template Option: Hidden =============================
+    id: 308432836831310843
+    identification: 
+      name: Hidden
+      identifier: MISC_HIDDEN
+      group: Misc
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideMisc
+
+    help: 
+      help-text: Hides the Misc column from being rendered on the screen.
+
+  - # ====== Template Option: Hidden =============================
+    id: 308433313072310843
+    identification: 
+      name: Hidden
+      identifier: SELECTION_HIDDEN
+      group: Selection
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideSelection
+
+    help: 
+      help-text: Hides the Selection column from being rendered on the screen.
+
+  - # ====== Template Option: Compact ============================
+    id: 308433445249310843
+    identification: 
+      name: Compact
+      identifier: STYLE_COMPACT
+      group: Style
+      sequence: 1
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--styleCompact
+
+    help: 
+      help-text: This option reduces the padding and font sizes to present a compact display of the same information.
+
+  - # ====== Template Option: Hidden =============================
+    id: 308433886929310843
+    identification: 
+      name: Hidden
+      identifier: TITLE_HIDDEN
+      group: Title
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-ContentRow--hideTitle
+
+    help: 
+      help-text: Hides the Title from being rendered on the screen.
+
+- # ====== Classic Report Template: Media List =================
+  id: 308433962611310843
+  identification: 
+    name: Media List
+    identifier: MEDIA_LIST
+    class: Borderless
+
+  subscription: 
+    master: 
+      referenced-id: 2092157460408299055
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-MediaList--stack
+    default: 
+    - t-MediaList--showIcons
+    - t-MediaList--showDesc
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<ul class="t-MediaList #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_report" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <li class="t-MediaList-item #LIST_CLASS#">
+        <a href="#LINK#" class="t-MediaList-itemWrap #LINK_CLASS#" #LINK_ATTR#>
+          <div class="t-MediaList-iconWrap" aria-hidden="true">
+            <span class="t-MediaList-icon u-color #ICON_COLOR_CLASS#"><span class="t-Icon #ICON_CLASS#"></span></span>
+          </div>
+          <div class="t-MediaList-body">
+            <h3 class="t-MediaList-title">#LIST_TITLE#</h3>
+            <p class="t-MediaList-desc">#LIST_TEXT#</p>
+          </div>
+          <div class="t-MediaList-badgeWrap">
+            <span class="t-MediaList-badge">#LIST_BADGE#</span>
+          </div>
+        </a>
+      </li>
+      
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':LINK is not null'
+
+  row-template-2: 
+    template: |
+      <li class="t-MediaList-item #LIST_CLASS#">
+        <div class="t-MediaList-itemWrap #LINK_CLASS#" #LINK_ATTR#>
+          <div class="t-MediaList-iconWrap" aria-hidden="true">
+            <span class="t-MediaList-icon u-color #ICON_COLOR_CLASS#"><span class="t-Icon #ICON_CLASS#"></span></span>
+          </div>
+          <div class="t-MediaList-body">
+            <h3 class="t-MediaList-title">#LIST_TITLE#</h3>
+            <p class="t-MediaList-desc">#LIST_TEXT#</p>
+          </div>
+          <div class="t-MediaList-badgeWrap">
+            <span class="t-MediaList-badge">#LIST_BADGE#</span>
+          </div>
+        </div>
+      </li>
+      
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  comments: 
+    comments: ' (SELECT link_text, link_target, detail1, detail2, last_modified)'
+
+  template-options: 
+  - # ====== Template Option: 2 Column Grid ======================
+    id: 308434236095310844
+    identification: 
+      name: 2 Column Grid
+      identifier: 2_COLUMN_GRID
+      group: Layout
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--cols
+      - t-MediaList--2cols
+
+  - # ====== Template Option: 3 Column Grid ======================
+    id: 308434429326310844
+    identification: 
+      name: 3 Column Grid
+      identifier: 3_COLUMN_GRID
+      group: Layout
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--cols
+      - t-MediaList--3cols
+
+  - # ====== Template Option: 4 Column Grid ======================
+    id: 308434655121310844
+    identification: 
+      name: 4 Column Grid
+      identifier: 4_COLUMN_GRID
+      group: Layout
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--cols
+      - t-MediaList--4cols
+
+  - # ====== Template Option: 5 Column Grid ======================
+    id: 308434833668310844
+    identification: 
+      name: 5 Column Grid
+      identifier: 5_COLUMN_GRID
+      group: Layout
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--cols
+      - t-MediaList--5cols
+
+  - # ====== Template Option: Apply Theme Colors =================
+    id: 308435084855310844
+    identification: 
+      name: Apply Theme Colors
+      identifier: APPLY_THEME_COLORS
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - u-colors
+
+  - # ====== Template Option: Rounded Corners ====================
+    id: 308435241398310844
+    identification: 
+      name: Rounded Corners
+      identifier: ICONS_ROUNDED
+      group: Icon Shape
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--iconsRounded
+
+    help: 
+      help-text: The icons are displayed within a square with rounded corners.
+
+  - # ====== Template Option: Square =============================
+    id: 308435452904310844
+    identification: 
+      name: Square
+      identifier: ICONS_SQUARE
+      group: Icon Shape
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--iconsSquare
+
+    help: 
+      help-text: The icons are displayed within a square shape.
+
+  - # ====== Template Option: Large ==============================
+    id: 308435869257310844
+    identification: 
+      name: Large
+      identifier: LARGE
+      group: Size
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--large
+      - force-fa-lg
+
+    help: 
+      help-text: Increases the size of the text and icons in the list.
+
+  - # ====== Template Option: Show Badges ========================
+    id: 308436102345310844
+    identification: 
+      name: Show Badges
+      identifier: SHOW_BADGES
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--showBadges
+
+  - # ====== Template Option: Show Description ===================
+    id: 308436240661310845
+    identification: 
+      name: Show Description
+      identifier: SHOW_DESCRIPTION
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--showDesc
+
+  - # ====== Template Option: Show Icons =========================
+    id: 308436511396310845
+    identification: 
+      name: Show Icons
+      identifier: SHOW_ICONS
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--showIcons
+
+  - # ====== Template Option: Span Horizontal ====================
+    id: 308436635538310845
+    identification: 
+      name: Span Horizontal
+      identifier: SPAN_HORIZONTAL
+      group: Layout
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--horizontal
+
+  - # ====== Template Option: Stack ==============================
+    id: 308436828083310845
+    identification: 
+      name: Stack
+      identifier: STACK
+      group: Layout
+      sequence: 5
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-MediaList--stack
+
+- # ====== Classic Report Template: Search Results =============
+  id: 308437022159310845
+  identification: 
+    name: Search Results
+    identifier: SEARCH_RESULTS
+    class: Borderless
+
+  subscription: 
+    master: 
+      referenced-id: 4070913431524059316
+
+  advanced: 
+    translatable: false
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: |
+      <div class="t-SearchResults #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_report" data-region-id="#REGION_STATIC_ID#">
+      <ul class="t-SearchResults-list">
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+      </div>
+
+  row-template-1: 
+    template: |2
+        <li class="t-SearchResults-item">
+          <h3 class="t-SearchResults-title"><a href="#SEARCH_LINK#">#SEARCH_TITLE#</a></h3>
+          <div class="t-SearchResults-info">
+            <p class="t-SearchResults-desc">#SEARCH_DESC#</p>
+            <span class="t-SearchResults-misc">#LABEL_01#: #VALUE_01#</span>
+          </div>
+        </li>
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':LABEL_02 is null'
+
+  row-template-2: 
+    template: |2
+        <li class="t-SearchResults-item">
+          <h3 class="t-SearchResults-title"><a href="#SEARCH_LINK#">#SEARCH_TITLE#</a></h3>
+          <div class="t-SearchResults-info">
+            <p class="t-SearchResults-desc">#SEARCH_DESC#</p>
+            <span class="t-SearchResults-misc">#LABEL_01#: #VALUE_01#</span>
+            <span class="t-SearchResults-misc">#LABEL_02#: #VALUE_02#</span>
+          </div>
+        </li>
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':LABEL_03 is null'
+
+  row-template-3: 
+    template: |2
+        <li class="t-SearchResults-item">
+          <h3 class="t-SearchResults-title"><a href="#SEARCH_LINK#">#SEARCH_TITLE#</a></h3>
+          <div class="t-SearchResults-info">
+            <p class="t-SearchResults-desc">#SEARCH_DESC#</p>
+            <span class="t-SearchResults-misc">#LABEL_01#: #VALUE_01#</span>
+            <span class="t-SearchResults-misc">#LABEL_02#: #VALUE_02#</span>
+            <span class="t-SearchResults-misc">#LABEL_03#: #VALUE_03#</span>
+          </div>
+        </li>
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':LABEL_04 is null'
+
+  row-template-4: 
+    template: |2
+        <li class="t-SearchResults-item">
+          <h3 class="t-SearchResults-title"><a href="#SEARCH_LINK#">#SEARCH_TITLE#</a></h3>
+          <div class="t-SearchResults-info">
+            <p class="t-SearchResults-desc">#SEARCH_DESC#</p>
+            <span class="t-SearchResults-misc">#LABEL_01#: #VALUE_01#</span>
+            <span class="t-SearchResults-misc">#LABEL_02#: #VALUE_02#</span>
+            <span class="t-SearchResults-misc">#LABEL_03#: #VALUE_03#</span>
+            <span class="t-SearchResults-misc">#LABEL_04#: #VALUE_04#</span>
+          </div>
+        </li>
+    condition: Use Based on PL/SQL Expression
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  comments: 
+    comments: ' (SELECT link_text, link_target, detail1, detail2, last_modified)'
+
+- # ====== Classic Report Template: Standard ===================
+  id: 308437175727310845
+  identification: 
+    name: Standard
+    identifier: STANDARD
+    class: Standard
+
+  subscription: 
+    master: 
+      referenced-id: 2537207537838287671
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-Report--altRowsDefault
+    - t-Report--rowHighlight
+
+  attributes: 
+    type: Generic Columns (column template)
+
+  report-template: 
+    top: |
+      <div class="t-Report #COMPONENT_CSS_CLASSES#" id="report_#REGION_STATIC_ID#" #REPORT_ATTRIBUTES# data-region-id="#REGION_STATIC_ID#">
+        <div class="t-Report-wrap">
+          <table class="t-Report-pagination" role="presentation">#TOP_PAGINATION#</table>
+          <div class="t-Report-tableWrap">
+          <table class="t-Report-report" id="report_table_#REGION_STATIC_ID#" aria-label="#REGION_TITLE#">
+    bottom: |2
+            </tbody>
+          </table>
+          </div>
+          <div class="t-Report-links">#EXTERNAL_LINK##CSV_LINK#</div>
+          <table class="t-Report-pagination t-Report-pagination--bottom" role="presentation">#PAGINATION#</table>
+        </div>
+      </div>
+
+  column-templates: 
+    before-heading: <thead>
+    heading: '<th class="t-Report-colHead" #ARIA_SORT# #ALIGNMENT# id="#COLUMN_HEADER_NAME#" #COLUMN_WIDTH#>#COLUMN_HEADER#</th>'
+    after-heading: |
+      </thead>
+      <tbody>
+    before-each-row: <tr>
+
+  column-template-1: 
+    template: '<td class="t-Report-cell" #ALIGNMENT# #ACCESSIBLE_HEADERS#>#COLUMN_VALUE#</td>'
+    condition: 0
+
+  row-templates: 
+    after-each-row: </tr>
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Disable ============================
+    id: 308437656464310845
+    identification: 
+      name: Disable
+      identifier: ALTROWCOLORSDISABLE
+      group: Alternating Rows
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--staticRowColors
+
+  - # ====== Template Option: Enable =============================
+    id: 308437834084310845
+    identification: 
+      name: Enable
+      identifier: ALTROWCOLORSENABLE
+      group: Alternating Rows
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--altRowsDefault
+
+  - # ====== Template Option: Enable =============================
+    id: 308438225495310846
+    identification: 
+      name: Enable
+      identifier: ENABLE
+      group: Row Highlighting
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--rowHighlight
+
+    help: 
+      help-text: Enable row highlighting on mouse over
+
+  - # ====== Template Option: Horizontal Only ====================
+    id: 308438680440310846
+    identification: 
+      name: Horizontal Only
+      identifier: HORIZONTALBORDERS
+      group: Report Border
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--horizontalBorders
+
+  - # ====== Template Option: No Borders =========================
+    id: 308438876907310846
+    identification: 
+      name: No Borders
+      identifier: REMOVEALLBORDERS
+      group: Report Border
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--noBorders
+
+  - # ====== Template Option: No Outer Borders ===================
+    id: 308439092278310846
+    identification: 
+      name: No Outer Borders
+      identifier: REMOVEOUTERBORDERS
+      group: Report Border
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--inline
+
+  - # ====== Template Option: Disable ============================
+    id: 308439237963310846
+    identification: 
+      name: Disable
+      identifier: ROWHIGHLIGHTDISABLE
+      group: Row Highlighting
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--rowHighlightOff
+
+    help: 
+      help-text: Disable row highlighting on mouse over
+
+  - # ====== Template Option: Stretch Report =====================
+    id: 308439501542310846
+    identification: 
+      name: Stretch Report
+      identifier: STRETCHREPORT
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--stretch
+
+  - # ====== Template Option: Vertical Only ======================
+    id: 308439721897310846
+    identification: 
+      name: Vertical Only
+      identifier: VERTICALBORDERS
+      group: Report Border
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Report--verticalBorders
+
+- # ====== Classic Report Template: Timeline ===================
+  id: 308439780690310846
+  identification: 
+    name: Timeline
+    identifier: TIMELINE
+    class: Custom 1
+
+  subscription: 
+    master: 
+      referenced-id: 1513373588340069864
+
+  advanced: 
+    translatable: false
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: |
+      <ul class="t-Timeline #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="#REGION_STATIC_ID#_timeline" data-region-id="#REGION_STATIC_ID#">
+      
+    bottom: |
+      </ul>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <li class="t-Timeline-item #EVENT_MODIFIERS#" #EVENT_ATTRIBUTES#>
+        <div class="t-Timeline-wrap">
+          <div class="t-Timeline-user">
+            <div class="t-Timeline-avatar #USER_COLOR#" role="presentation">
+              #USER_AVATAR#
+            </div>
+            <div class="t-Timeline-userinfo">
+              <span class="t-Timeline-username">#USER_NAME#</span>
+              <span class="t-Timeline-date">#EVENT_DATE#</span>
+            </div>
+          </div>
+          <div class="t-Timeline-content">
+            <div class="t-Timeline-typeWrap">
+              <div class="t-Timeline-type #EVENT_STATUS#">
+                <span class="t-Icon #EVENT_ICON#"></span>
+                <span class="t-Timeline-typename">#EVENT_TYPE#</span>
+              </div>
+            </div>
+            <div class="t-Timeline-body">
+              <h3 class="t-Timeline-title">#EVENT_TITLE#</h3>
+              <p class="t-Timeline-desc">#EVENT_DESC#</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    condition: Use Based on PL/SQL Expression
+    pl/sql-expression: ':EVENT_LINK is null'
+
+  row-template-2: 
+    template: |
+      <li class="t-Timeline-item #EVENT_MODIFIERS#" #EVENT_ATTRIBUTES#>
+        <a href="#EVENT_LINK#" class="t-Timeline-wrap">
+          <div class="t-Timeline-user">
+            <div class="t-Timeline-avatar #USER_COLOR#" role="presentation">
+              #USER_AVATAR#
+            </div>
+            <div class="t-Timeline-userinfo">
+              <span class="t-Timeline-username">#USER_NAME#</span>
+              <span class="t-Timeline-date">#EVENT_DATE#</span>
+            </div>
+          </div>
+          <div class="t-Timeline-content">
+            <div class="t-Timeline-typeWrap">
+              <div class="t-Timeline-type #EVENT_STATUS#">
+                <span class="t-Icon #EVENT_ICON#"></span>
+                <span class="t-Timeline-typename">#EVENT_TYPE#</span>
+              </div>
+            </div>
+            <div class="t-Timeline-body">
+              <h3 class="t-Timeline-title">#EVENT_TITLE#</h3>
+              <p class="t-Timeline-desc">#EVENT_DESC#</p>
+            </div>
+          </div>
+        </a>
+      </li>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Compact ============================
+    id: 308440025844310846
+    identification: 
+      name: Compact
+      identifier: COMPACT
+      group: Style
+      sequence: 1
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-Timeline--compact
+
+    help: 
+      help-text: Displays a compact version of timeline with smaller text and fewer columns.
+
+- # ====== Classic Report Template: Value Attribute Pairs - Colu
+  id: 308440165723310846
+  identification: 
+    name: Value Attribute Pairs - Column
+    identifier: VALUE_ATTRIBUTE_PAIRS_COLUMN
+    class: Value Attribute Pairs
+
+  subscription: 
+    master: 
+      referenced-id: 2099068636272681754
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-AVPList--leftAligned
+
+  attributes: 
+    type: Generic Columns (column template)
+
+  report-template: 
+    top: '<dl class="t-AVPList #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </dl>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  column-template-1: 
+    template: |
+      <dt class="t-AVPList-label">#COLUMN_HEADER#</dt>
+      <dd class="t-AVPList-value">#COLUMN_VALUE#</dd>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Hide Empty Values ==================
+    id: 8727103384354285
+    identification: 
+      name: Hide Empty Values
+      identifier: HIDE_EMPTY_VALUES
+      sequence: 70
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--hideNulls
+
+    help: 
+      help-text: 'This option will hide the null rows. Note: This only works in browsers that supports :has() pseudo-class.'
+
+  - # ====== Template Option: Fixed - Large ======================
+    id: 308440671117310847
+    identification: 
+      name: Fixed - Large
+      identifier: FIXED_LARGE
+      group: Label Width
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelLarge
+
+  - # ====== Template Option: Fixed - Medium =====================
+    id: 308440842661310847
+    identification: 
+      name: Fixed - Medium
+      identifier: FIXED_MEDIUM
+      group: Label Width
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelMedium
+
+  - # ====== Template Option: Fixed - Small ======================
+    id: 308441057411310847
+    identification: 
+      name: Fixed - Small
+      identifier: FIXED_SMALL
+      group: Label Width
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelSmall
+
+  - # ====== Template Option: Left Aligned Details ===============
+    id: 308441267667310847
+    identification: 
+      name: Left Aligned Details
+      identifier: LEFT_ALIGNED_DETAILS
+      group: Layout
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--leftAligned
+
+  - # ====== Template Option: Right Aligned Details ==============
+    id: 308441424867310847
+    identification: 
+      name: Right Aligned Details
+      identifier: RIGHT_ALIGNED_DETAILS
+      group: Layout
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--rightAligned
+
+  - # ====== Template Option: Variable - Large ===================
+    id: 308441642578310847
+    identification: 
+      name: Variable - Large
+      identifier: VARIABLE_LARGE
+      group: Label Width
+      sequence: 60
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelLarge
+
+  - # ====== Template Option: Variable - Medium ==================
+    id: 308441905676310847
+    identification: 
+      name: Variable - Medium
+      identifier: VARIABLE_MEDIUM
+      group: Label Width
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelMedium
+
+  - # ====== Template Option: Variable - Small ===================
+    id: 308442078882310847
+    identification: 
+      name: Variable - Small
+      identifier: VARIABLE_SMALL
+      group: Label Width
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelSmall
+
+- # ====== Classic Report Template: Value Attribute Pairs - Row 
+  id: 308442128637310848
+  identification: 
+    name: Value Attribute Pairs - Row
+    identifier: VALUE_ATTRIBUTE_PAIRS_ROW
+    class: Custom 1
+
+  subscription: 
+    master: 
+      referenced-id: 2099068321678681753
+
+  advanced: 
+    translatable: false
+
+  template-options: 
+    preset: 
+    - t-AVPList--leftAligned
+
+  attributes: 
+    type: Named Column (row template)
+
+  report-template: 
+    top: '<dl class="t-AVPList #COMPONENT_CSS_CLASSES#" #REPORT_ATTRIBUTES# id="report_#REGION_STATIC_ID#" data-region-id="#REGION_STATIC_ID#">'
+    bottom: |
+      </dl>
+      <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+
+  row-template-1: 
+    template: |
+      <dt class="t-AVPList-label">
+        #1#
+      </dt>
+      <dd class="t-AVPList-value">
+        #2#
+      </dd>
+    condition: 0
+
+  pagination-subtemplates: 
+    pagination: <span class="t-Report-paginationText">#TEXT#</span>
+    next-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-page: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS#
+      </a>
+    next-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+        #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow" aria-hidden="true"></span>
+      </a>
+    previous-set: |
+      <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+        <span class="a-Icon icon-left-arrow" aria-hidden="true"></span>#PAGINATION_PREVIOUS_SET#
+      </a>
+
+  template-options: 
+  - # ====== Template Option: Fixed - Large ======================
+    id: 308442489190310848
+    identification: 
+      name: Fixed - Large
+      identifier: FIXED_LARGE
+      group: Label Width
+      sequence: 30
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelLarge
+
+  - # ====== Template Option: Fixed - Medium =====================
+    id: 308442652154310848
+    identification: 
+      name: Fixed - Medium
+      identifier: FIXED_MEDIUM
+      group: Label Width
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelMedium
+
+  - # ====== Template Option: Fixed - Small ======================
+    id: 308442906053310848
+    identification: 
+      name: Fixed - Small
+      identifier: FIXED_SMALL
+      group: Label Width
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--fixedLabelSmall
+
+  - # ====== Template Option: Left Aligned Details ===============
+    id: 308443104361310848
+    identification: 
+      name: Left Aligned Details
+      identifier: LEFT_ALIGNED_DETAILS
+      group: Layout
+      sequence: 10
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--leftAligned
+
+  - # ====== Template Option: Right Aligned Details ==============
+    id: 308443257090310848
+    identification: 
+      name: Right Aligned Details
+      identifier: RIGHT_ALIGNED_DETAILS
+      group: Layout
+      sequence: 20
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--rightAligned
+
+  - # ====== Template Option: Variable - Large ===================
+    id: 308443507710310848
+    identification: 
+      name: Variable - Large
+      identifier: VARIABLE_LARGE
+      group: Label Width
+      sequence: 60
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelLarge
+
+  - # ====== Template Option: Variable - Medium ==================
+    id: 308443711295310848
+    identification: 
+      name: Variable - Medium
+      identifier: VARIABLE_MEDIUM
+      group: Label Width
+      sequence: 50
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelMedium
+
+  - # ====== Template Option: Variable - Small ===================
+    id: 308443920595310848
+    identification: 
+      name: Variable - Small
+      identifier: VARIABLE_SMALL
+      group: Label Width
+      sequence: 40
+
+    settings: 
+      advanced: false
+
+    appearance: 
+      css-classes: 
+      - t-AVPList--variableLabelSmall
+

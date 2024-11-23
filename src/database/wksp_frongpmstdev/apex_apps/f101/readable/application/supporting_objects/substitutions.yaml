@@ -1,0 +1,9 @@
+---
+- # ====== Substitution: APP_NAME ==============================
+  id: 278549867213454858
+  identification: 
+    name: APP_NAME
+
+  installation: 
+    prompt-substitution: false
+

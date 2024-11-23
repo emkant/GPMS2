@@ -1,0 +1,131 @@
+---
+- # ====== Application Item: G_SAAS_ACCESS_URL =================
+  id: 56490494284783909
+  identification: 
+    name: G_SAAS_ACCESS_URL
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_SAAS_ACCESS_TOKEN ===============
+  id: 56490961012796334
+  identification: 
+    name: G_SAAS_ACCESS_TOKEN
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_SAAS_USER =======================
+  id: 56491183733799094
+  identification: 
+    name: G_SAAS_USER
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_SAAS_PREFERRED_NAME =============
+  id: 56491368879802401
+  identification: 
+    name: G_SAAS_PREFERRED_NAME
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_TIMESTAMP =======================
+  id: 57090385471881989
+  identification: 
+    name: G_TIMESTAMP
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_TOKEN_DURATION ==================
+  id: 57090549163882998
+  identification: 
+    name: G_TOKEN_DURATION
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_TOKEN_AVAILABLE =================
+  id: 57908322130800305
+  identification: 
+    name: G_TOKEN_AVAILABLE
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_JWT_BASE ========================
+  id: 57923001550423315
+  identification: 
+    name: G_JWT_BASE
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_HIDE_PROJECT ====================
+  id: 66385779261974047
+  identification: 
+    name: G_HIDE_PROJECT
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 1
+
+- # ====== Application Item: G_CURRENCY ========================
+  id: 347152966649403928
+  identification: 
+    name: G_CURRENCY
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: false
+
+  subscription: 
+    version-number: 1
+

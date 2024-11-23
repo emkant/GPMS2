@@ -1,0 +1,94 @@
+---
+- # ====== Breadcrumb: Breadcrumb ==============================
+  id: 11773436787416740
+  identification: 
+    name: Breadcrumb
+
+  entries: 
+  - # ====== Entry: Oracle Cloud Password Reset ==================
+    id: 7378449284880825
+    identification: 
+      name: Oracle Cloud Password Reset
+      page-number: 3
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:3:&APP_SESSION.::&DEBUG.:::'
+        page: 3 # Oracle Cloud Password Reset
+
+  - # ====== Entry: Users and Roles ==============================
+    id: 8129584320461070
+    identification: 
+      name: Users and Roles
+      page-number: 4
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:4:&APP_SESSION.::&DEBUG.:::'
+        page: 4 # Users and Roles
+
+  - # ====== Entry: Client Environments ==========================
+    id: 8147049747837865
+    identification: 
+      name: Client Environments
+      page-number: 2
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:::'
+        page: 2 # Environment Details
+
+  - # ====== Entry: Customize Application Progress Bar Messages ==
+    id: 9447947868547572
+    identification: 
+      name: Customize Application Progress Bar Messages
+      page-number: 5
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:5:&APP_SESSION.::&DEBUG.:::'
+        page: 5 # Customize Application Progress Bar Messages
+
+  - # ====== Entry: Home =========================================
+    id: 11773628720416741
+    identification: 
+      name: Home
+      page-number: 1
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.'
+        page: 1 # Home
+
+  - # ====== Entry: Lookups ======================================
+    id: 42644801559272308
+    identification: 
+      name: Lookups
+      page-number: 6
+
+    execution: 
+      sequence: 10
+
+    appearance: 
+      parent-entry: Home # 11773628720416741
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:6:&APP_SESSION.::&DEBUG.:::'
+        page: 6 # Lookups
+

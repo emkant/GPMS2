@@ -1,0 +1,37 @@
+---
+- # ====== Automation: Run Import Project Costs ================
+  id: 40217877004795761
+  identification: 
+    name: Run Import Project Costs
+    static-id: run-import-project-costs
+
+  execution: 
+    type: On Demand
+    actions-initiated-on: Always
+
+  action-execution: 
+    action-error-handling: Ignore
+
+  actions: 
+  - # ====== Action: New Action ==================================
+    id: 40218123500795772
+    identification: 
+      name: New Action
+      type: Execute Code
+
+    source: 
+      location: Local Database
+      language: PL/SQL
+      pl/sql-code: |
+        declare
+          v_response_code number;
+        begin
+            v_response_code:= xx_gpms.SUBMIT_PARALLEL_ESS_JOB(:P_BUSINESS_UNIT,:P_BUSINESS_UNIT_ID,:P_TRANSACTION_SOURCE_ID,:P_DOCUMENT_ID,:P_EXPENDITURE_BATCH);
+        end;
+
+    execution: 
+      sequence: 10
+
+    error: 
+      stop-execution-on-error: true
+

@@ -1,0 +1,1469 @@
+---
+# ====== Page: Edit Bill Lines ===============================
+id: 13
+identification: 
+  name: Edit Bill Lines
+  alias: EDIT-BILL-LINES
+  title: Edit Bill Lines
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  width: 1000
+  height: 600
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+css: 
+  inline: |
+    .a-GV-table td, .a-GV-table th {
+        white-space: unset !important;
+    }
+    
+    .overLimit{
+        color: red;
+        background-color: white;
+        border: 1px solid red;
+    }
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Arguments Must Have Checksum
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Edit Bill Lines Grid ========================
+  id: 16679411201673438
+  identification: 
+    name: Edit Bill Lines Grid
+    type: Interactive Grid
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select SNO,
+             DESCRIPTION,
+             FEES,
+             PROJECT_NUMBER,
+             PROJECT_ID,
+             AGREEMENT_NUMBER,
+             SESSION_ID
+        from XXGPMS_BILL_LINES
+       where session_id = v('APP_SESSION')
+      
+      
+      
+    page-items-to-submit: 
+    - P13_PROJECT_NUMBER
+    - P13_AGREEMENT_NUMBER
+    - P13_PROJECT_ID
+    - P13_ROLLING_TOTAL
+
+  layout: 
+    sequence: 130
+    parent-region: Container # 20486195157765321
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--noUI
+    - t-Region--hiddenOverflow
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: ig
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 16679898507673442
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Add Row
+      - Update Row
+      - Delete Row
+      lost-update-type: Row Values
+      add-row-if-empty: true
+
+    performance: 
+      lazy-loading: false
+
+    appearance: 
+      select-first-row: false
+      fixed-row-height: true
+
+    pagination: 
+      type: Scroll
+      show-total-count: false
+
+    messages: 
+      when-no-data-found: '&nbsp;'
+
+    toolbar: 
+      show: true
+      controls: 
+      - Search Column Selection
+      - Search Field
+      - Actions Menu
+      - Save Button
+
+    enable-users-to: 
+      save-public-report: false
+      flashback: true
+      define-chart-view: true
+      download: true
+
+    download: 
+      formats: 
+      - CSV
+      - HTML
+      - Excel
+      - PDF
+      send-as-email: true
+
+    heading: 
+      fixed-to: Page
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    advanced: 
+      initialization-javascript-function: |
+        function(config) {
+        
+             config.defaultGridViewOptions = { 
+             footer: false 
+             }; 
+        
+            config.initActions = function (actions) {
+                var $ig = $(actions.context),
+                    saveAction = actions.lookup("save"),
+                    originalSaveAction = saveAction.action;
+        
+                saveAction.action = function (event, el) {
+                    var view = $ig.interactiveGrid("getCurrentView"),
+                        model = view.model,
+                        workHoursKey = model.getFieldKey("FEES"),
+                        workHours, meta, workHoursTotal = 0;
+        
+                    model.forEach(function (record, index, id) {
+                        workHours = parseFloat(record[workHoursKey]);
+                        meta = model.getRecordMetadata(id);
+        
+                        if (!isNaN(workHours) && !meta.deleted && !meta.agg) {
+                            workHoursTotal += workHours;
+                        }
+        
+                    });
+        
+                    if (workHoursTotal <= apex.item('P13_HOURLY_FEES').getValue()) { // Change it to your hours count
+                        originalSaveAction();
+                        apex.page.submit({
+                            showWait: false
+                        });
+                    }
+                    else {
+                        apex.message.showErrors([{
+                            type: "error",
+                            location: "page",
+                            message: "The current Overall Sum ("+workHoursTotal+") is greater than "+apex.item('P13_HOURLY_FEES').getValue()+"!",
+                            unsafe: true
+                        }]);
+        
+                    }
+        
+                    return true;
+                }
+            }
+        
+            return config;
+        }
+        
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 20470217356721953
+      identification: 
+        name: Primary Report
+        alias: 204703
+
+  columns: 
+  - # ====== Column: DESCRIPTION =================================
+    id: 20484117257765301
+    identification: 
+      column-name: DESCRIPTION
+      type: Text Field
+
+    heading: 
+      heading: Description
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 30
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 200
+
+    source: 
+      type: Database Column
+      database-column: DESCRIPTION
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: false
+      hide: false
+
+  - # ====== Column: FEES ========================================
+    id: 20484206703765302
+    identification: 
+      column-name: FEES
+      type: Number Field
+
+    heading: 
+      heading: Fees
+      alignment: end
+
+    settings: 
+      number-alignment: Start
+      virtual-keyboard: Decimal
+
+    layout: 
+      sequence: 40
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    appearance: 
+      format-mask: 999G999G999G999G990D00
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: FEES
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: APEX$ROW_ACTION =============================
+    id: 20484393571765303
+    identification: 
+      column-name: APEX$ROW_ACTION
+      type: Actions Menu
+
+    layout: 
+      sequence: 20
+
+  - # ====== Column: SNO =========================================
+    id: 20484678969765306
+    identification: 
+      column-name: SNO
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 50
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: SNO
+      data-type: NUMBER
+      query-only: true
+      primary-key: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: PROJECT_NUMBER ==============================
+    id: 20484706627765307
+    identification: 
+      column-name: PROJECT_NUMBER
+      type: Hidden
+
+    settings: 
+      value-protected: false
+
+    layout: 
+      sequence: 60
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: PROJECT_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: Item
+      item: P13_PROJECT_NUMBER
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: PROJECT_ID ==================================
+    id: 20484866762765308
+    identification: 
+      column-name: PROJECT_ID
+      type: Hidden
+
+    settings: 
+      value-protected: false
+
+    layout: 
+      sequence: 70
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: PROJECT_ID
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: Item
+      item: P13_PROJECT_ID
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: AGREEMENT_NUMBER ============================
+    id: 20484968183765309
+    identification: 
+      column-name: AGREEMENT_NUMBER
+      type: Hidden
+
+    settings: 
+      value-protected: false
+
+    layout: 
+      sequence: 80
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: AGREEMENT_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: Item
+      item: P13_AGREEMENT_NUMBER
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  - # ====== Column: SESSION_ID ==================================
+    id: 20485658576765316
+    identification: 
+      column-name: SESSION_ID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 90
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: SESSION_ID
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: Expression
+      language: PL/SQL
+      pl/sql-expression: v('APP_SESSION')
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: false
+
+  printing: 
+    page: 
+      size: Letter
+      orientation: Landscape
+      units: Inches
+      width: 11
+      height: 8.5
+      border-width: 0.5
+      border-color: '#666666'
+
+    page-header: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 12
+      font-color: '#000000'
+      alignment: center
+      page-header-text: Edit Bill Lines Grid
+
+    column-headings: 
+      font: Helvetica
+      font-weight: Bold
+      font-size: 10
+      font-color: '#000000'
+      background-color: '#EEEEEE'
+
+    columns: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 10
+      font-color: '#000000'
+      background-color: '#FFFFFF'
+
+    page-footer: 
+      font: Helvetica
+      font-weight: Normal
+      font-size: 12
+      font-color: '#000000'
+      alignment: center
+
+- # ====== Region: Hourly Fees =================================
+  id: 20485023914765310
+  identification: 
+    name: Hourly Fees
+    type: Static Content
+
+  source: 
+    html-code: '<div>Total Hourly Fees:   <b>&P13_HOURLY_FEES.</b></div>'
+
+  layout: 
+    sequence: 110
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Alert
+    template-options: 
+    - '#DEFAULT#'
+    - t-Alert--colorBG
+    - t-Alert--horizontal
+    - t-Alert--noIcon
+    - t-Alert--info
+    - t-Alert--removeHeading js-removeLandmark
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Container ===================================
+  id: 20486195157765321
+  identification: 
+    name: Container
+    type: Static Content
+
+  layout: 
+    sequence: 130
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--noUI
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: New =========================================
+  id: 20487931298765339
+  identification: 
+    name: New
+    type: Static Content
+
+  layout: 
+    sequence: 140
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes (No Grid)
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-none
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: New =========================================
+  id: 20488533817765345
+  identification: 
+    name: New
+    type: Static Content
+
+  layout: 
+    sequence: 120
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: false
+    column: 11
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes (No Grid)
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-md
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P13_PROJECT_ID ===========================
+  id: 16679587196673439
+  identification: 
+    name: P13_PROJECT_ID
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 10
+    region: Edit Bill Lines Grid # 16679411201673438
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P13_PROJECT_NUMBER =======================
+  id: 16679611220673440
+  identification: 
+    name: P13_PROJECT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 20
+    region: Edit Bill Lines Grid # 16679411201673438
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P13_AGREEMENT_NUMBER =====================
+  id: 16679759541673441
+  identification: 
+    name: P13_AGREEMENT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 30
+    region: Edit Bill Lines Grid # 16679411201673438
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P13_HOURLY_FEES ==========================
+  id: 20485135596765311
+  identification: 
+    name: P13_HOURLY_FEES
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 40
+    region: Edit Bill Lines Grid # 16679411201673438
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  default: 
+    type: SQL Query (return single value)
+    sql-query-(return-single-value): |
+      select sum(x."Hourly_Fees") s
+      from (
+      select 
+      sum(DECODE(lower(xpc.WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs xpc
+      where 1=1
+      and xpc.PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,xpc.project_number)
+      and xpc.contract_number = nvl(:P13_AGREEMENT_NUMBER,xpc.contract_number)
+      and xpc.SESSION_ID = V('SESSION')
+      union
+      select 
+      sum(DECODE(lower(WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs
+      where 1= 1
+      and PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,project_number)
+      and contract_number = nvl(:P13_AGREEMENT_NUMBER,contract_number)
+      and SESSION_ID = V('SESSION')
+      and project_bill_rate_amt-realized_bill_rate_amt >0
+      union
+      select 
+      sum(DECODE(lower(xpc.WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs xpc
+      where 1= 1
+      and xpc.PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,xpc.project_number)
+      and xpc.contract_number = nvl(:P13_AGREEMENT_NUMBER,xpc.contract_number)
+      and SESSION_ID = V('SESSION')
+      ) x;
+      
+      
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P13_CURRENCY_CODE ========================
+  id: 20486622068765326
+  identification: 
+    name: P13_CURRENCY_CODE
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 50
+    region: Edit Bill Lines Grid # 16679411201673438
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  default: 
+    type: SQL Query (return single value)
+    sql-query-(return-single-value): |
+      select distinct CURRENCY_CODE
+      from   xxgpms_project_contract
+      where  CONTRACT_NUMBER = nvl(:P13_AGREEMENT_NUMBER,CONTRACT_NUMBER)
+      and    session_id = v('SESSION');
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P13_ROLLING_TOTAL ========================
+  id: 20486970075765329
+  identification: 
+    name: P13_ROLLING_TOTAL
+    type: Number Field
+
+  label: 
+    label: Total
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Decimal
+
+  layout: 
+    sequence: 10
+    region: New # 20487931298765339
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-none
+    - margin-left-lg
+    - margin-right-none
+    css-classes: 
+    - u-pullRight
+    format-mask: 999G999G999G999G990D00
+    width: 10
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: SAVE ========================================
+  id: 20486020514765320
+  identification: 
+    button-name: SAVE
+    label: Save
+
+  layout: 
+    sequence: 50
+    region: Container # 20486195157765321
+    slot: CREATE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  server-side-condition: 
+    type: Never
+
+- # ====== Button: USE_TASKS ===================================
+  id: 20488468690765344
+  identification: 
+    button-name: USE_TASKS
+    label: Use Tasks
+
+  layout: 
+    sequence: 10
+    region: New # 20488533817765345
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    alignment: Left center
+
+  appearance: 
+    button-template: Text
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+dynamic-actions: 
+- # ====== Dynamic Action: On Click of SAVE ====================
+  id: 20486204687765322
+  identification: 
+    name: On Click of SAVE
+
+  execution: 
+    sequence: 10
+    event-scope: Dynamic
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: SAVE # 20486020514765320
+
+  server-side-condition: 
+    type: Never
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 20486328880765323
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var model = apex.region('ig').widget().interactiveGrid("getViews", "grid").model;
+        var total;
+        var original_total = apex.item('P13_HOURLY_FEES').getValue();
+        model.forEach(function (i) {
+            total = i[model.getFieldKey("FEES")];
+        });
+        
+        if (Number(total) > Number(original_total)) {
+            // First clear the errors
+            apex.message.clearErrors();
+        
+            // Now show new errors
+            apex.message.showErrors([
+                {
+                    type: "error",
+                    location: ["page"],
+                    message: "The Overall Sum Cannot be Greater than the Actual Total Hourly Fees!",
+                    unsafe: false
+                }
+            ]);
+        }
+        else{
+         apex.region( "ig" ).widget().interactiveGrid( "getActions" ).invoke( "save" );
+         apex.page.submit();
+        }
+
+    execution: 
+      sequence: 10
+      event: On Click of SAVE # 20486204687765322
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: New =================================
+  id: 20486719113765327
+  identification: 
+    name: New
+
+  execution: 
+    sequence: 20
+    event-scope: Dynamic
+    type: Immediate
+
+  when: 
+    event: After Refresh
+    selection-type: Region
+    region: Edit Bill Lines Grid # 16679411201673438
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 20486812272765328
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var i_selector = $('#ig_ig tr td[headers="FEES"]');
+        var i_currency = apex.item("P13_CURRENCY_CODE").getValue();
+        
+        // for (i=0;i<i_selector.length;i++)
+        // {
+        //     i_selector[i].innerHTML = currencyFormatter(Number(i_selector[i].innerHTML),i_currency);
+        // }
+        
+        var model = apex.region("ig").widget().interactiveGrid("getCurrentView").model;
+        var sum = 0;
+        model.forEach(function(i){
+            console.log(i[model.getFieldKey("FEES")]);
+            i[model.getFieldKey("FEES")] = currencyFormatter(Number(i[model.getFieldKey("FEES")]),i_currency)
+        })
+        
+
+    affected-elements: 
+      selection-type: Region
+      region: Edit Bill Lines Grid # 16679411201673438
+
+    execution: 
+      sequence: 20
+      event: New # 20486719113765327
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: Rolling Total =======================
+  id: 20487029204765330
+  identification: 
+    name: Rolling Total
+
+  execution: 
+    sequence: 30
+    event-scope: Static
+    type: Debounce
+    time: 5
+    immediate: false
+
+  when: 
+    event: Lose Focus
+    selection-type: Column(s)
+    interactive-grid: Edit Bill Lines Grid # 16679411201673438
+    column(s): 
+    - FEES
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 20487109039765331
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var model = apex.region("ig").widget().interactiveGrid("getCurrentView").model;
+        var sum = 0;
+        var fees;
+        model.forEach(function(i){
+            fees = i[model.getFieldKey("FEES")];
+            fees = fees.replace(/\,/g,'');
+            console.log(fees);
+            sum += Number(fees);
+        })
+        apex.item('P13_ROLLING_TOTAL').setValue(sum);
+
+    execution: 
+      sequence: 10
+      event: Rolling Total # 20487029204765330
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+  - # ====== Action: Add Class ===================================
+    id: 20488103287765341
+    identification: 
+      action: Add Class
+
+    settings: 
+      class: overLimit
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P13_ROLLING_TOTAL
+
+    execution: 
+      sequence: 20
+      event: Rolling Total # 20487029204765330
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+    client-side-condition: 
+      type: Item / Column > Value
+      component-type: Item
+      item: P13_ROLLING_TOTAL
+      value: '&P13_HOURLY_FEES.'
+
+  - # ====== Action: Remove Class ================================
+    id: 20488341201765343
+    identification: 
+      action: Remove Class
+
+    settings: 
+      class: overLimit
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P13_ROLLING_TOTAL
+
+    execution: 
+      sequence: 30
+      event: Rolling Total # 20487029204765330
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+    client-side-condition: 
+      type: Item / Column <= Value
+      component-type: Item
+      item: P13_ROLLING_TOTAL
+      value: '&P13_HOURLY_FEES.'
+
+- # ====== Dynamic Action: Get the Tasks and Fees ==============
+  id: 20488654470765346
+  identification: 
+    name: Get the Tasks and Fees
+
+  execution: 
+    sequence: 50
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: USE_TASKS # 20488468690765344
+
+  actions: 
+  - # ====== Action: Refresh =====================================
+    id: 9757058848138007
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P13_ROLLING_TOTAL
+
+    execution: 
+      sequence: 40
+      event: Get the Tasks and Fees # 20488654470765346
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Set Value ===================================
+    id: 9757179990138008
+    identification: 
+      action: Set Value
+
+    settings: 
+      set-type: SQL Statement
+      sql-statement: |
+        select sum(fees)
+        from    xxgpms_bill_lines 
+        where   agreement_number = :P13_AGREEMENT_NUMBER
+        and     session_id = V('SESSION');
+      items-to-submit: 
+      - P13_AGREEMENT_NUMBER
+      escape-special-characters: true
+      suppress-change-event: false
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P13_ROLLING_TOTAL
+
+    execution: 
+      sequence: 20
+      event: Get the Tasks and Fees # 20488654470765346
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 20488758448765347
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        delete from  xxgpms_bill_lines 
+        where agreement_number = :P13_AGREEMENT_NUMBER
+        and SESSION_ID = V('SESSION');
+        
+        insert into xxgpms_bill_lines (DESCRIPTION,FEES,AGREEMENT_NUMBER,SESSION_ID)
+        select task_number||' - '||task_name , sum(project_bill_rate_amt),contract_number,V('SESSION')
+        from xxgpms_project_costs xpc
+        where 1=1
+        and xpc.PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,xpc.project_number)
+        and xpc.contract_number = nvl(:P13_AGREEMENT_NUMBER,xpc.contract_number)
+        and xpc.SESSION_ID = V('SESSION')
+        and wip_category = 'Labor'
+        group by task_number,task_name,contract_number
+        order by 1;
+        
+      items-to-submit: 
+      - P13_AGREEMENT_NUMBER
+      - P13_PROJECT_NUMBER
+      items-to-return: 
+      - P13_ROLLING_TOTAL
+      suppress-change-event: false
+
+    execution: 
+      sequence: 10
+      event: Get the Tasks and Fees # 20488654470765346
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Refresh =====================================
+    id: 20488818508765348
+    identification: 
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: Edit Bill Lines Grid # 16679411201673438
+
+    execution: 
+      sequence: 30
+      event: Get the Tasks and Fees # 20488654470765346
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+processes: 
+- # ====== Process: Edit Bill Lines Grid - Save Interactive Grid
+  id: 20484518409765305
+  identification: 
+    name: Edit Bill Lines Grid - Save Interactive Grid Data
+    type: Execute Code
+    execution-chain: None
+    editable-region: Edit Bill Lines Grid # 16679411201673438
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      begin  
+           case :APEX$ROW_STATUS  
+           when 'C' then 
+               insert into xxgpms_bill_lines ( description,fees,project_id,project_number,agreement_number,SESSION_ID)  
+               values ( :DESCRIPTION, :FEES, :P13_PROJECT_ID,:P13_PROJECT_NUMBER,:P13_AGREEMENT_NUMBER,V('APP_SESSION') )  ;
+           when 'U' then  
+               update xxgpms_bill_lines  
+                  set description  = :DESCRIPTION,  
+                      FEES = :FEES  
+               WHERE SESSION_ID = V('APP_SESSION')
+               AND   SNO = :SNO;
+           when 'D' then  
+               delete xxgpms_bill_lines  
+               where SNO = :SNO;  
+           end case;  
+      end;  
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    execution-scope: All Submitted Rows
+    type: Never
+
+- # ====== Process: Get the Hourly Fees ========================
+  id: 20485266414765312
+  identification: 
+    name: Get the Hourly Fees
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      select sum(x."Hourly_Fees")
+      INTO  :P13_HOURLY_FEES
+      from (
+      select 
+      sum(DECODE(lower(xpc.WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs xpc
+      where 1=1
+      and xpc.PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,xpc.project_number)
+      and xpc.contract_number = nvl(:P13_AGREEMENT_NUMBER,xpc.contract_number)
+      and xpc.SESSION_ID = V('SESSION')
+      union
+      select 
+      sum(DECODE(lower(WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs
+      where 1= 1
+      and PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,project_number)
+      and contract_number = nvl(:P13_AGREEMENT_NUMBER,contract_number)
+      and SESSION_ID = V('SESSION')
+      and project_bill_rate_amt-realized_bill_rate_amt >0
+      union
+      select 
+      sum(DECODE(lower(xpc.WIP_CATEGORY),'labor', project_bill_rate_amt,0)) "Hourly_Fees"
+      from xxgpms_project_costs xpc
+      where 1= 1
+      and xpc.PROJECT_NUMBER = COALESCE(:P13_PROJECT_NUMBER,xpc.project_number)
+      and xpc.contract_number = nvl(:P13_AGREEMENT_NUMBER,xpc.contract_number)
+      and SESSION_ID = V('SESSION')
+      ) x;
+      
+      
+
+  execution: 
+    sequence: 20
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+  server-side-condition: 
+    type: Never
+
+- # ====== Process: New ========================================
+  id: 20485786510765317
+  identification: 
+    name: New
+    type: Interactive Grid - Automatic Row Processing (DML)
+    execution-chain: None
+    editable-region: Edit Bill Lines Grid # 16679411201673438
+
+  settings: 
+    target-type: Region Source
+    prevent-lost-updates: true
+    lock-row: Yes
+    return-primary-key(s)-after-insert: true
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    execution-scope: For Created and Modified Rows
+

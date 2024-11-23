@@ -1,0 +1,136 @@
+---
+- # ====== Static Application File: typo.min.js ================
+  id: 255574380930831948
+  identification: 
+    file-name: typo.min.js
+
+  attributes: 
+    mime-type: text/javascript
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: PreBillingAdjustments.min.cs
+  id: 254182451194818034
+  identification: 
+    file-name: PreBillingAdjustments.min.css
+
+  attributes: 
+    mime-type: text/css
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: PreBillingAdjustments.min.js
+  id: 254079534853094101
+  identification: 
+    file-name: PreBillingAdjustments.min.js
+
+  attributes: 
+    mime-type: text/javascript
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: typo.js ====================
+  id: 6068345952244012
+  identification: 
+    file-name: typo.js
+
+  attributes: 
+    mime-type: text/javascript
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: dictionaries.zip ===========
+  id: 6062502762160384
+  identification: 
+    file-name: dictionaries.zip
+
+  attributes: 
+    mime-type: application/zip
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: PreBillingAdjustments.css ==
+  id: 6061636914034756
+  identification: 
+    file-name: PreBillingAdjustments.css
+
+  attributes: 
+    mime-type: text/css
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: PreBillingAdjustments.js ===
+  id: 6061249591034164
+  identification: 
+    file-name: PreBillingAdjustments.js
+
+  attributes: 
+    mime-type: text/javascript
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: en_US.aff ==================
+  id: 6049213446782628
+  identification: 
+    file-name: en_US.aff
+
+  attributes: 
+    mime-type: application/octet-stream
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: en_US.dic ==================
+  id: 6049013632782627
+  identification: 
+    file-name: en_US.dic
+
+  attributes: 
+    mime-type: application/octet-stream
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: mcmillan logo.png ==========
+  id: 748884117207100
+  identification: 
+    file-name: mcmillan logo.png
+
+  attributes: 
+    mime-type: image/png
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: mcmillan logo_sm.png =======
+  id: 749205406208452
+  identification: 
+    file-name: mcmillan logo_sm.png
+
+  attributes: 
+    mime-type: image/png
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: GPMSLogo.jpg ===============
+  id: 2539524135288293
+  identification: 
+    file-name: GPMSLogo.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: Harneys.jpg ================
+  id: 6521254662335388
+  identification: 
+    file-name: Harneys.jpg
+
+  attributes: 
+    mime-type: image/jpeg
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: app-icon.svg ===============
+  id: 10403662414882230
+  identification: 
+    file-name: app-icon.svg
+
+  attributes: 
+    mime-type: image/svg+xml
+    file-character-set: Unicode UTF-8
+
+- # ====== Static Application File: app-icon.css ===============
+  id: 10403987900882230
+  identification: 
+    file-name: app-icon.css
+
+  attributes: 
+    mime-type: text/css
+    file-character-set: Unicode UTF-8
+

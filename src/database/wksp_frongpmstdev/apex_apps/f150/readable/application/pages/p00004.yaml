@@ -1,0 +1,2978 @@
+---
+# ====== Page: WIP Adjustments ===============================
+id: 4
+identification: 
+  name: WIP Adjustments
+  alias: WIP-TAGGING
+  title: Bill Adjustments
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Drawer
+  template-options: 
+  - '#DEFAULT#'
+  - js-dialog-class-t-Drawer--pullOutEnd
+  - js-dialog-class-t-Drawer--xl
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+javascript: 
+  file-urls: 
+  - '#APP_IMAGES#currencyFormatter.js'
+  - '#APP_FILES#PreBillingAdjustments#MIN#.js	'
+  function-and-global-variable-declaration: |
+    var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    
+
+css: 
+  inline: |
+    .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 10px;
+    }
+    
+    .separator::before,
+    .separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #000;
+    }
+    
+    .separator:not(:empty)::before {
+      margin-right: .45em;
+    }
+    
+    .separator:not(:empty)::after {
+      margin-left: .45em;
+    }
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Unrestricted
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Hours Adjustment ============================
+  id: 28228288345638230
+  identification: 
+    name: Hours Adjustment
+    type: Static Content
+
+  source: 
+    html-code: <div class="separator"><b>OR</b></div>
+
+  layout: 
+    sequence: 140
+    parent-region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: ':WIP_LINE_COUNT = 1'
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Alert on Non-Billable Line Selection ========
+  id: 28858343106455112
+  identification: 
+    name: Alert on Non-Billable Line Selection
+    type: Static Content
+
+  source: 
+    html-code: Some attributes are unavailable for adjustment due to a non-billable line selected.
+
+  layout: 
+    sequence: 50
+    parent-region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Alert
+    template-options: 
+    - '#DEFAULT#'
+    - t-Alert--colorBG
+    - t-Alert--horizontal
+    - t-Alert--defaultIcons
+    - t-Alert--info
+    - t-Alert--removeHeading js-removeLandmark
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Item is NOT zero
+    item: P4_INCLUDES_NONBILLABLE_LINES
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Hours Adjustment ============================
+  id: 30860925462108228
+  identification: 
+    name: Hours Adjustment
+    type: Static Content
+
+  source: 
+    html-code: <div class="separator"><b>OR</b></div>
+
+  layout: 
+    sequence: 80
+    parent-region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: ':WIP_LINE_COUNT = 1 and :P4_HOURS_COUNT > 0'
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Bill Adjustments ============================
+  id: 299009394346207273
+  identification: 
+    name: Bill Adjustments
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--removeHeader js-removeLandmark
+    - t-Region--accent2
+    - t-Region--noUI
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Transfer and Split ==========================
+  id: 308050374029615178
+  identification: 
+    name: Transfer and Split
+    type: Interactive Grid
+
+  source: 
+    location: Local Database
+    type: Table / View
+    table-owner: Parsing Schema
+    table-name: XXGPMS_PROJECT_SPLIT
+    include-rowid-column: true
+
+  layout: 
+    sequence: 81
+    parent-region: Bill Adjustments # 299009394346207273
+    slot: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noPadding
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    static-id: ProjectSplit
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Never
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    id: 308051038441615184
+    edit: 
+      enabled: true
+      allowed-operations: 
+      - Add Row
+      - Update Row
+      - Delete Row
+      lost-update-type: Row Values
+      add-row-if-empty: false
+
+    performance: 
+      lazy-loading: true
+
+    appearance: 
+      select-first-row: false
+      fixed-row-height: true
+
+    pagination: 
+      type: Scroll
+      show-total-count: true
+
+    toolbar: 
+      show: true
+      controls: 
+      - Search Field
+
+    enable-users-to: 
+      save-public-report: false
+      flashback: false
+      define-chart-view: false
+      download: false
+
+    heading: 
+      fixed-to: Page
+
+    icon-view: 
+      show: false
+
+    detail-view: 
+      show: false
+
+    saved-reports: 
+    - # ====== Saved Report: Primary Report ========================
+      id: 309064288942044892
+      identification: 
+        name: Primary Report
+        alias: 127193
+
+  columns: 
+  - # ====== Column: ROWID =======================================
+    id: 301148749700470761
+    identification: 
+      column-name: ROWID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 70
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: ROWID
+      data-type: ROWID
+      primary-key: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+  - # ====== Column: SESSION_ID ==================================
+    id: 308051083769615185
+    identification: 
+      column-name: SESSION_ID
+      type: Hidden
+
+    settings: 
+      value-protected: true
+
+    layout: 
+      sequence: 30
+
+    accessibility: 
+      value-identifies-row: false
+
+    source: 
+      type: Database Column
+      database-column: SESSION_ID
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      type: SQL Query (return single value)
+      sql-query-(return-single-value): select V('SESSION') from dual
+      duplicate-copies-existing-value: true
+
+    session-state: 
+      data-type: VARCHAR2
+
+    export-/-printing: 
+      include-in-export-/-print: false
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+
+  - # ====== Column: PROJECT_NUMBER ==============================
+    id: 308051185934615186
+    identification: 
+      column-name: PROJECT_NUMBER
+      type: Text Field
+
+    heading: 
+      heading: '&P0_PROJECT_LABEL. Number'
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 40
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 25
+
+    source: 
+      type: Database Column
+      database-column: PROJECT_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: Distinct Column
+      exact-match: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: TASK_NUMBER =================================
+    id: 308051363815615187
+    identification: 
+      column-name: TASK_NUMBER
+      type: Text Field
+
+    heading: 
+      heading: Task Number
+      alignment: start
+
+    settings: 
+      trim-spaces: Leading and Trailing
+      text-case: NO CHANGE
+
+    layout: 
+      sequence: 50
+      column-alignment: start
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+      maximum-length: 25
+
+    source: 
+      type: Database Column
+      database-column: TASK_NUMBER
+      data-type: VARCHAR2
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      performance-impacting-operators: 
+      - Contains
+      - Starts With
+      - Case Insensitive
+      - Regular Expression
+      text-case: Mixed
+      lov-type: Distinct Column
+      exact-match: true
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: QUANTITY ====================================
+    id: 308051458067615188
+    identification: 
+      column-name: QUANTITY
+      type: Number Field
+
+    heading: 
+      heading: Quantity
+      alignment: end
+
+    settings: 
+      number-alignment: End
+      virtual-keyboard: Text
+
+    layout: 
+      sequence: 60
+      column-alignment: end
+      stretch: Use Report Setting
+
+    accessibility: 
+      value-identifies-row: false
+
+    validation: 
+      value-required: false
+
+    source: 
+      type: Database Column
+      database-column: QUANTITY
+      data-type: NUMBER
+      query-only: false
+      primary-key: false
+
+    default: 
+      duplicate-copies-existing-value: true
+
+    column-filter: 
+      enabled: true
+      lov-type: None
+
+    export-/-printing: 
+      include-in-export-/-print: true
+
+    enable-users-to: 
+      sort: true
+      control-break/aggregate: true
+      hide: true
+
+  - # ====== Column: APEX$ROW_ACTION =============================
+    id: 308051527487615189
+    identification: 
+      column-name: APEX$ROW_ACTION
+      type: Actions Menu
+
+    layout: 
+      sequence: 20
+
+  - # ====== Column: APEX$ROW_SELECTOR ===========================
+    id: 308051647520615190
+    identification: 
+      column-name: APEX$ROW_SELECTOR
+      type: Row Selector
+
+    settings: 
+      enable-multi-select: true
+      show-select-all: true
+      hide-control: false
+
+    layout: 
+      sequence: 10
+
+page-items: 
+- # ====== Page Item: P4_ATTRIBUTE =============================
+  id: 28228148108638229
+  identification: 
+    name: P4_ATTRIBUTE
+    type: Select List
+
+  label: 
+    label: Adjustment Type
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 150
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select * from (
+      select 'Hold' Adjustment_type ,'H' R
+      from dual 
+      union all
+      select 'Billable Flag','B'
+      from dual
+      union all
+      select 'Cancel','C'
+      from dual
+      union all
+      select 'Expenditure Type','E'
+      from dual
+      where :WIP_LINE_COUNT = 1 
+      ) 
+      order by 1
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_ATTRIBUTE_VALUE =======================
+  id: 28228428599638231
+  identification: 
+    name: P4_ATTRIBUTE_VALUE
+    type: Popup LOV
+
+  label: 
+    label: Value
+    alignment: Left
+
+  settings: 
+    display-as: Inline Popup
+    initial-fetch: Automatic with Current Value
+    manual-entry: false
+    search-as-you-type: true
+    minimum-characters: No minimum (0)
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 160
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      SELECT LOOKUP_VALUE D, LOOKUP_VALUE R 
+      FROM XXGPMS_LOOKUP
+      WHERE LOOKUP_TYPE = DECODE(:P4_ATTRIBUTE,'H','BILL_HOLD','B','YES_NO')
+      AND   STATUS = 'A'
+      UNION ALL
+      SELECT EXPENDITURE_TYPE_NAME d, EXPENDITURE_TYPE_NAME r
+      FROM XXGPMS_EXP_TYPES
+      WHERE SESSION_ID = V('APP_SESSION')
+      AND   UPPER(EXPENDITURE_TYPE_NAME) NOT IN (SELECT UPPER(EXPENDITURE_TYPE_NAME)
+      FROM XXGPMS_PROJECT_COSTS 
+      WHERE SESSION_ID = V('APP_SESSION')
+      AND   EXPENDITURE_ITEM_ID = TRIM(BOTH '-' FROM :WIP_EXPIDS)
+      )
+      AND :P4_ATTRIBUTE = 'E'
+      ORDER BY 1
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  cascading-list-of-values: 
+    parent-item(s): 
+    - P4_ATTRIBUTE
+    items-to-submit: 
+    - P4_ATTRIBUTE
+    parent-required: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_INCLUDES_NONBILLABLE_LINES ============
+  id: 28858259664455111
+  identification: 
+    name: P4_INCLUDES_NONBILLABLE_LINES
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  default: 
+    type: SQL Query (return single value)
+    sql-query-(return-single-value): |
+      SELECT COUNT(*)
+      FROM   XXGPMS_PROJECT_COSTS 
+      WHERE  BILLABLE_FLAG = 'N'
+      AND    EXPENDITURE_ITEM_ID IN (SELECT * FROM TABLE(SELECT APEX_STRING.SPLIT(:WIP_EXPIDS,'-') FROM DUAL
+                                    ));
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_HOURS =================================
+  id: 30860789148108226
+  identification: 
+    name: P4_HOURS
+    type: Number Field
+
+  label: 
+    label: Hours
+    alignment: Left
+
+  settings: 
+    number-alignment: Start
+    virtual-keyboard: Decimal
+
+  layout: 
+    sequence: 90
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: ':WIP_LINE_COUNT = 1 and :P4_HOURS_COUNT > 0'
+
+  read-only: 
+    type: Item != Value
+    item: P4_INCLUDES_NONBILLABLE_LINES
+    value: 0
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_HOURS_NON_BILLABLE ====================
+  id: 30860888482108227
+  identification: 
+    name: P4_HOURS_NON_BILLABLE
+    type: Display Only
+
+  label: 
+    label: Non-Billable
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: false
+
+  layout: 
+    sequence: 100
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  server-side-condition: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: ':WIP_LINE_COUNT = 1 and :P4_HOURS_COUNT > 0'
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_HOURS_COUNT ===========================
+  id: 30861456281108233
+  identification: 
+    name: P4_HOURS_COUNT
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 20
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_SUCCESS_MESSAGE =======================
+  id: 38968361949064404
+  identification: 
+    name: P4_SUCCESS_MESSAGE
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_CANCEL ================================
+  id: 38968824873064409
+  identification: 
+    name: P4_CANCEL
+    type: Checkbox
+
+  label: 
+    label: Cancel
+    alignment: Left
+
+  settings: 
+    use-defaults: false
+    checked-value: Y
+    unchecked-value: N
+
+  layout: 
+    sequence: 190
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    - t-Form-fieldContainer--xlarge
+    - margin-top-lg
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_EXPENDITURE_TYPE ======================
+  id: 38969563348064416
+  identification: 
+    name: P4_EXPENDITURE_TYPE
+    type: Popup LOV
+
+  label: 
+    label: Expenditure Type
+    alignment: Left
+
+  settings: 
+    display-as: Inline Popup
+    initial-fetch: Automatic
+    manual-entry: false
+    search-as-you-type: true
+    minimum-characters: No minimum (0)
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 200
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      SELECT EXPENDITURE_TYPE_NAME d, EXPENDITURE_TYPE_NAME r
+      FROM XXGPMS_EXP_TYPES
+      WHERE SESSION_ID = V('APP_SESSION')
+      AND   UPPER(EXPENDITURE_TYPE_NAME) NOT IN (SELECT UPPER(EXPENDITURE_TYPE_NAME)
+      FROM XXGPMS_PROJECT_COSTS 
+      WHERE SESSION_ID = V('APP_SESSION')
+      AND   EXPENDITURE_ITEM_ID = TRIM(BOTH '-' FROM :WIP_EXPIDS)
+      )
+      ORDER BY 1
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: EVENT_ADJ_PCT ============================
+  id: 299009544354207274
+  identification: 
+    name: EVENT_ADJ_PCT
+    type: Number Field
+
+  label: 
+    label: Discount
+    alignment: Left
+
+  settings: 
+    number-alignment: Start
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 60
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Item != Value
+    item: P4_INCLUDES_NONBILLABLE_LINES
+    value: 0
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_SEL_AMOUNT ===========================
+  id: 299009748894207276
+  identification: 
+    name: WIP_SEL_AMOUNT
+    type: Number Field
+
+  label: 
+    label: WIP Amount
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 10
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 5
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_EXPIDS ===============================
+  id: 299010009242207279
+  identification: 
+    name: WIP_EXPIDS
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 110
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_PROJECT_NUMBER =======================
+  id: 299010282765207282
+  identification: 
+    name: WIP_PROJECT_NUMBER
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 120
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_MODAL_FLAG ===========================
+  id: 299011801142207297
+  identification: 
+    name: WIP_MODAL_FLAG
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 130
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: EVENT_ADJ_AMT ============================
+  id: 299012317695207302
+  identification: 
+    name: EVENT_ADJ_AMT
+    type: Number Field
+
+  label: 
+    label: Amount to Bill
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 70
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 50
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Item != Value
+    item: P4_INCLUDES_NONBILLABLE_LINES
+    value: 0
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_ERROR_FLAG ===========================
+  id: 301148548923470759
+  identification: 
+    name: WIP_ERROR_FLAG
+    type: Hidden
+
+  settings: 
+    value-protected: true
+
+  layout: 
+    sequence: 240
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_TRX_SPLT =============================
+  id: 301849691615468857
+  identification: 
+    name: WIP_TRX_SPLT
+    type: Display Only
+
+  label: 
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 230
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: 0
+
+  appearance: 
+    template: Optional
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: Transfer & Split
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_BILLABLE_FLAG ========================
+  id: 308049131991615165
+  identification: 
+    name: WIP_BILLABLE_FLAG
+    type: Select List
+
+  label: 
+    label: Billable
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 180
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC2:Yes;Y,No;N'
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_HOLD =================================
+  id: 308049183985615166
+  identification: 
+    name: WIP_HOLD
+    type: Select List
+
+  label: 
+    label: Hold
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 170
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC2:Once;O,Until Released;Y,Release Hold;N'
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  server-side-condition: 
+    type: Never
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_JUSTIFICATION_CODE ===================
+  id: 308049335332615167
+  identification: 
+    name: WIP_JUSTIFICATION_CODE
+    type: Select List
+
+  label: 
+    label: Justification
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+
+  multiple-values: 
+    type: No
+
+  layout: 
+    sequence: 210
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC2:Client Satisfaction;Client Satisfaction,Billing Error;Billing Error,B.I.S.S.;B.I.S.S.,We do not pay for summer associates;We do not pay for summer associates'
+    display-extra-values: false
+    display-null-value: true
+    null-display-value: '-- SELECT --'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_JUSTIFICATION_TEXT ===================
+  id: 308049441911615168
+  identification: 
+    name: WIP_JUSTIFICATION_TEXT
+    type: Textarea
+
+  label: 
+    alignment: Left
+
+  settings: 
+    resizable: true
+    auto-height: false
+    character-counter: true
+    trim-spaces: Leading and Trailing
+
+  layout: 
+    sequence: 220
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Required - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+    height: 5
+
+  validation: 
+    value-required: false
+    maximum-length: 150
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_LINE_COUNT ===========================
+  id: 308049741704615171
+  identification: 
+    name: WIP_LINE_COUNT
+    type: Number Field
+
+  label: 
+    label: Total Lines
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 30
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 3
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_HOURS_COUNT ==========================
+  id: 308049810461615172
+  identification: 
+    name: WIP_HOURS_COUNT
+    type: Text Field
+
+  label: 
+    label: Total Quantity
+    alignment: Left
+
+  settings: 
+    subtype: Text
+    trim-spaces: Leading and Trailing
+    text-case: NO CHANGE
+    submit-when-enter-pressed: false
+    disabled: false
+
+  layout: 
+    sequence: 40
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 4
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 999G999G999G999G990D0000
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  read-only: 
+    type: Always
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P4_CURRENCY ==============================
+  id: 333146066262127962
+  identification: 
+    name: P4_CURRENCY
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 250
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: WIP_SEL_AMOUNT_COPY ======================
+  id: 333146297523127964
+  identification: 
+    name: WIP_SEL_AMOUNT_COPY
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 20
+    region: Bill Adjustments # 299009394346207273
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: WIP_Adjust ==================================
+  id: 299010391173207283
+  identification: 
+    button-name: WIP_Adjust
+    label: Create Adjustments
+
+  layout: 
+    sequence: 50
+    region: Bill Adjustments # 299009394346207273
+    slot: DELETE
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: true
+    template-options: 
+    - '#DEFAULT#'
+
+  behavior: 
+    action: Defined by Dynamic Action
+    execute-validations: true
+
+  server-side-condition: 
+    type: Item != Value
+    item: WIP_LINE_COUNT
+    value: 0
+
+dynamic-actions: 
+- # ====== Dynamic Action: For Cancel No Values ================
+  id: 28228564868638233
+  identification: 
+    name: For Cancel No Values
+
+  execution: 
+    sequence: 60
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - P4_ATTRIBUTE
+
+  client-side-condition: 
+    type: Item = Value
+    item: P4_ATTRIBUTE
+    value: C
+
+  actions: 
+  - # ====== Action: Hide ========================================
+    id: 28228725751638234
+    identification: 
+      action: Hide
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P4_ATTRIBUTE_VALUE
+
+    execution: 
+      sequence: 10
+      event: For Cancel No Values # 28228564868638233
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Show ========================================
+    id: 28228753563638235
+    identification: 
+      action: Show
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P4_ATTRIBUTE_VALUE
+
+    execution: 
+      sequence: 10
+      event: For Cancel No Values # 28228564868638233
+      fire-when-event-result-is: False
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: When Adjustment Type is selected then
+  id: 28857838452455107
+  identification: 
+    name: 'When Adjustment Type is selected then hours and discount is disabled '
+
+  execution: 
+    sequence: 70
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - P4_ATTRIBUTE
+
+  client-side-condition: 
+    type: Item is not null
+    item: P4_ATTRIBUTE
+
+  actions: 
+  - # ====== Action: Disable =====================================
+    id: 28858024398455108
+    identification: 
+      action: Disable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_SEL_AMOUNT
+      - EVENT_ADJ_PCT
+      - EVENT_ADJ_AMT
+      - P4_HOURS
+
+    execution: 
+      sequence: 10
+      event: 'When Adjustment Type is selected then hours and discount is disabled ' # 28857838452455107
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Enable ======================================
+    id: 28858124806455109
+    identification: 
+      action: Enable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_SEL_AMOUNT
+      - EVENT_ADJ_PCT
+      - EVENT_ADJ_AMT
+      - P4_HOURS
+
+    execution: 
+      sequence: 10
+      event: 'When Adjustment Type is selected then hours and discount is disabled ' # 28857838452455107
+      fire-when-event-result-is: False
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: When Entered Hours calculate Non Bill
+  id: 30861094018108229
+  identification: 
+    name: When Entered Hours calculate Non Billable Hours
+
+  execution: 
+    sequence: 30
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - P4_HOURS
+
+  client-side-condition: 
+    type: Item is not null
+    item: P4_HOURS
+
+  actions: 
+  - # ====== Action: Set Value ===================================
+    id: 30861199921108230
+    identification: 
+      action: Set Value
+
+    settings: 
+      set-type: PL/SQL Expression
+      pl/sql-expression: ':WIP_HOURS_COUNT - :P4_HOURS'
+      items-to-submit: 
+      - WIP_HOURS_COUNT
+      - P4_HOURS
+      escape-special-characters: true
+      suppress-change-event: false
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P4_HOURS_NON_BILLABLE
+
+    execution: 
+      sequence: 30
+      event: When Entered Hours calculate Non Billable Hours # 30861094018108229
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Validations =================================
+    id: 30861760467108236
+    identification: 
+      name: Validations
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var total_hours = Number(apex.item('WIP_HOURS_COUNT').getValue());
+        var entered_hours = Number(apex.item('P4_HOURS').getValue());
+        var amount = apex.item('EVENT_ADJ_AMT').getValue();
+        var discount = apex.item('EVENT_ADJ_PCT').getValue();
+        apex.message.clearErrors();
+        if (entered_hours > total_hours){
+             apex.message.clearErrors();
+             apex.message.showErrors([
+            {
+                type:       "error",
+                location:   [ "page", "inline" ],
+                pageItem:   "P4_HOURS",
+                message:    "Entered Hours cannot be greater than the total hours!",
+                unsafe:     false
+            }
+        ]);
+        apex.da.cancel();
+        }
+        else if (((amount && amount > 0 || discount && discount > 0) && (entered_hours && entered_hours > 0))){
+            apex.message.clearErrors();
+             apex.message.showErrors([
+            {
+                type:       "error",
+                location:   [ "page"],
+                pageItem:   "P4_HOURS",
+                message:    "Enter either Amount or Hours!",
+                unsafe:     false
+            }
+            ]);
+            // apex.item('P4_HOURS').setValue(""); 
+            // apex.item('EVENT_ADJ_AMT').setValue(""); 
+            // apex.item('EVENT_ADJ_PCT').setValue(""); 
+            apex.da.cancel();
+        }
+
+    execution: 
+      sequence: 20
+      event: When Entered Hours calculate Non Billable Hours # 30861094018108229
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Disable =====================================
+    id: 38968460889064405
+    identification: 
+      action: Disable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_HOLD
+      - WIP_BILLABLE_FLAG
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+
+    execution: 
+      sequence: 10
+      event: When Entered Hours calculate Non Billable Hours # 30861094018108229
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Enable ======================================
+    id: 38968532383064406
+    identification: 
+      action: Enable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_HOLD
+      - WIP_BILLABLE_FLAG
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+
+    execution: 
+      sequence: 10
+      event: When Entered Hours calculate Non Billable Hours # 30861094018108229
+      fire-when-event-result-is: False
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: When Clicked on Cancel ==============
+  id: 38968916505064410
+  identification: 
+    name: When Clicked on Cancel
+
+  execution: 
+    sequence: 40
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - P4_CANCEL
+
+  client-side-condition: 
+    type: Item = Value
+    item: P4_CANCEL
+    value: Y
+
+  server-side-condition: 
+    type: Never
+
+  actions: 
+  - # ====== Action: Disable =====================================
+    id: 38969073363064411
+    identification: 
+      action: Disable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P4_HOURS
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+      - WIP_BILLABLE_FLAG
+      - WIP_HOLD
+
+    execution: 
+      sequence: 10
+      event: When Clicked on Cancel # 38968916505064410
+      fire-when-event-result-is: True
+      fire-on-initialization: true
+
+  - # ====== Action: Enable ======================================
+    id: 38969186756064412
+    identification: 
+      action: Enable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - P4_HOURS
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+      - WIP_BILLABLE_FLAG
+      - WIP_HOLD
+
+    execution: 
+      sequence: 10
+      event: When Clicked on Cancel # 38968916505064410
+      fire-when-event-result-is: False
+      fire-on-initialization: true
+
+- # ====== Dynamic Action: When Selected =======================
+  id: 38969643744064417
+  identification: 
+    name: When Selected
+
+  execution: 
+    sequence: 50
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Change
+    selection-type: Item(s)
+    item(s): 
+    - P4_EXPENDITURE_TYPE
+
+  client-side-condition: 
+    type: Item is not null
+    item: P4_EXPENDITURE_TYPE
+
+  server-side-condition: 
+    type: Never
+
+  actions: 
+  - # ====== Action: Disable =====================================
+    id: 38969705053064418
+    identification: 
+      action: Disable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_HOLD
+      - WIP_BILLABLE_FLAG
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+      - P4_HOURS
+      - P4_CANCEL
+
+    execution: 
+      sequence: 10
+      event: When Selected # 38969643744064417
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Enable ======================================
+    id: 38969813785064419
+    identification: 
+      action: Enable
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_HOLD
+      - WIP_BILLABLE_FLAG
+      - EVENT_ADJ_AMT
+      - EVENT_ADJ_PCT
+      - P4_HOURS
+      - P4_CANCEL
+
+    execution: 
+      sequence: 10
+      event: When Selected # 38969643744064417
+      fire-when-event-result-is: False
+      fire-on-initialization: false
+
+- # ====== Dynamic Action: WIP_AdjustClick =====================
+  id: 299010761894207286
+  identification: 
+    name: WIP_AdjustClick
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: Click
+    selection-type: Button
+    button: WIP_Adjust # 299010391173207283
+
+  actions: 
+  - # ====== Action: Progress Bar Start ==========================
+    id: 16678710463673431
+    identification: 
+      name: Progress Bar Start
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        apex.message.clearErrors();
+        setTimer();
+        
+
+    execution: 
+      sequence: 30
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Code to call the Package ====================
+    id: 28228854813638236
+    identification: 
+      name: Code to call the Package
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        declare
+          V_status number := 0;
+          V_RESPONSE CLOB;
+          V_HOLD_CODE VARCHAR2(1000);
+          V_OTHER_EXPIDS CLOB;
+        begin
+        xx_gpms.WIP_DEBUG (2, 50000, 'Cancel Flag '||:P4_CANCEL, '');
+        xx_gpms.WIP_DEBUG (2, 50001, 'Exp Type '||:P4_EXPENDITURE_TYPE, '');
+        xx_gpms.WIP_DEBUG (2, 50002,  'Hours '||:P4_HOURS, '');
+        xx_gpms.WIP_DEBUG (2, 50003,  'Hold Flag '||:WIP_HOLD, '');
+        xx_gpms.WIP_DEBUG (2, 50003,  'WIP_ERROR_FLAG '||:WIP_ERROR_FLAG, '');
+        if (:WIP_ERROR_FLAG = 'N')  then
+          XX_GPMS.WIP_ADJUST_WRAPPER(P_EXPENDITURE_ITEM_LIST=> :WIP_EXPIDS,
+                                       P_PROJECT_NUMBER => :WIP_PROJECT_NUMBER,
+                                       P_ADJ_PCT => :EVENT_ADJ_PCT,
+                                       P_ADJ_AMT => :EVENT_ADJ_AMT,
+                                       P_SEL_AMT => :WIP_SEL_AMOUNT_COPY,
+                                       P_ADJUSTED_HOURS => :P4_HOURS,
+                                       P_ATTRIBUTE => :P4_ATTRIBUTE,
+                                       P_ATTRIBUTE_VALUE => :P4_ATTRIBUTE_VALUE,
+                                       P_JUSTIFICATION =>:WIP_JUSTIFICATION_CODE||CASE  
+                                                         WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL 
+                                                         THEN ': '||:WIP_JUSTIFICATION_TEXT END,
+                                       P_RESPONSE_CODE => V_STATUS,
+                                       P_RESPONSE =>V_RESPONSE);
+          IF V_STATUS IN (200,201)
+          THEN
+            :P4_SUCCESS_MESSAGE := V_RESPONSE;
+          ELSE 
+             APEX_ERROR.ADD_ERROR (
+             P_MESSAGE          => V_RESPONSE,
+             P_DISPLAY_LOCATION => APEX_ERROR.C_INLINE_IN_NOTIFICATION );  
+          END IF;                                  
+        end if;
+        end;
+        
+      items-to-submit: 
+      - WIP_EXPIDS
+      - EVENT_ADJ_PCT
+      - WIP_PROJECT_NUMBER
+      - EVENT_ADJ_AMT
+      - WIP_SEL_AMOUNT
+      - WIP_ERROR_FLAG
+      - WIP_BILLABLE_FLAG
+      - WIP_JUSTIFICATION_CODE
+      - WIP_JUSTIFICATION_TEXT
+      - P4_HOURS
+      - P4_CANCEL
+      - P4_EXPENDITURE_TYPE
+      - WIP_HOLD
+      - P4_ATTRIBUTE_VALUE
+      - P4_ATTRIBUTE
+      items-to-return: 
+      - P4_SUCCESS_MESSAGE
+      suppress-change-event: false
+
+    execution: 
+      sequence: 50
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+  - # ====== Action: Validations =================================
+    id: 28229015094638237
+    identification: 
+      name: Validations
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        if ($v("EVENT_ADJ_AMT") != 0  && $v("EVENT_ADJ_PCT") != 0 ){
+               ig_errflag = 'Y';
+               apex.message.alert( "Adjustment Amount and Adjustment Percentage cannot be specified at the same time" );
+               apex.da.cancel(); 
+        }
+        
+        apex.item( "WIP_ERROR_FLAG" ).setValue ('N');
+        var amt_pct = apex.item('EVENT_ADJ_PCT').getValue();
+        var amt = apex.item('EVENT_ADJ_AMT').getValue();
+        var hours = apex.item('P4_HOURS').getValue();
+        var justification_code = apex.item('WIP_JUSTIFICATION_CODE').getValue();
+        var justification_txt = apex.item('WIP_JUSTIFICATION_TEXT').getValue();
+        var cancel = apex.item('P4_CANCEL').getValue();
+        var exp_type = apex.item('P4_EXPENDITURE_TYPE').getValue();
+        var hold = $v("WIP_HOLD");
+        
+        var attribute = $v("P4_ATTRIBUTE");
+        var attribute_value = $v("P4_ATTRIBUTE_VALUE");
+        
+        if (!attribute_value && attribute && attribute!='C')
+         {
+            apex.message.clearErrors();
+                    apex.message.showErrors([
+                    {
+                       type:       "error",
+                       location:   [ "page","inline"],
+                       pageItem:   "P4_ATTRIBUTE_VALUE",
+                       message:    "Atribute Value is required when an attribute is selected!",
+                       unsafe:     false
+                    }]) 
+                     apex.da.cancel(); 
+        }
+        else if (amt_pct >0 || amt > 0||hours > 0||attribute){
+            if (!justification_code){
+                if(!justification_txt){
+                    apex.message.clearErrors();
+                    // apex.message.alert( 'Justification is needed if Write Up/Down is performed!');
+                    apex.message.showErrors([
+                    {
+                       type:       "error",
+                       location:   [ "page", "inline" ],
+                       pageItem:   "WIP_JUSTIFICATION_CODE",
+                       message:    "Justification is needed if Write Up/Down is performed or line attributes are changed!",
+                       unsafe:     false
+                    }]) 
+                     apex.da.cancel(); 
+                }
+            }
+        }
+        else if (amt_pct==0 && amt==0 && hours == 0 && !attribute){
+            apex.message.clearErrors();
+                    apex.message.showErrors([
+                    {
+                       type:       "error",
+                       location:   [ "page"],
+                       message:    "No Changes to Adjust!",
+                       unsafe:     false
+                    }]) 
+                     apex.da.cancel(); 
+        }
+
+    execution: 
+      sequence: 20
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Code to call the Package ====================
+    id: 299010781767207287
+    identification: 
+      name: Code to call the Package
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: |
+        declare
+          V_status number := 0;
+          V_RESPONSE CLOB;
+          V_HOLD_CODE VARCHAR2(1000);
+          V_OTHER_EXPIDS CLOB;
+        begin
+        xx_gpms.WIP_DEBUG (2, 50000, 'Cancel Flag '||:P4_CANCEL, '');
+        xx_gpms.WIP_DEBUG (2, 50001, 'Exp Type '||:P4_EXPENDITURE_TYPE, '');
+        xx_gpms.WIP_DEBUG (2, 50002,  'Hours '||:P4_HOURS, '');
+        xx_gpms.WIP_DEBUG (2, 50003,  'Hold Flag '||:WIP_HOLD, '');
+        xx_gpms.WIP_DEBUG (2, 50003,  'WIP_ERROR_FLAG '||:WIP_ERROR_FLAG, '');
+        if (:WIP_ERROR_FLAG = 'N') then
+          IF :WIP_HOLD IS NOT NULL 
+          THEN
+            V_HOLD_CODE := CASE :WIP_HOLD WHEN 'O' THEN 'ONE_TIME_HOLD'
+                                          WHEN 'Y' THEN 'BILL_HOLD'
+                                          WHEN 'N' THEN 'REMOVE_BILL_HOLD'
+                                          WHEN 'BO' THEN 'ONE_TIME_HOLD' END;               
+            XX_GPMS.PERFORM_ADJUST_PROJECT_COSTS(P_EXPENDITURE_ITEM_ID => :WIP_EXPIDS,
+                              P_ADJUSTMENT_TYPE_CODE => V_HOLD_CODE,
+                              P_JUSTIFICATION => :WIP_JUSTIFICATION_CODE||CASE  WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL THEN ': '||:WIP_JUSTIFICATION_TEXT END,
+                              P_RESPONSE => V_RESPONSE,
+                              P_RESPONSE_CODE => V_STATUS);
+             IF V_STATUS IN (200,201)
+            THEN
+              :P4_SUCCESS_MESSAGE := V_RESPONSE;
+             ELSE
+                apex_error.add_error (
+                  p_message          => v_response,
+                  p_display_location => apex_error.c_inline_in_notification );
+            END IF;                      
+          ELSE                      
+          IF :P4_CANCEL = 'Y' and :P4_EXPENDITURE_TYPE is null
+          THEN
+            XX_GPMS.PERFORM_ADJUST_PROJECT_COSTS(P_EXPENDITURE_ITEM_ID => :WIP_EXPIDS,
+                              P_ADJUSTMENT_TYPE_CODE => 'REVERSE',
+                              P_JUSTIFICATION => :WIP_JUSTIFICATION_CODE||CASE  WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL THEN ': '||:WIP_JUSTIFICATION_TEXT END,
+                              P_RESPONSE => V_RESPONSE,
+                              P_RESPONSE_CODE => V_STATUS);
+            IF V_STATUS IN (200,201)
+            THEN
+              :P4_SUCCESS_MESSAGE := V_RESPONSE;
+             ELSE
+                apex_error.add_error (
+                  p_message          => v_response,
+                  p_display_location => apex_error.c_inline_in_notification );
+            END IF;  
+          ELSIF :P4_EXPENDITURE_TYPE IS NOT NULL AND NVL(:P4_CANCEL,'N') = 'N'
+          THEN
+            XX_GPMS.PERFORM_ADJUST_PROJECT_COSTS(P_EXPENDITURE_ITEM_ID => :WIP_EXPIDS,
+                              P_ADJUSTMENT_TYPE_CODE => 'TRANSFER',
+                              P_EXPENDITURE_TYPE => :P4_EXPENDITURE_TYPE,
+                              P_JUSTIFICATION => :WIP_JUSTIFICATION_CODE||CASE  WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL THEN ': '||:WIP_JUSTIFICATION_TEXT END,
+                              P_RESPONSE => V_RESPONSE,
+                              P_RESPONSE_CODE => V_STATUS);
+            IF V_STATUS IN (200,201)
+            THEN
+              :P4_SUCCESS_MESSAGE := V_RESPONSE;
+             ELSE
+                apex_error.add_error (
+                  p_message          => v_response,
+                  p_display_location => apex_error.c_inline_in_notification );
+            END IF;                     
+          ELSIF :P4_EXPENDITURE_TYPE IS NULL AND NVL(:P4_CANCEL,'N') = 'N'
+          THEN
+            IF :P4_HOURS IS NULL
+            THEN 
+              V_status := XX_GPMS.WIP_TAG_ADJUSTMENT (:WIP_EXPIDS
+              ,:WIP_PROJECT_NUMBER,:EVENT_ADJ_PCT, :EVENT_ADJ_AMT
+              , :WIP_SEL_AMOUNT_COPY
+              ,:WIP_BILLABLE_FLAG
+              ,:WIP_JUSTIFICATION_CODE||CASE  WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL THEN ': '||:WIP_JUSTIFICATION_TEXT END,
+              :WIP_HOLD);
+              if v_status = 0 
+              then
+                :P4_SUCCESS_MESSAGE := 'Success';
+              end if;  
+            ELSE
+              XX_GPMS.WIP_ADJUST_HOURS(:WIP_EXPIDS,:P4_HOURS,
+              :WIP_JUSTIFICATION_CODE||CASE  WHEN :WIP_JUSTIFICATION_TEXT IS NOT NULL THEN ': '||:WIP_JUSTIFICATION_TEXT END,V_STATUS,V_RESPONSE);
+              if V_STATUS IN (200,201)
+              then
+                :P4_SUCCESS_MESSAGE := V_RESPONSE;
+              ELSE
+                apex_error.add_error (
+                  p_message          => v_response,
+                  p_display_location => apex_error.c_inline_in_notification );
+              end if;  
+            END IF;    
+          END IF;  
+          END IF;
+        end if;
+        end;
+        
+      items-to-submit: 
+      - WIP_EXPIDS
+      - EVENT_ADJ_PCT
+      - WIP_PROJECT_NUMBER
+      - EVENT_ADJ_AMT
+      - WIP_SEL_AMOUNT
+      - WIP_ERROR_FLAG
+      - WIP_BILLABLE_FLAG
+      - WIP_JUSTIFICATION_CODE
+      - WIP_JUSTIFICATION_TEXT
+      - P4_HOURS
+      - P4_CANCEL
+      - P4_EXPENDITURE_TYPE
+      - WIP_HOLD
+      items-to-return: 
+      - P4_SUCCESS_MESSAGE
+      suppress-change-event: false
+
+    execution: 
+      sequence: 40
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+    server-side-condition: 
+      type: Never
+
+  - # ====== Action: Close Dialog and Progress Bar End ===========
+    id: 299011024315207289
+    identification: 
+      name: Close Dialog and Progress Bar End
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        var i,
+        i = "Y";
+        apex.item( "WIP_MODAL_FLAG" ).setValue (i);
+        if ($v("WIP_ERROR_FLAG") == 'N') {
+        apex.navigation.dialog.close(true);
+        apex.page.submit('NEW');
+        }
+        
+        endTimer();
+        
+        
+
+    execution: 
+      sequence: 60
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    client-side-condition: 
+      type: Item is not null
+      item: P4_SUCCESS_MESSAGE
+
+  - # ====== Action: Validations =================================
+    id: 301148664829470760
+    identification: 
+      name: Validations
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        // var ig_len, ig_project_number, ig_project_exists, ig_project_len, ig_qty;
+        
+        // var ig$ = apex.region("ProjectSplit").widget();
+        
+        // var model = ig$.interactiveGrid("getViews", "grid").model;
+        
+        // var ig_errflag = 'N';
+        
+        
+        
+        // ig_project_number = 0;
+        // ig_project_len = 0;
+        // ig_project_exists = 0;
+        // ig_qty = 0;
+        
+        // model.forEach(function(igrec) {
+        //    ig_project_number = igrec[model.getFieldKey("PROJECT_NUMBER")];
+        //    ig_qty += Number(igrec[model.getFieldKey("QUANTITY")]);
+              
+        //    ig_project_len = ig_project_number.length;
+           
+        //    if (ig_project_len > 0) {
+        //        ig_project_exists = 1;
+            
+        //    }
+          
+        //    //apex.message.alert(igrec[model.getFieldKey("PROJECT_NUMBER")]);
+        // });
+        
+        
+        
+        
+        
+        if ($v("EVENT_ADJ_AMT") != 0  && $v("EVENT_ADJ_PCT") != 0 ){
+               ig_errflag = 'Y';
+               apex.message.alert( "Adjustment Amount and Adjustment Percentage cannot be specified at the same time" );
+               apex.da.cancel(); 
+        }
+        
+        
+        // if ($v("EVENT_ADJ_AMT") != 0  && ig_project_exists == 1 ){
+        //        ig_errflag = 'Y';
+        //        apex.message.alert( "Adjustment Amount and Transfers cannot be specified at the same time" );
+        //        apex.da.cancel(); 
+        // }
+        
+        // if ($v("EVENT_ADJ_PCT") != 0  && ig_project_exists == 1 ){
+        //        ig_errflag = 'Y';
+        //        apex.message.alert( "Adjustment Percentage and Transfers cannot be specified at the same time" );
+        //        apex.da.cancel(); 
+        // }
+        
+        // if (ig_project_exists == 1 & $v("WIP_HOURS_COUNT") != ig_qty) {
+        //        ig_errflag = 'Y';
+        //        apex.message.alert( "Mismatch between Expenditure Quantity and Transfer Quantity" );
+        //        apex.da.cancel(); 
+        // }
+        
+        apex.item( "WIP_ERROR_FLAG" ).setValue ('N');
+        
+        // if (ig_errflag == 'N') {
+        // apex.region( "ProjectSplit" ).widget().interactiveGrid("getActions"). invoke("save");
+        // }
+        
+        // Justification Validations by EK
+        
+        var amt_pct = apex.item('EVENT_ADJ_PCT').getValue();
+        var amt = apex.item('EVENT_ADJ_AMT').getValue();
+        var hours = apex.item('P4_HOURS').getValue();
+        var justification_code = apex.item('WIP_JUSTIFICATION_CODE').getValue();
+        var justification_txt = apex.item('WIP_JUSTIFICATION_TEXT').getValue();
+        var cancel = apex.item('P4_CANCEL').getValue();
+        var exp_type = apex.item('P4_EXPENDITURE_TYPE').getValue();
+        var hold = $v("WIP_HOLD");
+        
+        if (amt_pct >0 || amt > 0||hours > 0||cancel=='Y'||exp_type||hold){
+            if (!justification_code){
+                if(!justification_txt){
+                    apex.message.clearErrors();
+                    // apex.message.alert( 'Justification is needed if Write Up/Down is performed!');
+                    apex.message.showErrors([
+                    {
+                       type:       "error",
+                       location:   [ "page", "inline" ],
+                       pageItem:   "WIP_JUSTIFICATION_CODE",
+                       message:    "Justification is needed if Write Up/Down is performed or line attributes are changed!",
+                       unsafe:     false
+                    }]) 
+                     apex.da.cancel(); 
+                }
+            }
+        }
+        
+        
+
+    execution: 
+      sequence: 10
+      event: WIP_AdjustClick # 299010761894207286
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+    server-side-condition: 
+      type: Never
+
+- # ====== Dynamic Action: Format the Numbers as per the currenc
+  id: 333145888360127960
+  identification: 
+    name: Format the Numbers as per the currency
+
+  execution: 
+    sequence: 20
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 333146022432127961
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: $("#WIP_SEL_AMOUNT").val(currencyFormatter(Number($("#WIP_SEL_AMOUNT").val()),apex.item("P4_CURRENCY").getValue()));
+
+    affected-elements: 
+      selection-type: Item(s)
+      item(s): 
+      - WIP_SEL_AMOUNT
+      - WIP_SEL_AMOUNT_COPY
+
+    execution: 
+      sequence: 20
+      event: Format the Numbers as per the currency # 333145888360127960
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
+  - # ====== Action: Execute Server-side Code ====================
+    id: 333146588531127967
+    identification: 
+      action: Execute Server-side Code
+
+    settings: 
+      language: PE.PROPERTY.SOURCE_SNIPPET_LANG.LOV.PLSQL.D
+      pl/sql-code: ':WIP_SEL_AMOUNT_COPY := :WIP_SEL_AMOUNT;'
+      items-to-submit: 
+      - WIP_SEL_AMOUNT_COPY
+      - WIP_SEL_AMOUNT
+
+    execution: 
+      sequence: 10
+      event: Format the Numbers as per the currency # 333145888360127960
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+      stop-execution-on-error: true
+      wait-for-result: true
+
+validations: 
+- # ====== Validation: Mandatory if attribute is selected ======
+  id: 28228530531638232
+  identification: 
+    name: Mandatory if attribute is selected
+
+  execution: 
+    sequence: 20
+
+  validation: 
+    type: Function Body (returning Error Text)
+    language: PL/SQL
+    pl/sql-function-body-returning-error-text: |
+      if :P4_ATTRIBUTE is not null and :P4_ATTRIBUTE_VALUE is null and :P4_ATTRIBUTE <> 'C'
+      then
+        return 'Attribute Value is required when an Attribute is selected.';
+      end if;
+    always-execute: true
+
+  error: 
+    display-location: Inline with Field and in Notification
+    associated-item: P4_ATTRIBUTE_VALUE # 28228428599638231
+
+  server-side-condition: 
+    when-button-pressed: WIP_Adjust # 299010391173207283
+
+- # ====== Validation: Justification is needed for Write Up/Down
+  id: 32485960664979956
+  identification: 
+    name: Justification is needed for Write Up/Down
+
+  execution: 
+    sequence: 10
+
+  validation: 
+    type: Function Body (returning Error Text)
+    language: PL/SQL
+    pl/sql-function-body-returning-error-text: |
+      if (to_number(:EVENT_ADJ_PCT, '999G999G999G999G990D000')  <>0 
+        or to_number(:EVENT_ADJ_AMT, '999G999G999G999G990D000') <> 0
+        or to_number(:P4_HOURS, '999G999G999G999G990D000') <> 0
+        or :P4_CANCEL = 'Y' 
+        or :P4_EXPENDITURE_TYPE is not null)
+      then
+        if coalesce(:WIP_JUSTIFICATION_CODE,:WIP_JUSTIFICATION_TEXT,'~!~') = '~!~'
+        then
+          return 'Justification is needed if Write Up/Down is performed!';
+        end if;
+      end if;
+    always-execute: true
+
+  error: 
+    display-location: Inline with Field and in Notification
+    associated-item: WIP_JUSTIFICATION_CODE # 308049335332615167
+
+  server-side-condition: 
+    when-button-pressed: WIP_Adjust # 299010391173207283
+
+processes: 
+- # ====== Process: Check if any Non Billable line is selected =
+  id: 16117774458370937
+  identification: 
+    name: Check if any Non Billable line is selected
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      -- IF :WIP_LINE_COUNT = 1 
+      -- THEN
+      --   BEGIN
+      --   SELECT BILLABLE_FLAG
+      --   INTO  :WIP_BILLABLE_FLAG
+      --   FROM  XXGPMS_PROJECT_COSTS 
+      --   WHERE SESSION_ID = V('APP_SESSION')
+      --   AND   EXPENDITURE_ITEM_ID = REPLACE(:WIP_EXPIDS,'-','');
+      --   EXCEPTION
+      --     WHEN OTHERS THEN
+      --       NULL;
+      --   END;   
+      -- END IF;
+      
+      -- CHECK IF THERE IS ANY NON-BILLABLE LINE IN THE EXPENDITURE LINES SELECTED
+      
+      SELECT COUNT(*)
+      INTO   :P4_INCLUDES_NONBILLABLE_LINES
+      FROM   XXGPMS_PROJECT_COSTS 
+      WHERE  BILLABLE_FLAG = 'N'
+      AND    EXPENDITURE_ITEM_ID IN (SELECT * FROM TABLE(SELECT APEX_STRING.SPLIT(:WIP_EXPIDS,'-') FROM DUAL
+                                    ));
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: Percentage_for_the_progress ================
+  id: 18887119776046227
+  identification: 
+    name: Percentage_for_the_progress
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      begin
+      select percentage,message
+      into   :P0_PROGRESS_BAR2, :P0_PROGRESS_MESSAGE
+      from   progress_bar_entries
+      where  module = 'WIP_ADJUSTMENT'
+      and    seq = :P0_PROGRESS_SEQ
+      order  by seq;
+      exception
+       when others then
+         :P0_PROGRESS_BAR2 := 99;
+         :P0_PROGRESS_MESSAGE := 'Processing..';
+      end;
+      
+      apex_json.open_object;
+      apex_json.write('percent', :P0_PROGRESS_BAR2);
+      apex_json.write('message', :P0_PROGRESS_MESSAGE);
+      apex_json.close_object;
+
+  execution: 
+    sequence: 20
+    point: Ajax Callback
+    run-process: Once Per Page Visit (default)
+
+  comments: 
+    comments: |
+      -- SELECT PERCENTAGE, MESSAGE
+      -- INTO  :P2_PROGRESS_BAR2,:P2_PROGRESS_MESSAGE
+      -- FROM (
+      -- SELECT * 
+      -- FROM  PROGRESS_ENTRIES
+      -- ORDER BY CREATED_DATE DESC)
+      -- WHERE ROWNUM = 1;
+      
+
+- # ====== Process: Project Split - Save Interactive Grid Data =
+  id: 308051674770615191
+  identification: 
+    name: Project Split - Save Interactive Grid Data
+    type: Interactive Grid - Automatic Row Processing (DML)
+    execution-chain: None
+    editable-region: Transfer and Split # 308050374029615178
+
+  settings: 
+    target-type: Region Source
+    prevent-lost-updates: true
+    lock-row: Yes
+    return-primary-key(s)-after-insert: true
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    execution-scope: For Created and Modified Rows
+    type: Never
+

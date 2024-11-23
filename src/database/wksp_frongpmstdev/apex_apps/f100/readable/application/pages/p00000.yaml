@@ -1,0 +1,130 @@
+---
+# ====== Page: Global Page - Desktop =========================
+id: 0
+identification: 
+  name: Global Page - Desktop
+
+page-items: 
+- # ====== Page Item: P0_PROJECT_LABEL =========================
+  id: 248074102312216862
+  identification: 
+    name: P0_PROJECT_LABEL
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 10
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P0_TRUST_LABEL ===========================
+  id: 248073697620216858
+  identification: 
+    name: P0_TRUST_LABEL
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 20
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P0_RETAINER_LABEL ========================
+  id: 248073580508216857
+  identification: 
+    name: P0_RETAINER_LABEL
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 30
+    region: No Parent
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+dynamic-actions: 
+- # ====== Dynamic Action: New =================================
+  id: 259206955905375550
+  identification: 
+    name: New
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+
+  when: 
+    event: Page Load
+
+  actions: 
+  - # ====== Action: Execute JavaScript Code =====================
+    id: 259206844326375549
+    identification: 
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        window.addEventListener("error", function (e) {
+           alert("Error occurred: " + e.error.message);
+           return false;
+        })
+        
+
+    execution: 
+      sequence: 10
+      event: New # 259206955905375550
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+

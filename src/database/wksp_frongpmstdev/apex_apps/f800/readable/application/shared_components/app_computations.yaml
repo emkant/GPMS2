@@ -1,0 +1,22 @@
+---
+- # ====== Application Computation: G_SAAS_ACCESS_URL ==========
+  id: 56490728499786715
+  identification: 
+    item-name: G_SAAS_ACCESS_URL
+
+  execution: 
+    sequence: 10
+    point: Before Header
+
+  computation: 
+    type: SQL Query (return single value)
+    sql-query: |
+      select base_url from prt_environments
+      where organization_id in (
+      select organization_id from prt_organizations
+      where upper(organization_name) = :CLIENT)
+      and   upper(environment_name) = :ENV
+
+  subscription: 
+    version-number: 1
+

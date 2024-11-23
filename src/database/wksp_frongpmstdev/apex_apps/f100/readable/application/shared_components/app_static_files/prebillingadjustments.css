@@ -1,0 +1,94 @@
+main {
+	background-color: #fff;
+}
+
+.apex-side-nav .t-Body-actions,.apex-side-nav .t-Body-nav,.apex-side-nav .t-Body-title 
+{
+    top: 0px;
+}
+
+.t-Header-branding 
+{
+    height: 0px;
+}
+
+.col-2
+{
+    margin-top: -11px !important;
+}
+
+#spell_check_region .a-GV-table td, #spell_check_region .a-GV-table th 
+{
+  overflow: visible;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+#ProjectDetails, #chart_parent, #CostSummary, #ProjectCosts,#ProjectEvents, #wipmanagement, #billing
+
+{
+    /* box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20) !important; */
+    border-radius: 10px !important;
+}
+
+.t-Region-header
+{
+    border-top-right-radius: 10px!important;
+    border-top-left-radius: 10px !important;
+}
+
+
+.t-Body-contentInner
+{
+    background-color: #e5e5e5;
+}
+.t-Login-container{
+    background: white;
+
+}
+
+#report_table_CostSummary tr .t-Report-cell ,  #report_table_CostSummary th
+{
+
+    font-size:16px;
+}
+
+/* body {
+    font-family: "Roboto", sans-serif;
+  } */
+
+  .dummy
+{
+    min-width: 0px;
+}
+
+.t-Region-header
+{
+    border-bottom: none !important;
+}
+.t-Comments-item {
+    margin-bottom: 0px!important;
+}
+
+/* #FEE_ADJ
+{
+    margin-top: 2px !important;
+} */
+
+/* body {
+  font-family: "Roboto", sans-serif;
+} */
+
+.body{
+    font-family: "Oracle Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+}
+
+
+/* #GET_WIP_LINES
+{
+    margin-top: 2.0rem!important;
+} */
+
+
+-- sqlcl_snapshot {"hash":"2fa6c2116758f83bff97f0d04f9459d6254f3872","type":"APEX_APPLICATION","name":"f100","schemaName":"WKSP_FRONGPMSTDEV"}

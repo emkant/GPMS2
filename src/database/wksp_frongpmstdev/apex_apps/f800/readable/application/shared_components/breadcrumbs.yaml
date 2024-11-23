@@ -1,0 +1,49 @@
+---
+- # ====== Breadcrumb: Breadcrumb ==============================
+  id: 322339127331904480
+  identification: 
+    name: Breadcrumb
+
+  entries: 
+  - # ====== Entry: Login Page ===================================
+    id: 57116424069963601
+    identification: 
+      name: Login Page
+      page-number: 9
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:9:&APP_SESSION.::&DEBUG.:::'
+        page: 9 # Home
+
+  - # ====== Entry: Error Page ===================================
+    id: 57124174192044926
+    identification: 
+      name: Error Page
+      page-number: 10
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:10:&APP_SESSION.::&DEBUG.:::'
+        page: 10 # Access Denied
+
+  - # ====== Entry: Home =========================================
+    id: 322339343973904480
+    identification: 
+      name: Home
+      page-number: 1
+
+    execution: 
+      sequence: 10
+
+    link: 
+      target: 
+        url: 'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.'
+        page: 1 # Home
+

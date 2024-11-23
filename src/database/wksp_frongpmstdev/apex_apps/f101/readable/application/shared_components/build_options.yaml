@@ -1,0 +1,14 @@
+---
+- # ====== Build Option: DEV_ONLY ==============================
+  id: 6056851964022345
+  identification: 
+    name: DEV_ONLY
+
+  status: 
+    status: Exclude
+    default-on-export: Exclude
+    on-upgrade-keep-status: false
+
+  subscription: 
+    version-number: 1
+

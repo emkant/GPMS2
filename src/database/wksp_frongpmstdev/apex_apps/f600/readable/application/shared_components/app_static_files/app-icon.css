@@ -1,0 +1,10 @@
+.app-icon {
+    background-image: url(app-icon.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    background-color: #309FDB;
+}
+
+
+-- sqlcl_snapshot {"hash":"d6d3f0b0c96016a49beb6968e68a95d6207bf214","type":"APEX_APPLICATION","name":"f600","schemaName":"WKSP_FRONGPMSTDEV"}

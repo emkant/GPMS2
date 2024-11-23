@@ -1,0 +1,57 @@
+---
+- # ====== List of Values: SPELL_CHECK_SUGGESTED_WORDS =========
+  id: 4760616632163706
+  identification: 
+    name: SPELL_CHECK_SUGGESTED_WORDS
+
+  subscription: 
+    version-number: 1
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      WITH SPELL_CHECK_QUERY
+      AS
+      (select ROWNO,ERROR_WORD,REPLACE(REPLACE(REPLACE(SUGGESTED_WORDS,'[',''),']',''),'"','') SUGGESTED_WORDS
+       from  json_table((SELECT JSON_VALUE FROM SPELL_CHECK),
+      '$'
+              COLUMNS (
+                  NESTED PATH '$.words[*]'
+                  COLUMNS (
+                      RowNo Number PATH '$.RowNo',
+                      Error_Word VARCHAR PATH '$.Error_Word',
+                      Suggested_words VARCHAR FORMAT JSON PATH '$.Suggested_Words'
+                  )))
+      )
+      SELECT  REGEXP_SUBSTR(SUGGESTED_WORDS,'[^,]+',1,LEVEL) D,
+      REGEXP_SUBSTR(SUGGESTED_WORDS,'[^,]+',1,LEVEL) R
+      FROM SPELL_CHECK_QUERY
+      connect by  REGEXP_SUBSTR(SUGGESTED_WORDS,'[^,]+',1,LEVEL) is not null
+      
+
+  column-mapping: 
+    return: R
+    display: D
+    default-sort: D
+    sort-direction: Ascending (Nulls Last)
+
+- # ====== List of Values: LOGIN_REMEMBER_USERNAME =============
+  id: 10407842601882236
+  identification: 
+    name: LOGIN_REMEMBER_USERNAME
+
+  subscription: 
+    version-number: 1
+
+  source: 
+    location: Static Values
+
+  entries: 
+  - # ====== Entry: Remember username ============================
+    id: 10408284687882236
+    entry: 
+      sequence: 10
+      display: Remember username
+      return: Y
+

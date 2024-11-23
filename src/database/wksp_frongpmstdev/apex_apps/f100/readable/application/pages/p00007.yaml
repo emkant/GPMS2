@@ -1,0 +1,714 @@
+---
+# ====== Page: Fee Allocation ================================
+id: 7
+identification: 
+  name: Fee Allocation
+  alias: FEE-ALLOCATION1
+  title: Fee Allocation
+
+appearance: 
+  page-mode: Modal Dialog
+  dialog-template: Theme Default
+  template-options: 
+  - '#DEFAULT#'
+
+dialog: 
+  chained: true
+
+navigation-menu: 
+  override-user-interface-level: false
+
+navigation: 
+  cursor-focus: Do not focus cursor
+  warn-on-unsaved-changes: true
+
+security: 
+  authentication: Page Requires Authentication
+  deep-linking: Application Default
+  page-access-protection: Unrestricted
+  form-auto-complete: Off
+  browser-cache: Application Default
+
+session-management: 
+  rejoin-sessions: Application Default
+
+advanced: 
+  enable-duplicate-page-submissions: Yes - Enable page to be re-posted
+  reload-on-submit: Only for Success
+
+server-cache: 
+  caching: Disabled
+
+regions: 
+- # ====== Region: Form on Person Name =========================
+  id: 247420651508518052
+  identification: 
+    name: Form on Person Name
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: No Parent
+    slot: BODY
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Blank with Attributes
+    template-options: 
+    - '#DEFAULT#'
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: true
+    exclude-title-from-translation: false
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+page-items: 
+- # ====== Page Item: P7_PERSON_NAME ===========================
+  id: 247420531076518051
+  identification: 
+    name: P7_PERSON_NAME
+    type: Display Only
+
+  label: 
+    label: Person Name
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 10
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 3
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_LINES =================================
+  id: 247420519199518050
+  identification: 
+    name: P7_LINES
+    type: Display Only
+
+  label: 
+    label: Lines
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 60
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-sm
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_HOURS =================================
+  id: 247420344416518049
+  identification: 
+    name: P7_HOURS
+    type: Display Only
+
+  label: 
+    label: Hours
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 70
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-sm
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_ADJUSTMENT_FEES =======================
+  id: 247419924400518045
+  identification: 
+    name: P7_ADJUSTMENT_FEES
+    type: Number Field
+
+  label: 
+    label: Write Down (-Up)
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 90
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 999G999G999G999G990D00
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_JOB_NAME ==============================
+  id: 247419750274518043
+  identification: 
+    name: P7_JOB_NAME
+    type: Display Only
+
+  label: 
+    label: Job Name
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 20
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: 3
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_ADJUSTMENT_FEES_HIDDEN ================
+  id: 247418940688518035
+  identification: 
+    name: P7_ADJUSTMENT_FEES_HIDDEN
+    type: Hidden
+
+  settings: 
+    value-protected: false
+
+  layout: 
+    sequence: 140
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Always, replacing any existing value in session state
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_REALIZATION_PCT =======================
+  id: 242627409460484262
+  identification: 
+    name: P7_REALIZATION_PCT
+    type: Display Only
+
+  label: 
+    label: Realization %
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 130
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+
+  advanced: 
+    css-classes: 
+    - is-readonly
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_FEES ==================================
+  id: 242627260515484261
+  identification: 
+    name: P7_FEES
+    type: Display Only
+
+  label: 
+    label: Fees
+    alignment: Left
+
+  settings: 
+    format: Plain Text
+    based-on: Item Value
+    show-line-breaks: true
+    send-on-page-submit: true
+
+  layout: 
+    sequence: 80
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    - margin-top-sm
+    format-mask: 999G999G999G999G990D00
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    data-type: VARCHAR2
+    storage: Per Session (Persistent)
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_FEE_ALLOCATION ========================
+  id: 242627178623484260
+  identification: 
+    name: P7_FEE_ALLOCATION
+    type: Number Field
+
+  label: 
+    label: Fee Allocation
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 120
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 999G999G999G999G990D00
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P7_WRITE_DOWN_PCT ========================
+  id: 242627106453484259
+  identification: 
+    name: P7_WRITE_DOWN_PCT
+    type: Number Field
+
+  label: 
+    label: Write Down (-Up)
+    alignment: Left
+
+  settings: 
+    number-alignment: End
+    virtual-keyboard: Text
+
+  layout: 
+    sequence: 100
+    region: Form on Person Name # 247420651508518052
+    slot: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: false
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating
+    template-options: 
+    - '#DEFAULT#'
+    format-mask: 999G999G999G999G990D00
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: false
+    restricted-characters: All characters can be saved.
+
+buttons: 
+- # ====== Button: SAVE ========================================
+  id: 247419258437518038
+  identification: 
+    button-name: SAVE
+    label: Save
+
+  layout: 
+    sequence: 10
+    region: Form on Person Name # 247420651508518052
+    slot: NEXT
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    button-template: Text
+    hot: false
+    template-options: 
+    - '#DEFAULT#'
+    - t-Button--primary
+    css-classes: 
+    - u-color-9
+
+  behavior: 
+    action: Submit Page
+    execute-validations: true
+    show-processing: false
+    warn-on-unsaved-changes: Do Not Check
+
+processes: 
+- # ====== Process: Load the Information for the Person ========
+  id: 247419849116518044
+  identification: 
+    name: Load the Information for the Person
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      SELECT JOB_NAME,
+           LINES,
+           HOURS,
+           FEES,
+           WRITE_DOWN,
+           WRITE_DOWN_PCT,
+           FEE_ALLOCATION,
+           REALIZATION_PCT
+      INTO
+          :P7_JOB_NAME,
+          :P7_LINES,
+          :P7_HOURS,
+          :P7_FEES,
+          :P7_ADJUSTMENT_FEES,
+          :P7_WRITE_DOWN_PCT,
+          :P7_FEE_ALLOCATION,
+          :P7_REALIZATION_PCT
+      FROM
+      (SELECT PERSON_NAME,
+             JOB_NAME,
+             COUNT(*)                   LINES,
+             SUM(QUANTITY)              HOURS,
+             SUM(PROJECT_BILL_RATE_AMT) FEES,
+             SUM(PROJECT_BILL_RATE_AMT) -   SUM(REALIZED_BILL_RATE_AMT) WRITE_DOWN,
+             (SUM(PROJECT_BILL_RATE_AMT) - SUM(REALIZED_BILL_RATE_AMT))/DECODE(SUM(PROJECT_BILL_RATE_AMT),0,1,NULL,1,SUM(PROJECT_BILL_RATE_AMT))*100    WRITE_DOWN_PCT,
+             SUM(REALIZED_BILL_RATE_AMT) FEE_ALLOCATION,
+             ROUND(SUM(REALIZED_BILL_RATE_AMT)/DECODE(SUM(STANDARD_BILL_RATE_AMT),0,1,NULL,1,SUM(STANDARD_BILL_RATE_AMT))*100,2)        REALIZATION_PCT
+      FROM XXGPMS_PROJECT_COSTS
+      WHERE SESSION_ID = V('SESSION')
+      GROUP BY PERSON_NAME,JOB_NAME)
+      WHERE  UPPER(TRIM(PERSON_NAME)) = UPPER(TRIM(:P7_PERSON_NAME));
+
+  execution: 
+    sequence: 10
+    point: Before Header
+    run-process: Once Per Page Visit (default)
+
+- # ====== Process: Save the Adjustment ========================
+  id: 247419087769518036
+  identification: 
+    name: Save the Adjustment
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: |
+      DECLARE
+        V_STATUS NUMBER;
+        V_EXP_ID VARCHAR2(32767);
+      BEGIN
+      SELECT '-'||LISTAGG(EXPENDITURE_ITEM_ID,'-')||'-'
+      INTO   V_EXP_ID
+      FROM   XXGPMS_PROJECT_COSTS 
+      WHERE PERSON_NAME = :P7_PERSON_NAME;
+      
+          V_STATUS :=
+              XX_GPMS.WIP_TAG_ADJUSTMENT (V_EXP_ID,
+                                          :WIP_PROJECT_NUMBER,
+                                          :P7_WRITE_DOWN_PCT,
+                                          :P7_ADJUSTMENT_FEES_HIDDEN,
+                                          :P7_FEES);
+      END;
+
+  execution: 
+    sequence: 10
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  success-message: 
+    success-message: Adjustment Successful!!
+
+  error: 
+    display-location: Inline in Notification
+
+  server-side-condition: 
+    when-button-pressed: SAVE # 247419258437518038
+
+- # ====== Process: Close Dialog ===============================
+  id: 247207079976526360
+  identification: 
+    name: Close Dialog
+    type: Close Dialog
+    execution-chain: None
+
+  settings: 
+    show-success-messages: false
+
+  execution: 
+    sequence: 20
+    point: Processing
+    run-process: Once Per Page Visit (default)
+
+  error: 
+    display-location: Inline in Notification
+
